@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\PHPUnitAttributes\Tests\Reflection;
 
 use EliasHaeussler\PHPUnitAttributes as Src;
+use EliasHaeussler\PHPUnitAttributes\Tests;
 use PHPUnit\Framework;
 
 /**
@@ -44,7 +45,7 @@ final class AttributeReflectorTest extends Framework\TestCase
         ];
 
         $actual = Src\Reflection\AttributeReflector::forClass(
-            Src\Tests\Fixtures\FakeTest::class,
+            Tests\Fixtures\FakeTest::class,
             Src\Attribute\RequiresPackage::class,
         );
 
@@ -60,7 +61,7 @@ final class AttributeReflectorTest extends Framework\TestCase
         ];
 
         $actual = Src\Reflection\AttributeReflector::forClassMethod(
-            Src\Tests\Fixtures\FakeTest::class,
+            Tests\Fixtures\FakeTest::class,
             'fakeMethod',
             Src\Attribute\RequiresPackage::class,
         );

@@ -21,21 +21,24 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use EliasHaeussler\RectorConfig\Config\Config;
-use Rector\Config\RectorConfig;
-use Rector\PHPUnit\CodeQuality\Rector\ClassMethod\RemoveEmptyTestMethodRector;
-use Rector\ValueObject\PhpVersion;
+namespace EliasHaeussler\PHPUnitAttributes\Tests\E2E;
 
-return static function (RectorConfig $rectorConfig): void {
-    Config::create($rectorConfig, PhpVersion::PHP_81)
-        ->in(
-            __DIR__.'/src',
-            __DIR__.'/tests',
-        )
-        ->withPHPUnit()
-        ->skip(RemoveEmptyTestMethodRector::class, [
-            __DIR__.'/tests/e2e/fixtures',
-        ])
-        ->apply()
-    ;
-};
+use EliasHaeussler\PHPUnitAttributes as Src;
+use PHPUnit\Framework;
+
+/**
+ * RequiresPackageAttributeWithCustomMessageTest.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-3.0-or-later
+ */
+final class RequiresPackageAttributeWithCustomMessageTest extends Framework\TestCase
+{
+    #[Framework\Attributes\Test]
+    #[Src\Attribute\RequiresPackage('phpunit/phpunit', '< 10', 'PHPUnit < 10 must be installed')]
+    public function fakeTest(): void
+    {
+        /* @phpstan-ignore-next-line staticMethod.alreadyNarrowedType */
+        self::assertTrue(true);
+    }
+}

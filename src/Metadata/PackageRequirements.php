@@ -104,7 +104,7 @@ final class PackageRequirements
         $packageVersion = InstalledVersions::getVersion($packageName);
 
         if (null === $packageVersion) {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         return $requirement->isSatisfiedBy($packageVersion);

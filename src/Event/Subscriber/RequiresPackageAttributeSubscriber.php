@@ -29,6 +29,8 @@ use EliasHaeussler\PHPUnitAttributes\Reflection;
 use PHPUnit\Event;
 use PHPUnit\Framework;
 
+use function implode;
+
 /**
  * RequiresPackageAttributeSubscriber.
  *

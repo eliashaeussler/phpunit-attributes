@@ -22,7 +22,8 @@
 		"eliashaeussler/rector-config": "^3.0",
 		"ergebnis/composer-normalize": "^2.30",
 		"phpstan/extension-installer": "^1.2",
-		"phpstan/phpstan-phpunit": "^1.1"
+		"phpstan/phpstan-phpunit": "^1.1",
+		"phpunit/phpcov": "^9.0 || ^10.0"
 	},
 	"autoload": {
 		"psr-4": {
@@ -31,7 +32,7 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"EliasHaeussler\\PHPUnitAttributes\\Tests\\": "tests/src/"
+			"EliasHaeussler\\PHPUnitAttributes\\Tests\\": "tests/unit/"
 		}
 	},
 	"config": {
@@ -66,7 +67,20 @@
 			"@sca:php"
 		],
 		"sca:php": "phpstan analyse -c phpstan.php",
-		"test": "@test:coverage --no-coverage",
-		"test:coverage": "phpunit -c phpunit.xml"
+		"test": [
+			"@test:e2e",
+			"@test:unit"
+		],
+		"test:coverage": [
+			"@test:coverage:e2e",
+			"@test:coverage:unit",
+			"@test:coverage:merge"
+		],
+		"test:coverage:e2e": "phpunit --testsuite e2e --coverage-php .build/coverage/php/e2e.cov",
+		"test:coverage:merge": "phpcov merge --html .build/coverage/html/_merged --clover .build/coverage/clover.xml --text php://stdout .build/coverage/php",
+		"test:coverage:unit": "phpunit --testsuite unit --coverage-php .build/coverage/php/unit.cov",
+		"test:e2e": "phpunit --testsuite e2e --no-coverage",
+		"test:e2e:run": "tests/e2e/run.sh",
+		"test:unit": "phpunit --testsuite unit --no-coverage"
 	}
 }

@@ -31,8 +31,6 @@ use PHPUnit\TextUI\Configuration;
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
- *
- * @codeCoverageIgnore
  */
 final class PHPUnitAttributesExtension implements Runner\Extension\Extension
 {

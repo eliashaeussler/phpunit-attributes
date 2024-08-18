@@ -55,17 +55,28 @@ composer sca:php
 # All tests
 composer test
 
+# Specific tests
+composer test:e2e
+composer test:unit
+
 # All tests with code coverage
 composer test:coverage
+
+# Specific tests with code coverage
+composer test:coverage:e2e
+composer test:coverage:unit
+
+# Merge code coverage of all test suites
+composer test coverage:merge
 ```
 
 ### Test reports
 
 Code coverage reports are written to `.build/coverage`. You can open the
-last HTML report like follows:
+last merged HTML report like follows:
 
 ```bash
-open .build/coverage/html/index.html
+open .build/coverage/html/_merged/index.html
 ```
 
 ## Submit a pull request
