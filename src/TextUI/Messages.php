@@ -26,6 +26,7 @@ namespace EliasHaeussler\PHPUnitAttributes\TextUI;
 use PHPUnit\Metadata;
 
 use function sprintf;
+use function str_contains;
 
 /**
  * Messages.
@@ -45,7 +46,8 @@ final class Messages
         ?Metadata\Version\Requirement $versionRequirement = null,
     ): string {
         return sprintf(
-            'Package "%s"%s is required.',
+            '%s "%s"%s is required.',
+            str_contains($packageName, '*') ? 'Any package matching' : 'Package',
             $packageName,
             null !== $versionRequirement ? ' ('.$versionRequirement->asString().')' : '',
         );
