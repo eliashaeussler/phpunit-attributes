@@ -1,6 +1,6 @@
 repository:
   name: 'phpunit-attributes'
-  description: 'Additional attributes for tests with PHPUnit'
+  description: '🧙 Additional attributes for tests with PHPUnit'
   topics: 'phpunit,testing,unit,test,attributes,php'
   private: false
   has_issues: true
