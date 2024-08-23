@@ -1,5 +1,5 @@
 --TEST--
-The #[RequiresPackage] attribute causes tests with unsatisified requirement to fail
+The #[RequiresPackage] attribute causes tests with unsatisified requirement to be skipped
 --FILE--
 <?php
 
