@@ -19,6 +19,7 @@
     </testsuites>
     <coverage>
         <report>
+            <clover outputFile=".build/coverage/clover.xml" />
             <html outputDirectory=".build/coverage/html"/>
             <text outputFile="php://stdout" showOnlySummary="true"/>
         </report>

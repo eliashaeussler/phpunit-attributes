@@ -65,18 +65,15 @@ composer test:coverage
 # Specific tests with code coverage
 composer test:coverage:e2e
 composer test:coverage:unit
-
-# Merge code coverage of all test suites
-composer test:coverage:merge
 ```
 
 ### Test reports
 
 Code coverage reports are written to `.build/coverage`. You can open the
-last merged HTML report like follows:
+last HTML report like follows:
 
 ```bash
-open .build/coverage/html/_merged/index.html
+open .build/coverage/html/index.html
 ```
 
 ## Submit a pull request
