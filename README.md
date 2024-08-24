@@ -62,7 +62,153 @@ be added to the extension registration section like follows:
 
 ## 🎢 Attributes
 
-The following attributes are shipped with this library.
+The following attributes are shipped with this library:
+
+* [`#[RequiresClass]`](#requiresclass)
+* [`#[RequiresPackage]`](#requirespackage)
+
+### [`#[RequiresClass]`](src/Attribute/RequiresClass.php)
+
+_Scope: Class & Method level_
+
+With this attribute, tests or test cases can be marked as to be only executed
+if a certain class exists. The given class must be loadable by the current
+class loader (which normally is Composer's default class loader).
+
+#### Configuration
+
+By default, test cases requiring non-existent classes are skipped. However, this
+behavior can be configured by using the `failOnMissingClasses` extension parameter.
+If set to `true`, test cases with missing classes will fail (defaults to `false`):
+
+```xml
+<extensions>
+    <bootstrap class="EliasHaeussler\PHPUnitAttributes\PHPUnitAttributesExtension">
+        <parameter name="failOnMissingClasses" value="true" />
+    </bootstrap>
+</extensions>
+```
+
+<details>
+<summary>Examples</summary>
+
+#### Require single class
+
+Class level:
+
+```php
+#[RequiresClass(AnImportantClass::class)]
+final class DummyTest extends TestCase
+{
+    public function testDummyAction(): void
+    {
+        // Skipped if AnImportantClass is missing.
+    }
+
+    public function testOtherDummyAction(): void
+    {
+        // Skipped if AnImportantClass is missing.
+    }
+}
+```
+
+Method level:
+
+```php
+final class DummyTest extends TestCase
+{
+    #[RequiresClass('AnImportantClass')]
+    public function testDummyAction(): void
+    {
+        // Skipped if AnImportantClass is missing.
+    }
+
+    public function testOtherDummyAction(): void
+    {
+        // Not skipped.
+    }
+}
+```
+
+#### Require single class and provide custom message
+
+Class level:
+
+```php
+#[RequiresClass('AnImportantClass', 'This test requires the `AnImportantClass` class.')]
+final class DummyTest extends TestCase
+{
+    public function testDummyAction(): void
+    {
+        // Skipped if AnImportantClass is missing, along with custom message.
+    }
+
+    public function testOtherDummyAction(): void
+    {
+        // Skipped if AnImportantClass is missing, along with custom message.
+    }
+}
+```
+
+Method level:
+
+```php
+final class DummyTest extends TestCase
+{
+    #[RequiresClass('AnImportantClass', 'This test requires the `AnImportantClass` class.')]
+    public function testDummyAction(): void
+    {
+        // Skipped if AnImportantClass is missing, along with custom message.
+    }
+
+    public function testOtherDummyAction(): void
+    {
+        // Not skipped.
+    }
+}
+```
+
+#### Require multiple classes
+
+Class level:
+
+```php
+#[RequiresClass('AnImportantClass')]
+#[RequiresClass('AnotherVeryImportantClass')]
+final class DummyTest extends TestCase
+{
+    public function testDummyAction(): void
+    {
+        // Skipped if AnImportantClass and/or AnotherVeryImportantClass are missing.
+    }
+
+    public function testOtherDummyAction(): void
+    {
+        // Skipped if AnImportantClass and/or AnotherVeryImportantClass are missing.
+    }
+}
+```
+
+Method level:
+
+```php
+final class DummyTest extends TestCase
+{
+    #[RequiresClass('AnImportantClass')]
+    #[RequiresClass('AnotherVeryImportantClass')]
+    public function testDummyAction(): void
+    {
+        // Skipped if AnImportantClass and/or AnotherVeryImportantClass are missing.
+    }
+
+    public function testOtherDummyAction(): void
+    {
+        // Not skipped.
+    }
+}
+```
+
+</details>
 
 ### [`#[RequiresPackage]`](src/Attribute/RequiresPackage.php)
 
@@ -105,9 +251,10 @@ will fail (defaults to `false`):
 </extensions>
 ```
 
-#### Examples
+<details>
+<summary>Examples</summary>
 
-##### Require explicit Composer package
+#### Require explicit Composer package
 
 Class level:
 
@@ -145,7 +292,7 @@ final class DummyTest extends TestCase
 }
 ```
 
-##### Require any Composer package matching a given pattern
+#### Require any Composer package matching a given pattern
 
 Class level:
 
@@ -183,7 +330,7 @@ final class DummyTest extends TestCase
 }
 ```
 
-##### Require Composer package with given version constraint
+#### Require Composer package with given version constraint
 
 Class level:
 
@@ -221,7 +368,7 @@ final class DummyTest extends TestCase
 }
 ```
 
-##### Require Composer package and provide custom message
+#### Require Composer package and provide custom message
 
 Class level:
 
@@ -259,7 +406,7 @@ final class DummyTest extends TestCase
 }
 ```
 
-##### Multiple requirements
+#### Multiple requirements
 
 Class level:
 
@@ -298,6 +445,8 @@ final class DummyTest extends TestCase
     }
 }
 ```
+
+</details>
 
 ## 🧑‍💻 Contributing
 

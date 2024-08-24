@@ -39,20 +39,24 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
         Runner\Extension\Facade $facade,
         Runner\Extension\ParameterCollection $parameters,
     ): void {
-        if ($parameters->has('failOnUnsatisfiedPackageRequirements')) {
-            $failOnUnsatisfiedPackageRequirements = TextUI\Configuration\Parameters::parseBooleanValue(
-                $parameters->get('failOnUnsatisfiedPackageRequirements'),
-                false,
-            );
-        } else {
-            $failOnUnsatisfiedPackageRequirements = false;
-        }
-
         $facade->registerSubscribers(
             new Event\Subscriber\RequiresPackageAttributeSubscriber(
                 new Metadata\PackageRequirements(),
-                $failOnUnsatisfiedPackageRequirements,
+                $this->parseBooleanParameter($parameters, 'failOnUnsatisfiedPackageRequirements'),
+            ),
+            new Event\Subscriber\RequiresClassAttributeSubscriber(
+                new Metadata\ClassRequirements(),
+                $this->parseBooleanParameter($parameters, 'failOnMissingClasses'),
             ),
         );
+    }
+
+    private function parseBooleanParameter(Runner\Extension\ParameterCollection $parameters, string $name): bool
+    {
+        if ($parameters->has($name)) {
+            return TextUI\Configuration\Parameters::parseBooleanValue($parameters->get($name), false);
+        }
+
+        return false;
     }
 }

@@ -38,7 +38,6 @@ final class RequiresPackageAttributeWithoutVersionRequirementTest extends Framew
     #[Src\Attribute\RequiresPackage('foo/baz')]
     public function fakeTest(): void
     {
-        /* @phpstan-ignore-next-line staticMethod.alreadyNarrowedType */
         self::assertTrue(true);
     }
 
@@ -46,7 +45,6 @@ final class RequiresPackageAttributeWithoutVersionRequirementTest extends Framew
     #[Src\Attribute\RequiresPackage('phpunit/phpunit')]
     public function anotherFakeTest(): void
     {
-        /* @phpstan-ignore-next-line staticMethod.alreadyNarrowedType */
         self::assertTrue(true);
     }
 }

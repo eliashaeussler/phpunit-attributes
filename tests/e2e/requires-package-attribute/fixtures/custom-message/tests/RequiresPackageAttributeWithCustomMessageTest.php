@@ -38,7 +38,6 @@ final class RequiresPackageAttributeWithCustomMessageTest extends Framework\Test
     #[Src\Attribute\RequiresPackage('phpunit/phpunit', '< 10', 'PHPUnit < 10 must be installed')]
     public function fakeTest(): void
     {
-        /* @phpstan-ignore-next-line staticMethod.alreadyNarrowedType */
         self::assertTrue(true);
     }
 }

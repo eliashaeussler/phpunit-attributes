@@ -38,14 +38,12 @@ final class SingleRequiresPackageAttributeTest extends Framework\TestCase
     #[Src\Attribute\RequiresPackage('phpunit/phpunit', '< 10')]
     public function fakeTest(): void
     {
-        /* @phpstan-ignore-next-line staticMethod.alreadyNarrowedType */
         self::assertTrue(true);
     }
 
     #[Framework\Attributes\Test]
     public function anotherFakeTest(): void
     {
-        /* @phpstan-ignore-next-line staticMethod.alreadyNarrowedType */
         self::assertTrue(true);
     }
 }

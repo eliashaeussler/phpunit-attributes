@@ -55,4 +55,13 @@ final class MessagesTest extends Framework\TestCase
             Src\TextUI\Messages::forMissingRequiredPackage('foo/baz', $versionRequirement),
         );
     }
+
+    #[Framework\Attributes\Test]
+    public function forMissingClassReturnsMessageForGivenClassName(): void
+    {
+        self::assertSame(
+            'Class "'.self::class.'" is required.',
+            Src\TextUI\Messages::forMissingClass(self::class),
+        );
+    }
 }
