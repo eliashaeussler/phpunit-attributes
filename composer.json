@@ -67,20 +67,11 @@
 			"@sca:php"
 		],
 		"sca:php": "phpstan analyse -c phpstan.php",
-		"test": [
-			"@test:e2e",
-			"@test:unit"
-		],
-		"test:coverage": [
-			"@test:coverage:e2e",
-			"@test:coverage:unit",
-			"@test:coverage:merge"
-		],
-		"test:coverage:e2e": "phpunit --testsuite e2e --coverage-php .build/coverage/php/e2e.cov",
-		"test:coverage:merge": "phpcov merge --html .build/coverage/html/_merged --clover .build/coverage/clover.xml --text php://stdout .build/coverage/php",
-		"test:coverage:unit": "phpunit --testsuite unit --coverage-php .build/coverage/php/unit.cov",
-		"test:e2e": "phpunit --testsuite e2e --no-coverage",
-		"test:e2e:run": "tests/e2e/run.sh",
-		"test:unit": "phpunit --testsuite unit --no-coverage"
+		"test": "@test:coverage --no-coverage",
+		"test:coverage": "phpunit",
+		"test:coverage:e2e": "@test:coverage --testsuite e2e",
+		"test:coverage:unit": "@test:coverage --testsuite unit",
+		"test:e2e": "@test --testsuite e2e",
+		"test:unit": "@test --testsuite unit"
 	}
 }
