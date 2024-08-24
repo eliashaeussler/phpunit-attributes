@@ -77,7 +77,7 @@ final class PackageRequirements
             return $packageName;
         }
 
-        if (!class_exists(InstalledVersions::class)) {
+        if (!@class_exists(InstalledVersions::class)) {
             return null; // @codeCoverageIgnore
         }
 
@@ -92,7 +92,7 @@ final class PackageRequirements
 
     private function isPackageInstalled(string $packageName): bool
     {
-        if (!class_exists(InstalledVersions::class)) {
+        if (!@class_exists(InstalledVersions::class)) {
             return false; // @codeCoverageIgnore
         }
 
