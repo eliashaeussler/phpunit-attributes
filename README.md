@@ -72,6 +72,23 @@ tests as well as complete test classes. A required package is expected to be
 installed via Composer. You can optionally define a version constraint and a
 custom message.
 
+> [!IMPORTANT]
+> The attribute determines installed Composer packages from the build-time
+> generated `InstalledVersions` class built by Composer. In order to properly
+> read from this class , it's essential to include Composer's generated
+> autoloader in your PHPUnit bootstrap script:
+>
+> ```xml
+> <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+>          bootstrap="vendor/autoload.php"
+> >
+>     <!-- ... -->
+> </phpunit>
+> ```
+>
+> You can also pass the script as command option: `phpunit --bootstrap vendor/autoload.php`
+
 #### Configuration
 
 By default, test cases with unsatisfied requirements are skipped. However, this
