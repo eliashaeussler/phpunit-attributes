@@ -83,15 +83,16 @@ branches:
         strict: true
         contexts:
           - 'cgl'
-          - 'Tests (PHP 8.1 & locked dependencies)'
-          - 'Tests (PHP 8.1 & highest dependencies)'
-          - 'Tests (PHP 8.1 & lowest dependencies)'
-          - 'Tests (PHP 8.2 & locked dependencies)'
-          - 'Tests (PHP 8.2 & highest dependencies)'
-          - 'Tests (PHP 8.2 & lowest dependencies)'
-          - 'Tests (PHP 8.3 & locked dependencies)'
-          - 'Tests (PHP 8.3 & highest dependencies)'
-          - 'Tests (PHP 8.3 & lowest dependencies)'
+          - 'Tests (PHP 8.1, PHPUnit 10 & highest dependencies)'
+          - 'Tests (PHP 8.1, PHPUnit 10 & lowest dependencies)'
+          - 'Tests (PHP 8.2, PHPUnit 10 & highest dependencies)'
+          - 'Tests (PHP 8.2, PHPUnit 10 & lowest dependencies)'
+          - 'Tests (PHP 8.2, PHPUnit 11 & highest dependencies)'
+          - 'Tests (PHP 8.2, PHPUnit 11 & lowest dependencies)'
+          - 'Tests (PHP 8.3, PHPUnit 10 & highest dependencies)'
+          - 'Tests (PHP 8.3, PHPUnit 10 & lowest dependencies)'
+          - 'Tests (PHP 8.3, PHPUnit 11 & highest dependencies)'
+          - 'Tests (PHP 8.3, PHPUnit 11 & lowest dependencies)'
           - 'Test coverage'
       enforce_admins: false
       required_linear_history: true

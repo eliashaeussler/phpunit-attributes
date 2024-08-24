@@ -10,13 +10,17 @@ on:
 
 jobs:
   tests:
-    name: Tests (PHP ${{ matrix.php-version }} & ${{ matrix.dependencies }} dependencies)
+    name: Tests (PHP ${{ matrix.php-version }}, PHPUnit ${{ matrix.phpunit-version }} & ${{ matrix.dependencies }} dependencies)
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         php-version: ["8.1", "8.2", "8.3"]
-        dependencies: ["locked", "highest", "lowest"]
+        phpunit-version: ["10", "11"]
+        dependencies: ["highest", "lowest"]
+        exclude:
+          - php-version: "8.1"
+            phpunit-version: "11"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -35,6 +39,7 @@ jobs:
         uses: ramsey/composer-install@v2
         with:
           dependency-versions: ${{ matrix.dependencies }}
+          composer-options: --with=phpunit/phpunit:^${{ matrix.phpunit-version }}
 
       # Run tests
       - name: Run tests
