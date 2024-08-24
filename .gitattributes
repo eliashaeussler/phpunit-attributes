@@ -10,6 +10,7 @@
 /CONTRIBUTING.md          export-ignore
 /dependency-checker.json  export-ignore
 /phpstan.php              export-ignore
+/phpstan-baseline.neon    export-ignore
 /phpunit.xml              export-ignore
 /rector.php               export-ignore
 /renovate.json            export-ignore

@@ -38,14 +38,12 @@ final class RequiresPackageAttributeFailsOnUnsatisfiedRequirementTest extends Fr
     #[Src\Attribute\RequiresPackage('foo/baz')]
     public function fakeTest(): void
     {
-        /* @phpstan-ignore-next-line staticMethod.alreadyNarrowedType */
         self::assertTrue(true);
     }
 
     #[Framework\Attributes\Test]
     public function anotherFakeTest(): void
     {
-        /* @phpstan-ignore-next-line staticMethod.alreadyNarrowedType */
         self::assertTrue(true);
     }
 }

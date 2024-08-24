@@ -26,7 +26,7 @@ namespace EliasHaeussler\PHPUnitAttributes\Tests\Metadata;
 use EliasHaeussler\PHPUnitAttributes as Src;
 use Generator;
 use PHPUnit\Framework;
-use PHPUnit\Metadata\Version\ConstraintRequirement;
+use PHPUnit\Metadata;
 
 /**
  * PackageRequirementsTest.
@@ -106,7 +106,7 @@ final class PackageRequirementsTest extends Framework\TestCase
      */
     public static function validateForAttributeReturnsMessageIfVersionRequirementIsNotSatisfiedDataProvider(): Generator
     {
-        $versionRequirement = ConstraintRequirement::from('< 10');
+        $versionRequirement = Metadata\Version\ConstraintRequirement::from('< 10');
 
         yield 'package name' => [
             'phpunit/phpunit',

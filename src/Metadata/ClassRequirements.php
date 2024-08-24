@@ -21,29 +21,33 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Tests\E2E;
+namespace EliasHaeussler\PHPUnitAttributes\Metadata;
 
-use EliasHaeussler\PHPUnitAttributes as Src;
-use PHPUnit\Framework;
+use EliasHaeussler\PHPUnitAttributes\Attribute;
+use EliasHaeussler\PHPUnitAttributes\TextUI;
+
+use function class_exists;
 
 /**
- * RequiresPackageAttributeSkipsOnUnsatisfiedRequirementTest.
+ * ClassRequirements.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-final class RequiresPackageAttributeSkipsOnUnsatisfiedRequirementTest extends Framework\TestCase
+final class ClassRequirements
 {
-    #[Framework\Attributes\Test]
-    #[Src\Attribute\RequiresPackage('foo/baz')]
-    public function fakeTest(): void
+    /**
+     * @return non-empty-string|null
+     */
+    public function validateForAttribute(Attribute\RequiresClass $attribute): ?string
     {
-        self::assertTrue(true);
-    }
+        $className = $attribute->className();
+        $message = $attribute->message();
 
-    #[Framework\Attributes\Test]
-    public function anotherFakeTest(): void
-    {
-        self::assertTrue(true);
+        if (!@class_exists($className)) {
+            return $message ?? TextUI\Messages::forMissingClass($className);
+        }
+
+        return null;
     }
 }

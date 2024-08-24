@@ -28,7 +28,12 @@ return PHPStanConfig\Config\Config::create(__DIR__)
         'src',
         'tests',
     )
+    ->withBaseline()
     ->withBleedingEdge()
     ->maxLevel()
+    ->ignoreError(
+        'Call to static method PHPUnit\\Framework\\Assert::assertTrue() with true will always evaluate to true.',
+        'tests/e2e/*',
+    )
     ->toArray()
 ;

@@ -52,4 +52,14 @@ final class Messages
             null !== $versionRequirement ? ' ('.$versionRequirement->asString().')' : '',
         );
     }
+
+    /**
+     * @param class-string $className
+     *
+     * @return non-empty-string
+     */
+    public static function forMissingClass(string $className): string
+    {
+        return sprintf('Class "%s" is required.', $className);
+    }
 }

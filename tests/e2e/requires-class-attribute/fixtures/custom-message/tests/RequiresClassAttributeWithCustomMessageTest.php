@@ -27,22 +27,16 @@ use EliasHaeussler\PHPUnitAttributes as Src;
 use PHPUnit\Framework;
 
 /**
- * RequiresPackageAttributeSkipsOnUnsatisfiedRequirementTest.
+ * RequiresClassAttributeWithCustomMessageTest.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-final class RequiresPackageAttributeSkipsOnUnsatisfiedRequirementTest extends Framework\TestCase
+final class RequiresClassAttributeWithCustomMessageTest extends Framework\TestCase
 {
     #[Framework\Attributes\Test]
-    #[Src\Attribute\RequiresPackage('foo/baz')]
+    #[Src\Attribute\RequiresClass('Foo\\Baz', 'You\'re obviously missing some Foo...')]
     public function fakeTest(): void
-    {
-        self::assertTrue(true);
-    }
-
-    #[Framework\Attributes\Test]
-    public function anotherFakeTest(): void
     {
         self::assertTrue(true);
     }

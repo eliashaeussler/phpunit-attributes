@@ -1,0 +1,51 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			count: 1
+			path: tests/e2e/requires-class-attribute/fixtures/class-level/tests/RepeatedRequiresClassAttributeTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			count: 1
+			path: tests/e2e/requires-class-attribute/fixtures/class-level/tests/SingleRequiresClassAttributeTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			count: 1
+			path: tests/e2e/requires-class-attribute/fixtures/custom-message/tests/RequiresClassAttributeWithCustomMessageTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			count: 1
+			path: tests/e2e/requires-class-attribute/fixtures/fail-on-unsatisfied-requirement/tests/RequiresClassAttributeFailsOnUnsatisfiedRequirementTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			count: 1
+			path: tests/e2e/requires-class-attribute/fixtures/method-level/tests/RepeatedRequiresClassAttributeTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			count: 1
+			path: tests/e2e/requires-class-attribute/fixtures/method-level/tests/SingleRequiresClassAttributeTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			count: 1
+			path: tests/e2e/requires-class-attribute/fixtures/skip-on-invalid-configuration-value/tests/RequiresClassAttributeSkipsOnInvalidConfigurationValueTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			count: 1
+			path: tests/e2e/requires-class-attribute/fixtures/skip-on-unsatisfied-requirement/tests/RequiresClassAttributeSkipsOnUnsatisfiedRequirementTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$className of class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			count: 1
+			path: tests/unit/Metadata/ClassRequirementsTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$className of static method EliasHaeussler\\\\PHPUnitAttributes\\\\TextUI\\\\Messages\\:\\:forMissingClass\\(\\) expects class\\-string, string given\\.$#"
+			count: 1
+			path: tests/unit/Metadata/ClassRequirementsTest.php

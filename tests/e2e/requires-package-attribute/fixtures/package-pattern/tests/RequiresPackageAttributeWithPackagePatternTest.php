@@ -38,7 +38,6 @@ final class RequiresPackageAttributeWithPackagePatternTest extends Framework\Tes
     #[Src\Attribute\RequiresPackage('phpunit/*-coverage', '< 10')]
     public function fakeTest(): void
     {
-        /* @phpstan-ignore-next-line staticMethod.alreadyNarrowedType */
         self::assertTrue(true);
     }
 
@@ -46,7 +45,6 @@ final class RequiresPackageAttributeWithPackagePatternTest extends Framework\Tes
     #[Src\Attribute\RequiresPackage('foo/*')]
     public function anotherFakeTest(): void
     {
-        /* @phpstan-ignore-next-line staticMethod.alreadyNarrowedType */
         self::assertTrue(true);
     }
 }

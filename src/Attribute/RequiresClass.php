@@ -21,29 +21,41 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Tests\E2E;
+namespace EliasHaeussler\PHPUnitAttributes\Attribute;
 
-use EliasHaeussler\PHPUnitAttributes as Src;
-use PHPUnit\Framework;
+use Attribute;
 
 /**
- * RequiresPackageAttributeSkipsOnUnsatisfiedRequirementTest.
+ * RequiresClass.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-final class RequiresPackageAttributeSkipsOnUnsatisfiedRequirementTest extends Framework\TestCase
+#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
+final class RequiresClass
 {
-    #[Framework\Attributes\Test]
-    #[Src\Attribute\RequiresPackage('foo/baz')]
-    public function fakeTest(): void
+    /**
+     * @param class-string          $className
+     * @param non-empty-string|null $message
+     */
+    public function __construct(
+        private readonly string $className,
+        private readonly ?string $message = null,
+    ) {}
+
+    /**
+     * @return class-string
+     */
+    public function className(): string
     {
-        self::assertTrue(true);
+        return $this->className;
     }
 
-    #[Framework\Attributes\Test]
-    public function anotherFakeTest(): void
+    /**
+     * @return non-empty-string|null
+     */
+    public function message(): ?string
     {
-        self::assertTrue(true);
+        return $this->message;
     }
 }

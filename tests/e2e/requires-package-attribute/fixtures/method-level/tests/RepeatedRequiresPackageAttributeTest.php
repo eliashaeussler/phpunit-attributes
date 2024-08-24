@@ -39,14 +39,12 @@ final class RepeatedRequiresPackageAttributeTest extends Framework\TestCase
     #[Src\Attribute\RequiresPackage('phpstan/phpstan-phpunit', '< 1')]
     public function fakeTest(): void
     {
-        /* @phpstan-ignore-next-line staticMethod.alreadyNarrowedType */
         self::assertTrue(true);
     }
 
     #[Framework\Attributes\Test]
     public function anotherFakeTest(): void
     {
-        /* @phpstan-ignore-next-line staticMethod.alreadyNarrowedType */
         self::assertTrue(true);
     }
 }

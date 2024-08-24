@@ -27,15 +27,16 @@ use EliasHaeussler\PHPUnitAttributes as Src;
 use PHPUnit\Framework;
 
 /**
- * RequiresPackageAttributeSkipsOnUnsatisfiedRequirementTest.
+ * RepeatedRequiresClassAttributeTest.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-final class RequiresPackageAttributeSkipsOnUnsatisfiedRequirementTest extends Framework\TestCase
+#[Src\Attribute\RequiresClass(self::class)]
+#[Src\Attribute\RequiresClass('Foo\\Baz\\Bar')]
+final class RepeatedRequiresClassAttributeTest extends Framework\TestCase
 {
     #[Framework\Attributes\Test]
-    #[Src\Attribute\RequiresPackage('foo/baz')]
     public function fakeTest(): void
     {
         self::assertTrue(true);
