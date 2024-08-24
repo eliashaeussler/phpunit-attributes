@@ -67,7 +67,7 @@ composer test:coverage:e2e
 composer test:coverage:unit
 
 # Merge code coverage of all test suites
-composer test coverage:merge
+composer test:coverage:merge
 ```
 
 ### Test reports
