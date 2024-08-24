@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  tests:
-    name: Tests (PHP ${{ matrix.php-version }}, PHPUnit ${{ matrix.phpunit-version }} & ${{ matrix.dependencies }} dependencies)
+  tests-composer:
+    name: Tests with Composer (PHP ${{ matrix.php-version }}, PHPUnit ${{ matrix.phpunit-version }} & ${{ matrix.dependencies }} dependencies)
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -44,6 +44,47 @@ jobs:
       # Run tests
       - name: Run tests
         run: composer test
+
+  tests-phar:
+    name: Tests with PHAR (PHP ${{ matrix.php-version }} & PHPUnit ${{ matrix.phpunit-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["8.1", "8.2", "8.3"]
+        phpunit-version: ["10", "11"]
+        exclude:
+          - php-version: "8.1"
+            phpunit-version: "11"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Prepare environment
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2
+          coverage: none
+
+      # Install dependencies
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v2
+
+      # Download PHAR
+      - name: Download PHPUnit PHAR
+        run: |
+          wget -O phpunit.phar https://phar.phpunit.de/phpunit-${{ matrix.phpunit-version }}.phar
+          wget -O phpunit.phar.asc https://phar.phpunit.de/phpunit-${{ matrix.phpunit-version }}.phar.asc
+          gpg --keyserver keys.openpgp.org --recv-keys 0x4AA394086372C20A
+          gpg --verify phpunit.phar.asc
+          chmod +x phpunit.phar
+
+      # Run tests
+      - name: Run tests
+        run: ./phpunit.phar --no-coverage
 
   coverage:
     name: Test coverage
