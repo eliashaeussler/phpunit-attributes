@@ -117,7 +117,7 @@ Method level:
 ```php
 final class DummyTest extends TestCase
 {
-    #[RequiresClass('AnImportantClass')]
+    #[RequiresClass(AnImportantClass::class)]
     public function testDummyAction(): void
     {
         // Skipped if AnImportantClass is missing.
@@ -135,7 +135,7 @@ final class DummyTest extends TestCase
 Class level:
 
 ```php
-#[RequiresClass('AnImportantClass', 'This test requires the `AnImportantClass` class.')]
+#[RequiresClass(AnImportantClass::class, 'This test requires the `AnImportantClass` class.')]
 final class DummyTest extends TestCase
 {
     public function testDummyAction(): void
@@ -155,7 +155,7 @@ Method level:
 ```php
 final class DummyTest extends TestCase
 {
-    #[RequiresClass('AnImportantClass', 'This test requires the `AnImportantClass` class.')]
+    #[RequiresClass(AnImportantClass::class, 'This test requires the `AnImportantClass` class.')]
     public function testDummyAction(): void
     {
         // Skipped if AnImportantClass is missing, along with custom message.
@@ -173,8 +173,8 @@ final class DummyTest extends TestCase
 Class level:
 
 ```php
-#[RequiresClass('AnImportantClass')]
-#[RequiresClass('AnotherVeryImportantClass')]
+#[RequiresClass(AnImportantClass::class)]
+#[RequiresClass(AnotherVeryImportantClass::class)]
 final class DummyTest extends TestCase
 {
     public function testDummyAction(): void
@@ -194,8 +194,8 @@ Method level:
 ```php
 final class DummyTest extends TestCase
 {
-    #[RequiresClass('AnImportantClass')]
-    #[RequiresClass('AnotherVeryImportantClass')]
+    #[RequiresClass(AnImportantClass::class)]
+    #[RequiresClass(AnotherVeryImportantClass::class)]
     public function testDummyAction(): void
     {
         // Skipped if AnImportantClass and/or AnotherVeryImportantClass are missing.
