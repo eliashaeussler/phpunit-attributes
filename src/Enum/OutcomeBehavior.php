@@ -21,48 +21,41 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Attribute;
+namespace EliasHaeussler\PHPUnitAttributes\Enum;
 
-use Attribute;
-use EliasHaeussler\PHPUnitAttributes\Enum;
+use function reset;
+use function usort;
 
 /**
- * RequiresClass.
+ * OutcomeBehavior.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
-final class RequiresClass
+enum OutcomeBehavior: string
 {
-    /**
-     * @param class-string          $className
-     * @param non-empty-string|null $message
-     */
-    public function __construct(
-        private readonly string $className,
-        private readonly ?string $message = null,
-        private readonly ?Enum\OutcomeBehavior $outcomeBehavior = null,
-    ) {}
+    case Fail = 'fail';
+    case Skip = 'skip';
 
     /**
-     * @return class-string
+     * @param list<self> $outputBehaviors
      */
-    public function className(): string
+    public static function fromSet(array $outputBehaviors): ?self
     {
-        return $this->className;
+        if ([] === $outputBehaviors) {
+            return null;
+        }
+
+        usort($outputBehaviors, static fn (self $a, self $b) => $b->getPriority() <=> $a->getPriority());
+
+        return reset($outputBehaviors);
     }
 
-    /**
-     * @return non-empty-string|null
-     */
-    public function message(): ?string
+    private function getPriority(): int
     {
-        return $this->message;
-    }
-
-    public function outcomeBehavior(): ?Enum\OutcomeBehavior
-    {
-        return $this->outcomeBehavior;
+        return match ($this) {
+            self::Fail => 20,
+            self::Skip => 10,
+        };
     }
 }

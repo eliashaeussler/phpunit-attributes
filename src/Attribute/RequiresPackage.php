@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\PHPUnitAttributes\Attribute;
 
 use Attribute;
+use EliasHaeussler\PHPUnitAttributes\Enum;
 
 /**
  * RequiresPackage.
@@ -43,6 +44,7 @@ final class RequiresPackage
         private readonly string $package,
         private readonly ?string $versionRequirement = null,
         private readonly ?string $message = null,
+        private readonly ?Enum\OutcomeBehavior $outcomeBehavior = null,
     ) {}
 
     /**
@@ -67,5 +69,10 @@ final class RequiresPackage
     public function message(): ?string
     {
         return $this->message;
+    }
+
+    public function outcomeBehavior(): ?Enum\OutcomeBehavior
+    {
+        return $this->outcomeBehavior;
     }
 }

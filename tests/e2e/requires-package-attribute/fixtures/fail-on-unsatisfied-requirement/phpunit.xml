@@ -4,7 +4,7 @@
 >
     <extensions>
         <bootstrap class="EliasHaeussler\PHPUnitAttributes\PHPUnitAttributesExtension">
-            <parameter name="failOnUnsatisfiedPackageRequirements" value="true" />
+            <parameter name="handleUnsatisfiedPackageRequirements" value="fail" />
         </bootstrap>
     </extensions>
     <testsuites>

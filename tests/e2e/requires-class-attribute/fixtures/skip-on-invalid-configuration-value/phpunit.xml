@@ -4,8 +4,8 @@
 >
     <extensions>
         <bootstrap class="EliasHaeussler\PHPUnitAttributes\PHPUnitAttributesExtension">
-            <!-- "foo" is invalid here by purpose, test verifies that it's normalized to ”false" -->
-            <parameter name="failOnMissingClasses" value="foo" />
+            <!-- "foo" is invalid here by purpose, test verifies that it's normalized to ”skip" -->
+            <parameter name="handleMissingClasses" value="foo" />
         </bootstrap>
     </extensions>
     <testsuites>

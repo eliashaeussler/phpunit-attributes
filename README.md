@@ -78,13 +78,13 @@ class loader (which normally is Composer's default class loader).
 #### Configuration
 
 By default, test cases requiring non-existent classes are skipped. However, this
-behavior can be configured by using the `failOnMissingClasses` extension parameter.
-If set to `true`, test cases with missing classes will fail (defaults to `false`):
+behavior can be configured by using the `handleMissingClasses` extension parameter.
+If set to `fail`, test cases with missing classes will fail (defaults to `skip`):
 
 ```xml
 <extensions>
     <bootstrap class="EliasHaeussler\PHPUnitAttributes\PHPUnitAttributesExtension">
-        <parameter name="failOnMissingClasses" value="true" />
+        <parameter name="handleMissingClasses" value="fail" />
     </bootstrap>
 </extensions>
 ```
@@ -252,14 +252,14 @@ custom message.
 #### Configuration
 
 By default, test cases with unsatisfied requirements are skipped. However, this
-behavior can be configured by using the `failOnUnsatisfiedPackageRequirements`
-extension parameter. If set to `true`, test cases with unsatisfied requirements
-will fail (defaults to `false`):
+behavior can be configured by using the `handleUnsatisfiedPackageRequirements`
+extension parameter. If set to `fail`, test cases with unsatisfied requirements
+will fail (defaults to `skip`):
 
 ```xml
 <extensions>
     <bootstrap class="EliasHaeussler\PHPUnitAttributes\PHPUnitAttributesExtension">
-        <parameter name="failOnUnsatisfiedPackageRequirements" value="true" />
+        <parameter name="handleUnsatisfiedPackageRequirements" value="fail" />
     </bootstrap>
 </extensions>
 ```

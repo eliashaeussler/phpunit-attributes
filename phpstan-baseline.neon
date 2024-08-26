@@ -33,6 +33,11 @@ parameters:
 		-
 			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
 			count: 1
+			path: tests/e2e/requires-class-attribute/fixtures/parameter-migration/tests/RequiresClassAttributeFailsWithMigratedParameterTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			count: 1
 			path: tests/e2e/requires-class-attribute/fixtures/skip-on-invalid-configuration-value/tests/RequiresClassAttributeSkipsOnInvalidConfigurationValueTest.php
 
 		-

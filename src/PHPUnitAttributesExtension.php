@@ -23,8 +23,12 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\PHPUnitAttributes;
 
+use PHPUnit\Event\Facade;
 use PHPUnit\Runner;
 use PHPUnit\TextUI\Configuration;
+
+use function array_unshift;
+use function implode;
 
 /**
  * PHPUnitAttributesExtension.
@@ -39,24 +43,76 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
         Runner\Extension\Facade $facade,
         Runner\Extension\ParameterCollection $parameters,
     ): void {
+        [$requiresPackageMigrationResult, $requiresClassMigrationResult] = $this->migrateConfigurationParameters($parameters);
+
         $facade->registerSubscribers(
             new Event\Subscriber\RequiresPackageAttributeSubscriber(
                 new Metadata\PackageRequirements(),
-                $this->parseBooleanParameter($parameters, 'failOnUnsatisfiedPackageRequirements'),
+                Enum\OutcomeBehavior::tryFrom($requiresPackageMigrationResult->value()) ?? Enum\OutcomeBehavior::Skip,
             ),
             new Event\Subscriber\RequiresClassAttributeSubscriber(
                 new Metadata\ClassRequirements(),
-                $this->parseBooleanParameter($parameters, 'failOnMissingClasses'),
+                Enum\OutcomeBehavior::tryFrom($requiresClassMigrationResult->value()) ?? Enum\OutcomeBehavior::Skip,
             ),
+        );
+
+        $this->triggerDeprecationForMigratedConfigurationParameters(
+            $configuration->colors(),
+            $requiresPackageMigrationResult,
+            $requiresClassMigrationResult,
         );
     }
 
-    private function parseBooleanParameter(Runner\Extension\ParameterCollection $parameters, string $name): bool
+    /**
+     * @return list<TextUI\Configuration\MigrationResult>
+     */
+    private function migrateConfigurationParameters(Runner\Extension\ParameterCollection $parameters): array
     {
-        if ($parameters->has($name)) {
-            return TextUI\Configuration\Parameters::parseBooleanValue($parameters->get($name), false);
+        // RequiresPackage
+        // @todo Remove support of legacy parameter in v3 of the library
+        $requiresPackageMigration = TextUI\Configuration\Migration::forParameter(
+            'handleUnsatisfiedPackageRequirements',
+            'failOnUnsatisfiedPackageRequirements',
+        );
+        $requiresPackageMigration->withValueMapping(Enum\OutcomeBehavior::Fail->value, 'true', true);
+        $requiresPackageMigration->withValueMapping(Enum\OutcomeBehavior::Skip->value, 'false', true);
+        $requiresPackageMigrationResult = $requiresPackageMigration->resolve($parameters, Enum\OutcomeBehavior::Skip->value);
+
+        // RequiresClass
+        // @todo Remove support of legacy parameter in v3 of the library
+        $requiresClassMigration = TextUI\Configuration\Migration::forParameter(
+            'handleMissingClasses',
+            'failOnMissingClasses',
+        );
+        $requiresClassMigration->withValueMapping(Enum\OutcomeBehavior::Fail->value, 'true', true);
+        $requiresClassMigration->withValueMapping(Enum\OutcomeBehavior::Skip->value, 'false', true);
+        $requiresClassMigrationResult = $requiresClassMigration->resolve($parameters, Enum\OutcomeBehavior::Skip->value);
+
+        return [
+            $requiresPackageMigrationResult,
+            $requiresClassMigrationResult,
+        ];
+    }
+
+    private function triggerDeprecationForMigratedConfigurationParameters(
+        bool $colorize,
+        TextUI\Configuration\MigrationResult ...$migrationResults,
+    ): void {
+        $deprecationMessages = [];
+
+        foreach ($migrationResults as $migrationResult) {
+            if ($migrationResult->wasMigrated()) {
+                $deprecationMessages[] = $migrationResult->getDiffAsString($colorize);
+            }
         }
 
-        return false;
+        if ([] !== $deprecationMessages) {
+            array_unshift(
+                $deprecationMessages,
+                'Your XML configuration contains deprecated extension parameters. Migrate your XML configuration:',
+            );
+
+            Facade::emitter()->testRunnerTriggeredDeprecation(implode(PHP_EOL, $deprecationMessages));
+        }
     }
 }
