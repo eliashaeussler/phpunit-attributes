@@ -89,8 +89,21 @@ If set to `true`, test cases with missing classes will fail (defaults to `false`
 </extensions>
 ```
 
+#### Example
+
+```php
+final class DummyTest extends TestCase
+{
+    #[RequiresClass(AnImportantClass::class)]
+    public function testDummyAction(): void
+    {
+        // ...
+    }
+}
+```
+
 <details>
-<summary>Examples</summary>
+<summary>More examples</summary>
 
 #### Require single class
 
@@ -251,8 +264,21 @@ will fail (defaults to `false`):
 </extensions>
 ```
 
+#### Example
+
+```php
+final class DummyTest extends TestCase
+{
+    #[RequiresPackage('symfony/console')]
+    public function testDummyAction(): void
+    {
+        // ...
+    }
+}
+```
+
 <details>
-<summary>Examples</summary>
+<summary>More examples</summary>
 
 #### Require explicit Composer package
 
