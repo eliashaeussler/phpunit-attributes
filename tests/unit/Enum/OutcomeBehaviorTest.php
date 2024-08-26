@@ -21,48 +21,36 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Attribute;
+namespace EliasHaeussler\PHPUnitAttributes\Tests\Enum;
 
-use Attribute;
-use EliasHaeussler\PHPUnitAttributes\Enum;
+use EliasHaeussler\PHPUnitAttributes as Src;
+use PHPUnit\Framework;
 
 /**
- * RequiresClass.
+ * OutcomeBehaviorTest.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
-final class RequiresClass
+#[Framework\Attributes\CoversClass(Src\Enum\OutcomeBehavior::class)]
+final class OutcomeBehaviorTest extends Framework\TestCase
 {
-    /**
-     * @param class-string          $className
-     * @param non-empty-string|null $message
-     */
-    public function __construct(
-        private readonly string $className,
-        private readonly ?string $message = null,
-        private readonly ?Enum\OutcomeBehavior $outcomeBehavior = null,
-    ) {}
-
-    /**
-     * @return class-string
-     */
-    public function className(): string
+    #[Framework\Attributes\Test]
+    public function fromSetReturnsNullOnEmptySet(): void
     {
-        return $this->className;
+        self::assertNull(Src\Enum\OutcomeBehavior::fromSet([]));
     }
 
-    /**
-     * @return non-empty-string|null
-     */
-    public function message(): ?string
+    #[Framework\Attributes\Test]
+    public function fromSetReturnsOutcomeBehaviorWithHighestPriority(): void
     {
-        return $this->message;
-    }
+        $outputBehaviors = [
+            Src\Enum\OutcomeBehavior::Skip,
+            Src\Enum\OutcomeBehavior::Fail,
+            Src\Enum\OutcomeBehavior::Fail,
+            Src\Enum\OutcomeBehavior::Skip,
+        ];
 
-    public function outcomeBehavior(): ?Enum\OutcomeBehavior
-    {
-        return $this->outcomeBehavior;
+        self::assertSame(Src\Enum\OutcomeBehavior::Fail, Src\Enum\OutcomeBehavior::fromSet($outputBehaviors));
     }
 }

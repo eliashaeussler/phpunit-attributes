@@ -4,8 +4,8 @@
 >
     <extensions>
         <bootstrap class="EliasHaeussler\PHPUnitAttributes\PHPUnitAttributesExtension">
-            <!-- "foo" is invalid here by purpose, test verifies that it's normalized to ”skip" -->
-            <parameter name="handleUnsatisfiedPackageRequirements" value="foo" />
+            <!-- legacy parameter is invalid here by purpose, test verifies that it's migrated -->
+            <parameter name="failOnMissingClasses" value="true" />
         </bootstrap>
     </extensions>
     <testsuites>

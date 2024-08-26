@@ -4,7 +4,7 @@
 >
     <extensions>
         <bootstrap class="EliasHaeussler\PHPUnitAttributes\PHPUnitAttributesExtension">
-            <parameter name="failOnMissingClasses" value="false" />
+            <parameter name="handleMissingClasses" value="skip" />
         </bootstrap>
     </extensions>
     <testsuites>

@@ -21,28 +21,29 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\TextUI\Configuration;
+namespace EliasHaeussler\PHPUnitAttributes\Tests\E2E;
 
-use function strtolower;
+use EliasHaeussler\PHPUnitAttributes as Src;
+use PHPUnit\Framework;
 
 /**
- * Parameters.
+ * RequiresPackageAttributeFailsWithMigratedParameterTest.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-final class Parameters
+final class RequiresPackageAttributeFailsWithMigratedParameterTest extends Framework\TestCase
 {
-    public static function parseBooleanValue(string $value, bool $default): bool
+    #[Framework\Attributes\Test]
+    #[Src\Attribute\RequiresPackage('foo/baz')]
+    public function fakeTest(): void
     {
-        if ('false' === strtolower($value)) {
-            return false;
-        }
+        self::assertTrue(true);
+    }
 
-        if ('true' === strtolower($value)) {
-            return true;
-        }
-
-        return $default;
+    #[Framework\Attributes\Test]
+    public function anotherFakeTest(): void
+    {
+        self::assertTrue(true);
     }
 }

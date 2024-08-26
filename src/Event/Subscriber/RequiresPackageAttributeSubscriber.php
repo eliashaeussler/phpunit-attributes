@@ -24,11 +24,15 @@ declare(strict_types=1);
 namespace EliasHaeussler\PHPUnitAttributes\Event\Subscriber;
 
 use EliasHaeussler\PHPUnitAttributes\Attribute;
+use EliasHaeussler\PHPUnitAttributes\Enum;
 use EliasHaeussler\PHPUnitAttributes\Metadata;
 use EliasHaeussler\PHPUnitAttributes\Reflection;
 use PHPUnit\Event;
 use PHPUnit\Framework;
 
+use function array_filter;
+use function array_keys;
+use function array_values;
 use function implode;
 
 /**
@@ -40,13 +44,13 @@ use function implode;
 final class RequiresPackageAttributeSubscriber implements Event\Test\PreparedSubscriber
 {
     /**
-     * @var array<non-empty-string, list<non-empty-string>>
+     * @var array<non-empty-string, array<non-empty-string, Enum\OutcomeBehavior>>
      */
-    private array $testClassMessagesCache = [];
+    private array $testClassBehaviorsCache = [];
 
     public function __construct(
         private readonly Metadata\PackageRequirements $packageRequirements,
-        private readonly bool $failOnUnsatisfiedPackageRequirements,
+        private readonly Enum\OutcomeBehavior $behaviorOnUnsatisfiedPackageRequirements,
     ) {}
 
     public function notify(Event\Test\Prepared $event): void
@@ -58,20 +62,20 @@ final class RequiresPackageAttributeSubscriber implements Event\Test\PreparedSub
         }
 
         $testClassName = $test->className();
-        $messages = $this->testClassMessagesCache[$testClassName] ?? [];
+        $behaviors = $this->testClassBehaviorsCache[$testClassName] ?? [];
 
-        if ([] !== $messages) {
-            $this->skipTest($messages);
+        if ([] !== $behaviors) {
+            $this->handleOutcomeBehavior($behaviors);
         }
 
         $classAttributes = Reflection\AttributeReflector::forClass(
             $testClassName,
             Attribute\RequiresPackage::class,
         );
-        $messages = $this->testClassMessagesCache[$testClassName] = $this->checkPackageRequirements($classAttributes);
+        $behaviors = $this->testClassBehaviorsCache[$testClassName] = $this->checkPackageRequirements($classAttributes);
 
-        if ([] !== $messages) {
-            $this->skipTest($messages);
+        if ([] !== $behaviors) {
+            $this->handleOutcomeBehavior($behaviors);
         }
 
         $methodAttributes = Reflection\AttributeReflector::forClassMethod(
@@ -79,17 +83,17 @@ final class RequiresPackageAttributeSubscriber implements Event\Test\PreparedSub
             $test->methodName(),
             Attribute\RequiresPackage::class,
         );
-        $messages = $this->checkPackageRequirements($methodAttributes);
+        $behaviors = $this->checkPackageRequirements($methodAttributes);
 
-        if ([] !== $messages) {
-            $this->skipTest($messages);
+        if ([] !== $behaviors) {
+            $this->handleOutcomeBehavior($behaviors);
         }
     }
 
     /**
      * @param list<Attribute\RequiresPackage> $attributes
      *
-     * @return list<non-empty-string>
+     * @return array<non-empty-string, Enum\OutcomeBehavior>
      */
     private function checkPackageRequirements(array $attributes): array
     {
@@ -99,7 +103,7 @@ final class RequiresPackageAttributeSubscriber implements Event\Test\PreparedSub
             $message = $this->packageRequirements->validateForAttribute($attribute);
 
             if (null !== $message) {
-                $notSatisfied[] = $message;
+                $notSatisfied[$message] = $attribute->outcomeBehavior() ?? $this->behaviorOnUnsatisfiedPackageRequirements;
             }
         }
 
@@ -107,16 +111,21 @@ final class RequiresPackageAttributeSubscriber implements Event\Test\PreparedSub
     }
 
     /**
-     * @param list<non-empty-string> $messages
+     * @param array<non-empty-string, Enum\OutcomeBehavior> $behaviors
      */
-    private function skipTest(array $messages): never
+    private function handleOutcomeBehavior(array $behaviors): never
     {
-        $message = implode(PHP_EOL, $messages);
+        $message = implode(PHP_EOL, array_keys($behaviors));
+        $outcomeBehaviors = array_values(
+            array_filter(
+                $behaviors,
+                static fn (?Enum\OutcomeBehavior $outcomeBehavior) => null !== $outcomeBehavior,
+            ),
+        );
 
-        if ($this->failOnUnsatisfiedPackageRequirements) {
-            Framework\Assert::fail($message);
-        } else {
-            Framework\Assert::markTestSkipped($message);
-        }
+        match (Enum\OutcomeBehavior::fromSet($outcomeBehaviors) ?? $this->behaviorOnUnsatisfiedPackageRequirements) {
+            Enum\OutcomeBehavior::Fail => Framework\Assert::fail($message),
+            Enum\OutcomeBehavior::Skip => Framework\Assert::markTestSkipped($message),
+        };
     }
 }

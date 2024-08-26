@@ -24,11 +24,15 @@ declare(strict_types=1);
 namespace EliasHaeussler\PHPUnitAttributes\Event\Subscriber;
 
 use EliasHaeussler\PHPUnitAttributes\Attribute;
+use EliasHaeussler\PHPUnitAttributes\Enum;
 use EliasHaeussler\PHPUnitAttributes\Metadata;
 use EliasHaeussler\PHPUnitAttributes\Reflection;
 use PHPUnit\Event;
 use PHPUnit\Framework;
 
+use function array_filter;
+use function array_keys;
+use function array_values;
 use function implode;
 
 /**
@@ -40,13 +44,13 @@ use function implode;
 final class RequiresClassAttributeSubscriber implements Event\Test\PreparedSubscriber
 {
     /**
-     * @var array<non-empty-string, list<non-empty-string>>
+     * @var array<non-empty-string, array<non-empty-string, Enum\OutcomeBehavior>>
      */
-    private array $testClassMessagesCache = [];
+    private array $testClassBehaviorsCache = [];
 
     public function __construct(
         private readonly Metadata\ClassRequirements $classRequirements,
-        private readonly bool $failOnMissingClasses,
+        private readonly Enum\OutcomeBehavior $behaviorOnMissingClasses,
     ) {}
 
     public function notify(Event\Test\Prepared $event): void
@@ -58,20 +62,20 @@ final class RequiresClassAttributeSubscriber implements Event\Test\PreparedSubsc
         }
 
         $testClassName = $test->className();
-        $messages = $this->testClassMessagesCache[$testClassName] ?? [];
+        $behaviors = $this->testClassBehaviorsCache[$testClassName] ?? [];
 
-        if ([] !== $messages) {
-            $this->skipTest($messages);
+        if ([] !== $behaviors) {
+            $this->handleOutcomeBehavior($behaviors);
         }
 
         $classAttributes = Reflection\AttributeReflector::forClass(
             $testClassName,
             Attribute\RequiresClass::class,
         );
-        $messages = $this->testClassMessagesCache[$testClassName] = $this->checkClassNames($classAttributes);
+        $behaviors = $this->testClassBehaviorsCache[$testClassName] = $this->checkClassNames($classAttributes);
 
-        if ([] !== $messages) {
-            $this->skipTest($messages);
+        if ([] !== $behaviors) {
+            $this->handleOutcomeBehavior($behaviors);
         }
 
         $methodAttributes = Reflection\AttributeReflector::forClassMethod(
@@ -79,17 +83,17 @@ final class RequiresClassAttributeSubscriber implements Event\Test\PreparedSubsc
             $test->methodName(),
             Attribute\RequiresClass::class,
         );
-        $messages = $this->checkClassNames($methodAttributes);
+        $behaviors = $this->checkClassNames($methodAttributes);
 
-        if ([] !== $messages) {
-            $this->skipTest($messages);
+        if ([] !== $behaviors) {
+            $this->handleOutcomeBehavior($behaviors);
         }
     }
 
     /**
      * @param list<Attribute\RequiresClass> $attributes
      *
-     * @return list<non-empty-string>
+     * @return array<non-empty-string, Enum\OutcomeBehavior>
      */
     private function checkClassNames(array $attributes): array
     {
@@ -99,7 +103,7 @@ final class RequiresClassAttributeSubscriber implements Event\Test\PreparedSubsc
             $message = $this->classRequirements->validateForAttribute($attribute);
 
             if (null !== $message) {
-                $notSatisfied[] = $message;
+                $notSatisfied[$message] = $attribute->outcomeBehavior() ?? $this->behaviorOnMissingClasses;
             }
         }
 
@@ -107,16 +111,21 @@ final class RequiresClassAttributeSubscriber implements Event\Test\PreparedSubsc
     }
 
     /**
-     * @param list<non-empty-string> $messages
+     * @param array<non-empty-string, Enum\OutcomeBehavior> $behaviors
      */
-    private function skipTest(array $messages): never
+    private function handleOutcomeBehavior(array $behaviors): never
     {
-        $message = implode(PHP_EOL, $messages);
+        $message = implode(PHP_EOL, array_keys($behaviors));
+        $outcomeBehaviors = array_values(
+            array_filter(
+                $behaviors,
+                static fn (?Enum\OutcomeBehavior $outcomeBehavior) => null !== $outcomeBehavior,
+            ),
+        );
 
-        if ($this->failOnMissingClasses) {
-            Framework\Assert::fail($message);
-        } else {
-            Framework\Assert::markTestSkipped($message);
-        }
+        match (Enum\OutcomeBehavior::fromSet($outcomeBehaviors) ?? $this->behaviorOnMissingClasses) {
+            Enum\OutcomeBehavior::Fail => Framework\Assert::fail($message),
+            Enum\OutcomeBehavior::Skip => Framework\Assert::markTestSkipped($message),
+        };
     }
 }
