@@ -181,6 +181,44 @@ final class DummyTest extends TestCase
 }
 ```
 
+#### Require single class and define custom outcome behavior
+
+Class level:
+
+```php
+#[RequiresClass(AnImportantClass::class, outcomeBehavior: OutcomeBehavior::Fail)]
+final class DummyTest extends TestCase
+{
+    public function testDummyAction(): void
+    {
+        // Fails if AnImportantClass is missing.
+    }
+
+    public function testOtherDummyAction(): void
+    {
+        // Fails if AnImportantClass is missing.
+    }
+}
+```
+
+Method level:
+
+```php
+final class DummyTest extends TestCase
+{
+    #[RequiresClass(AnImportantClass::class, outcomeBehavior: OutcomeBehavior::Fail)]
+    public function testDummyAction(): void
+    {
+        // Fails if AnImportantClass is missing.
+    }
+
+    public function testOtherDummyAction(): void
+    {
+        // Does not fail.
+    }
+}
+```
+
 #### Require multiple classes
 
 Class level:
@@ -428,6 +466,44 @@ final class DummyTest extends TestCase
     public function testOtherDummyAction(): void
     {
         // Not skipped.
+    }
+}
+```
+
+#### Require Composer package and define custom outcome behavior
+
+Class level:
+
+```php
+#[RequiresPackage('symfony/console', outcomeBehavior: OutcomeBehavior::Fail)]
+final class DummyTest extends TestCase
+{
+    public function testDummyAction(): void
+    {
+        // Fails if symfony/console is not installed.
+    }
+
+    public function testOtherDummyAction(): void
+    {
+        // Fails if symfony/console is not installed.
+    }
+}
+```
+
+Method level:
+
+```php
+final class DummyTest extends TestCase
+{
+    #[RequiresPackage('symfony/console', outcomeBehavior: OutcomeBehavior::Fail)]
+    public function testDummyAction(): void
+    {
+        // Fails if symfony/console is not installed.
+    }
+
+    public function testOtherDummyAction(): void
+    {
+        // Does not fail.
     }
 }
 ```
