@@ -21,7 +21,7 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Event\Tracer;
+namespace EliasHaeussler\PHPUnitAttributes\PHPUnit\Event\Tracer;
 
 use EliasHaeussler\PHPUnitAttributes\Attribute;
 use EliasHaeussler\PHPUnitAttributes\Enum;
@@ -36,12 +36,12 @@ use function array_values;
 use function implode;
 
 /**
- * RequiresClassAttributeTracer.
+ * RequiresPackageAttributeTracer.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-final class RequiresClassAttributeTracer implements Event\Tracer\Tracer
+final class RequiresPackageAttributeTracer implements Event\Tracer\Tracer
 {
     /**
      * @var array<class-string, array<non-empty-string, Enum\OutcomeBehavior>>
@@ -49,8 +49,8 @@ final class RequiresClassAttributeTracer implements Event\Tracer\Tracer
     private array $testClassBehaviorsCache = [];
 
     public function __construct(
-        private readonly Metadata\ClassRequirements $classRequirements,
-        private readonly Enum\OutcomeBehavior $behaviorOnMissingClasses,
+        private readonly Metadata\PackageRequirements $packageRequirements,
+        private readonly Enum\OutcomeBehavior $behaviorOnUnsatisfiedPackageRequirements,
     ) {}
 
     public function trace(Event\Event $event): void
@@ -86,9 +86,9 @@ final class RequiresClassAttributeTracer implements Event\Tracer\Tracer
 
         $classAttributes = Reflection\AttributeReflector::forClass(
             $testClassName,
-            Attribute\RequiresClass::class,
+            Attribute\RequiresPackage::class,
         );
-        $behaviors = $this->testClassBehaviorsCache[$testClassName] = $this->checkClassNames($classAttributes);
+        $behaviors = $this->testClassBehaviorsCache[$testClassName] = $this->checkPackageRequirements($classAttributes);
 
         if ([] !== $behaviors) {
             $this->handleOutcomeBehavior($behaviors);
@@ -103,9 +103,9 @@ final class RequiresClassAttributeTracer implements Event\Tracer\Tracer
         $methodAttributes = Reflection\AttributeReflector::forClassMethod(
             $testClassName,
             $testMethodName,
-            Attribute\RequiresClass::class,
+            Attribute\RequiresPackage::class,
         );
-        $behaviors = $this->checkClassNames($methodAttributes);
+        $behaviors = $this->checkPackageRequirements($methodAttributes);
 
         if ([] !== $behaviors) {
             $this->handleOutcomeBehavior($behaviors);
@@ -113,19 +113,19 @@ final class RequiresClassAttributeTracer implements Event\Tracer\Tracer
     }
 
     /**
-     * @param list<Attribute\RequiresClass> $attributes
+     * @param list<Attribute\RequiresPackage> $attributes
      *
      * @return array<non-empty-string, Enum\OutcomeBehavior>
      */
-    private function checkClassNames(array $attributes): array
+    private function checkPackageRequirements(array $attributes): array
     {
         $notSatisfied = [];
 
         foreach ($attributes as $attribute) {
-            $message = $this->classRequirements->validateForAttribute($attribute);
+            $message = $this->packageRequirements->validateForAttribute($attribute);
 
             if (null !== $message) {
-                $notSatisfied[$message] = $attribute->outcomeBehavior() ?? $this->behaviorOnMissingClasses;
+                $notSatisfied[$message] = $attribute->outcomeBehavior() ?? $this->behaviorOnUnsatisfiedPackageRequirements;
             }
         }
 
@@ -145,7 +145,7 @@ final class RequiresClassAttributeTracer implements Event\Tracer\Tracer
             ),
         );
 
-        match (Enum\OutcomeBehavior::fromSet($outcomeBehaviors) ?? $this->behaviorOnMissingClasses) {
+        match (Enum\OutcomeBehavior::fromSet($outcomeBehaviors) ?? $this->behaviorOnUnsatisfiedPackageRequirements) {
             Enum\OutcomeBehavior::Fail => Framework\Assert::fail($message),
             Enum\OutcomeBehavior::Skip => Framework\Assert::markTestSkipped($message),
         };

@@ -21,7 +21,7 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Tests\TextUI\Configuration;
+namespace EliasHaeussler\PHPUnitAttributes\Tests\PHPUnit\TextUI\Configuration;
 
 use EliasHaeussler\PHPUnitAttributes as Src;
 use PHPUnit\Framework;
@@ -33,15 +33,15 @@ use PHPUnit\Runner;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-#[Framework\Attributes\CoversClass(Src\TextUI\Configuration\Migration::class)]
+#[Framework\Attributes\CoversClass(Src\PHPUnit\TextUI\Configuration\Migration::class)]
 final class MigrationTest extends Framework\TestCase
 {
-    private Src\TextUI\Configuration\Migration $subject;
+    private Src\PHPUnit\TextUI\Configuration\Migration $subject;
     private Runner\Extension\ParameterCollection $parameters;
 
     public function setUp(): void
     {
-        $this->subject = Src\TextUI\Configuration\Migration::forParameter('foo', 'baz');
+        $this->subject = Src\PHPUnit\TextUI\Configuration\Migration::forParameter('foo', 'baz');
         $this->parameters = Runner\Extension\ParameterCollection::fromArray([
             'baz' => 'bazValue',
         ]);
@@ -80,7 +80,7 @@ final class MigrationTest extends Framework\TestCase
             'foo' => 'fooValue',
         ]);
 
-        $expected = Src\TextUI\Configuration\MigrationResult::forMigration($this->subject, 'fooValue');
+        $expected = Src\PHPUnit\TextUI\Configuration\MigrationResult::forMigration($this->subject, 'fooValue');
 
         self::assertEquals($expected, $this->subject->resolve($parameters));
     }
@@ -98,7 +98,7 @@ final class MigrationTest extends Framework\TestCase
     {
         $parameters = Runner\Extension\ParameterCollection::fromArray([]);
 
-        $expected = Src\TextUI\Configuration\MigrationResult::forMigration($this->subject, 'fooValue');
+        $expected = Src\PHPUnit\TextUI\Configuration\MigrationResult::forMigration($this->subject, 'fooValue');
 
         self::assertEquals($expected, $this->subject->resolve($parameters, 'fooValue'));
     }

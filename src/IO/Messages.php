@@ -21,8 +21,9 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\TextUI;
+namespace EliasHaeussler\PHPUnitAttributes\IO;
 
+use EliasHaeussler\PHPUnitAttributes\Enum;
 use PHPUnit\Metadata;
 
 use function sprintf;
@@ -61,5 +62,18 @@ final class Messages
     public static function forMissingClass(string $className): string
     {
         return sprintf('Class "%s" is required.', $className);
+    }
+
+    public static function forUnsupportedConfiguredOutcomeBehavior(
+        string $configurationName,
+        Enum\OutcomeBehavior $outcomeBehavior,
+        Enum\OutcomeBehavior $defaultBehavior,
+    ): string {
+        return sprintf(
+            'You have configured an unsupported outcome behavior "%s" for "%s". Falling back to "%s".',
+            $outcomeBehavior->value,
+            $configurationName,
+            $defaultBehavior->value,
+        );
     }
 }
