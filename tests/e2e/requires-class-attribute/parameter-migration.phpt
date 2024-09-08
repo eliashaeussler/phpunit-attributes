@@ -43,6 +43,7 @@ Class "Foo\Baz" is required.
 
 %s
 %s
+%s
 
 FAILURES!
 Tests: 2, Assertions: 2, Failures: 1,%sDeprecations: 1.
