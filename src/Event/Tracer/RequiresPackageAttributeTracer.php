@@ -21,7 +21,7 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Event\Subscriber;
+namespace EliasHaeussler\PHPUnitAttributes\Event\Tracer;
 
 use EliasHaeussler\PHPUnitAttributes\Attribute;
 use EliasHaeussler\PHPUnitAttributes\Enum;
@@ -36,32 +36,48 @@ use function array_values;
 use function implode;
 
 /**
- * RequiresClassAttributeSubscriber.
+ * RequiresPackageAttributeTracer.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-final class RequiresClassAttributeSubscriber implements Event\Test\PreparedSubscriber
+final class RequiresPackageAttributeTracer implements Event\Tracer\Tracer
 {
     /**
-     * @var array<non-empty-string, array<non-empty-string, Enum\OutcomeBehavior>>
+     * @var array<class-string, array<non-empty-string, Enum\OutcomeBehavior>>
      */
     private array $testClassBehaviorsCache = [];
 
     public function __construct(
-        private readonly Metadata\ClassRequirements $classRequirements,
-        private readonly Enum\OutcomeBehavior $behaviorOnMissingClasses,
+        private readonly Metadata\PackageRequirements $packageRequirements,
+        private readonly Enum\OutcomeBehavior $behaviorOnUnsatisfiedPackageRequirements,
     ) {}
 
-    public function notify(Event\Test\Prepared $event): void
+    public function trace(Event\Event $event): void
     {
-        $test = $event->test();
+        if ($event instanceof Event\Test\BeforeTestMethodCalled) {
+            $this->processAttributesOnClassLevel($event->testClassName());
 
-        if (!($test instanceof Event\Code\TestMethod)) {
             return;
         }
 
-        $testClassName = $test->className();
+        if (!($event instanceof Event\Test\Prepared)) {
+            return;
+        }
+
+        $test = $event->test();
+
+        if ($test instanceof Event\Code\TestMethod) {
+            $this->processAttributesOnClassLevel($test->className());
+            $this->processAttributesOnMethodLevel($test->className(), $test->methodName());
+        }
+    }
+
+    /**
+     * @param class-string $testClassName
+     */
+    private function processAttributesOnClassLevel(string $testClassName): void
+    {
         $behaviors = $this->testClassBehaviorsCache[$testClassName] ?? [];
 
         if ([] !== $behaviors) {
@@ -70,20 +86,9 @@ final class RequiresClassAttributeSubscriber implements Event\Test\PreparedSubsc
 
         $classAttributes = Reflection\AttributeReflector::forClass(
             $testClassName,
-            Attribute\RequiresClass::class,
+            Attribute\RequiresPackage::class,
         );
-        $behaviors = $this->testClassBehaviorsCache[$testClassName] = $this->checkClassNames($classAttributes);
-
-        if ([] !== $behaviors) {
-            $this->handleOutcomeBehavior($behaviors);
-        }
-
-        $methodAttributes = Reflection\AttributeReflector::forClassMethod(
-            $testClassName,
-            $test->methodName(),
-            Attribute\RequiresClass::class,
-        );
-        $behaviors = $this->checkClassNames($methodAttributes);
+        $behaviors = $this->testClassBehaviorsCache[$testClassName] = $this->checkPackageRequirements($classAttributes);
 
         if ([] !== $behaviors) {
             $this->handleOutcomeBehavior($behaviors);
@@ -91,19 +96,36 @@ final class RequiresClassAttributeSubscriber implements Event\Test\PreparedSubsc
     }
 
     /**
-     * @param list<Attribute\RequiresClass> $attributes
+     * @param class-string $testClassName
+     */
+    private function processAttributesOnMethodLevel(string $testClassName, string $testMethodName): void
+    {
+        $methodAttributes = Reflection\AttributeReflector::forClassMethod(
+            $testClassName,
+            $testMethodName,
+            Attribute\RequiresPackage::class,
+        );
+        $behaviors = $this->checkPackageRequirements($methodAttributes);
+
+        if ([] !== $behaviors) {
+            $this->handleOutcomeBehavior($behaviors);
+        }
+    }
+
+    /**
+     * @param list<Attribute\RequiresPackage> $attributes
      *
      * @return array<non-empty-string, Enum\OutcomeBehavior>
      */
-    private function checkClassNames(array $attributes): array
+    private function checkPackageRequirements(array $attributes): array
     {
         $notSatisfied = [];
 
         foreach ($attributes as $attribute) {
-            $message = $this->classRequirements->validateForAttribute($attribute);
+            $message = $this->packageRequirements->validateForAttribute($attribute);
 
             if (null !== $message) {
-                $notSatisfied[$message] = $attribute->outcomeBehavior() ?? $this->behaviorOnMissingClasses;
+                $notSatisfied[$message] = $attribute->outcomeBehavior() ?? $this->behaviorOnUnsatisfiedPackageRequirements;
             }
         }
 
@@ -123,7 +145,7 @@ final class RequiresClassAttributeSubscriber implements Event\Test\PreparedSubsc
             ),
         );
 
-        match (Enum\OutcomeBehavior::fromSet($outcomeBehaviors) ?? $this->behaviorOnMissingClasses) {
+        match (Enum\OutcomeBehavior::fromSet($outcomeBehaviors) ?? $this->behaviorOnUnsatisfiedPackageRequirements) {
             Enum\OutcomeBehavior::Fail => Framework\Assert::fail($message),
             Enum\OutcomeBehavior::Skip => Framework\Assert::markTestSkipped($message),
         };

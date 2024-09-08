@@ -45,12 +45,14 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
     ): void {
         [$requiresPackageMigrationResult, $requiresClassMigrationResult] = $this->migrateConfigurationParameters($parameters);
 
-        $facade->registerSubscribers(
-            new Event\Subscriber\RequiresPackageAttributeSubscriber(
+        $facade->registerTracer(
+            new Event\Tracer\RequiresPackageAttributeTracer(
                 new Metadata\PackageRequirements(),
                 Enum\OutcomeBehavior::tryFrom($requiresPackageMigrationResult->value()) ?? Enum\OutcomeBehavior::Skip,
             ),
-            new Event\Subscriber\RequiresClassAttributeSubscriber(
+        );
+        $facade->registerTracer(
+            new Event\Tracer\RequiresClassAttributeTracer(
                 new Metadata\ClassRequirements(),
                 Enum\OutcomeBehavior::tryFrom($requiresClassMigrationResult->value()) ?? Enum\OutcomeBehavior::Skip,
             ),
