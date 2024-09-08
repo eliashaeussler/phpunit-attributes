@@ -21,28 +21,32 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Event\Tracer;
+namespace EliasHaeussler\PHPUnitAttributes\Codeception\Event\Subscriber;
 
+use Codeception\Event;
+use Codeception\Lib;
+use Codeception\Test;
 use EliasHaeussler\PHPUnitAttributes\Attribute;
 use EliasHaeussler\PHPUnitAttributes\Enum;
+use EliasHaeussler\PHPUnitAttributes\IO;
 use EliasHaeussler\PHPUnitAttributes\Metadata;
 use EliasHaeussler\PHPUnitAttributes\Reflection;
-use PHPUnit\Event;
-use PHPUnit\Framework;
 
-use function array_filter;
-use function array_keys;
-use function array_values;
-use function implode;
+use function in_array;
 
 /**
- * RequiresPackageAttributeTracer.
+ * RequiresPackageAttributeSubscriber.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-final class RequiresPackageAttributeTracer implements Event\Tracer\Tracer
+final class RequiresPackageAttributeSubscriber implements Subscriber
 {
+    /**
+     * @var list<Enum\OutcomeBehavior>
+     */
+    private static array $noticesPrinted = [];
+
     /**
      * @var array<class-string, array<non-empty-string, Enum\OutcomeBehavior>>
      */
@@ -51,37 +55,31 @@ final class RequiresPackageAttributeTracer implements Event\Tracer\Tracer
     public function __construct(
         private readonly Metadata\PackageRequirements $packageRequirements,
         private readonly Enum\OutcomeBehavior $behaviorOnUnsatisfiedPackageRequirements,
-    ) {}
+        private readonly Lib\Console\Output $output,
+    ) {
+        $this->displayNoticeOnUnsupportedConfiguredOutcomeBehavior();
+    }
 
-    public function trace(Event\Event $event): void
+    public function notify(Event\TestEvent $event): void
     {
-        if ($event instanceof Event\Test\BeforeTestMethodCalled) {
-            $this->processAttributesOnClassLevel($event->testClassName());
+        $test = $event->getTest();
+        $metadata = $test->getMetadata();
+        /** @var class-string $testClassName */
+        [$testClassName, $testMethodName] = explode(':', $test->getSignature(), 2);
 
-            return;
-        }
-
-        if (!($event instanceof Event\Test\Prepared)) {
-            return;
-        }
-
-        $test = $event->test();
-
-        if ($test instanceof Event\Code\TestMethod) {
-            $this->processAttributesOnClassLevel($test->className());
-            $this->processAttributesOnMethodLevel($test->className(), $test->methodName());
-        }
+        $this->processAttributesOnClassLevel($testClassName, $metadata);
+        $this->processAttributesOnMethodLevel($testClassName, $testMethodName, $metadata);
     }
 
     /**
      * @param class-string $testClassName
      */
-    private function processAttributesOnClassLevel(string $testClassName): void
+    private function processAttributesOnClassLevel(string $testClassName, Test\Metadata $metadata): void
     {
         $behaviors = $this->testClassBehaviorsCache[$testClassName] ?? [];
 
         if ([] !== $behaviors) {
-            $this->handleOutcomeBehavior($behaviors);
+            $this->handleOutcomeBehavior($behaviors, $metadata);
         }
 
         $classAttributes = Reflection\AttributeReflector::forClass(
@@ -91,15 +89,18 @@ final class RequiresPackageAttributeTracer implements Event\Tracer\Tracer
         $behaviors = $this->testClassBehaviorsCache[$testClassName] = $this->checkPackageRequirements($classAttributes);
 
         if ([] !== $behaviors) {
-            $this->handleOutcomeBehavior($behaviors);
+            $this->handleOutcomeBehavior($behaviors, $metadata);
         }
     }
 
     /**
      * @param class-string $testClassName
      */
-    private function processAttributesOnMethodLevel(string $testClassName, string $testMethodName): void
-    {
+    private function processAttributesOnMethodLevel(
+        string $testClassName,
+        string $testMethodName,
+        Test\Metadata $metadata,
+    ): void {
         $methodAttributes = Reflection\AttributeReflector::forClassMethod(
             $testClassName,
             $testMethodName,
@@ -108,7 +109,7 @@ final class RequiresPackageAttributeTracer implements Event\Tracer\Tracer
         $behaviors = $this->checkPackageRequirements($methodAttributes);
 
         if ([] !== $behaviors) {
-            $this->handleOutcomeBehavior($behaviors);
+            $this->handleOutcomeBehavior($behaviors, $metadata);
         }
     }
 
@@ -135,7 +136,7 @@ final class RequiresPackageAttributeTracer implements Event\Tracer\Tracer
     /**
      * @param array<non-empty-string, Enum\OutcomeBehavior> $behaviors
      */
-    private function handleOutcomeBehavior(array $behaviors): never
+    private function handleOutcomeBehavior(array $behaviors, Test\Metadata $metadata): void
     {
         $message = implode(PHP_EOL, array_keys($behaviors));
         $outcomeBehaviors = array_values(
@@ -146,8 +147,24 @@ final class RequiresPackageAttributeTracer implements Event\Tracer\Tracer
         );
 
         match (Enum\OutcomeBehavior::fromSet($outcomeBehaviors) ?? $this->behaviorOnUnsatisfiedPackageRequirements) {
-            Enum\OutcomeBehavior::Fail => Framework\Assert::fail($message),
-            Enum\OutcomeBehavior::Skip => Framework\Assert::markTestSkipped($message),
+            Enum\OutcomeBehavior::Fail, Enum\OutcomeBehavior::Skip => $metadata->setSkip($message),
         };
+    }
+
+    private function displayNoticeOnUnsupportedConfiguredOutcomeBehavior(): void
+    {
+        if (Enum\OutcomeBehavior::Fail === $this->behaviorOnUnsatisfiedPackageRequirements
+            && !in_array($this->behaviorOnUnsatisfiedPackageRequirements, self::$noticesPrinted, true)
+        ) {
+            self::$noticesPrinted[] = $this->behaviorOnUnsatisfiedPackageRequirements;
+
+            $message = IO\Messages::forUnsupportedConfiguredOutcomeBehavior(
+                'handleUnsatisfiedPackageRequirements',
+                $this->behaviorOnUnsatisfiedPackageRequirements,
+                Enum\OutcomeBehavior::Skip,
+            );
+
+            $this->output->writeln('<comment>'.$message.'</comment>');
+        }
     }
 }

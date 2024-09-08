@@ -21,7 +21,7 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Tests\TextUI\Configuration;
+namespace EliasHaeussler\PHPUnitAttributes\Tests\PHPUnit\TextUI\Configuration;
 
 use EliasHaeussler\PHPUnitAttributes as Src;
 use PHPUnit\Framework;
@@ -32,16 +32,16 @@ use PHPUnit\Framework;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-#[Framework\Attributes\CoversClass(Src\TextUI\Configuration\MigrationResult::class)]
+#[Framework\Attributes\CoversClass(Src\PHPUnit\TextUI\Configuration\MigrationResult::class)]
 final class MigrationResultTest extends Framework\TestCase
 {
-    private Src\TextUI\Configuration\Migration $migration;
-    private Src\TextUI\Configuration\MigrationResult $subject;
+    private Src\PHPUnit\TextUI\Configuration\Migration $migration;
+    private Src\PHPUnit\TextUI\Configuration\MigrationResult $subject;
 
     public function setUp(): void
     {
-        $this->migration = Src\TextUI\Configuration\Migration::forParameter('foo', 'baz');
-        $this->subject = Src\TextUI\Configuration\MigrationResult::forMigration(
+        $this->migration = Src\PHPUnit\TextUI\Configuration\Migration::forParameter('foo', 'baz');
+        $this->subject = Src\PHPUnit\TextUI\Configuration\MigrationResult::forMigration(
             $this->migration,
             'fooValue',
             'bazValue',
@@ -57,7 +57,7 @@ final class MigrationResultTest extends Framework\TestCase
     #[Framework\Attributes\Test]
     public function wasMigratedReturnsFalseIfNoLegacyValueIsGiven(): void
     {
-        $subject = Src\TextUI\Configuration\MigrationResult::forMigration($this->migration, 'fooValue');
+        $subject = Src\PHPUnit\TextUI\Configuration\MigrationResult::forMigration($this->migration, 'fooValue');
 
         self::assertFalse($subject->wasMigrated());
     }
@@ -65,7 +65,7 @@ final class MigrationResultTest extends Framework\TestCase
     #[Framework\Attributes\Test]
     public function wasMigratedReturnsFalseIfValuesAreEqual(): void
     {
-        $subject = Src\TextUI\Configuration\MigrationResult::forMigration(
+        $subject = Src\PHPUnit\TextUI\Configuration\MigrationResult::forMigration(
             $this->migration,
             'fooValue',
             'fooValue',
@@ -77,7 +77,7 @@ final class MigrationResultTest extends Framework\TestCase
     #[Framework\Attributes\Test]
     public function getDiffAsStringReturnsNullIfParameterWasNotMigrated(): void
     {
-        $subject = Src\TextUI\Configuration\MigrationResult::forMigration($this->migration, 'fooValue');
+        $subject = Src\PHPUnit\TextUI\Configuration\MigrationResult::forMigration($this->migration, 'fooValue');
 
         self::assertNull($subject->getDiffAsString());
     }

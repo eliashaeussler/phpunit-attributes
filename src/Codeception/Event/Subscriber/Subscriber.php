@@ -21,33 +21,17 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Metadata;
+namespace EliasHaeussler\PHPUnitAttributes\Codeception\Event\Subscriber;
 
-use EliasHaeussler\PHPUnitAttributes\Attribute;
-use EliasHaeussler\PHPUnitAttributes\IO;
-
-use function class_exists;
+use Codeception\Event;
 
 /**
- * ClassRequirements.
+ * Subscriber.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-final class ClassRequirements
+interface Subscriber
 {
-    /**
-     * @return non-empty-string|null
-     */
-    public function validateForAttribute(Attribute\RequiresClass $attribute): ?string
-    {
-        $className = $attribute->className();
-        $message = $attribute->message();
-
-        if (!@class_exists($className)) {
-            return $message ?? IO\Messages::forMissingClass($className);
-        }
-
-        return null;
-    }
+    public function notify(Event\TestEvent $event): void;
 }

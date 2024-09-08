@@ -17,6 +17,7 @@
 	},
 	"require-dev": {
 		"armin/editorconfig-cli": "^1.8 || ^2.0",
+		"codeception/codeception": "^5.0",
 		"eliashaeussler/php-cs-fixer-config": "^2.0",
 		"eliashaeussler/phpstan-config": "^2.5.1",
 		"eliashaeussler/rector-config": "^3.0",

@@ -86,6 +86,6 @@ parameters:
 			path: tests/unit/Metadata/ClassRequirementsTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$className of static method EliasHaeussler\\\\PHPUnitAttributes\\\\TextUI\\\\Messages\\:\\:forMissingClass\\(\\) expects class\\-string, string given\\.$#"
+			message: "#^Parameter \\#1 \\$className of static method EliasHaeussler\\\\PHPUnitAttributes\\\\IO\\\\Messages\\:\\:forMissingClass\\(\\) expects class\\-string, string given\\.$#"
 			count: 1
 			path: tests/unit/Metadata/ClassRequirementsTest.php

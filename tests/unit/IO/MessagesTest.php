@@ -21,7 +21,7 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Tests\TextUI;
+namespace EliasHaeussler\PHPUnitAttributes\Tests\IO;
 
 use EliasHaeussler\PHPUnitAttributes as Src;
 use PHPUnit\Framework;
@@ -33,7 +33,7 @@ use PHPUnit\Metadata\Version\ConstraintRequirement;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-#[Framework\Attributes\CoversClass(Src\TextUI\Messages::class)]
+#[Framework\Attributes\CoversClass(Src\IO\Messages::class)]
 final class MessagesTest extends Framework\TestCase
 {
     #[Framework\Attributes\Test]
@@ -41,7 +41,7 @@ final class MessagesTest extends Framework\TestCase
     {
         self::assertSame(
             'Package "foo/baz" is required.',
-            Src\TextUI\Messages::forMissingRequiredPackage('foo/baz'),
+            Src\IO\Messages::forMissingRequiredPackage('foo/baz'),
         );
     }
 
@@ -52,7 +52,7 @@ final class MessagesTest extends Framework\TestCase
 
         self::assertSame(
             'Package "foo/baz" (> 10) is required.',
-            Src\TextUI\Messages::forMissingRequiredPackage('foo/baz', $versionRequirement),
+            Src\IO\Messages::forMissingRequiredPackage('foo/baz', $versionRequirement),
         );
     }
 
@@ -61,7 +61,7 @@ final class MessagesTest extends Framework\TestCase
     {
         self::assertSame(
             'Class "'.self::class.'" is required.',
-            Src\TextUI\Messages::forMissingClass(self::class),
+            Src\IO\Messages::forMissingClass(self::class),
         );
     }
 }

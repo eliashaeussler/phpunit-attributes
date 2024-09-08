@@ -25,7 +25,7 @@ namespace EliasHaeussler\PHPUnitAttributes\Metadata;
 
 use Composer\InstalledVersions;
 use EliasHaeussler\PHPUnitAttributes\Attribute;
-use EliasHaeussler\PHPUnitAttributes\TextUI;
+use EliasHaeussler\PHPUnitAttributes\IO;
 use PHPUnit\Metadata;
 
 use function class_exists;
@@ -50,7 +50,7 @@ final class PackageRequirements
         $message = $attribute->message();
 
         if (null === $package || !$this->isPackageInstalled($package)) {
-            return $message ?? TextUI\Messages::forMissingRequiredPackage($package ?? $attribute->package());
+            return $message ?? IO\Messages::forMissingRequiredPackage($package ?? $attribute->package());
         }
 
         if (null === $versionRequirement) {
@@ -60,7 +60,7 @@ final class PackageRequirements
         $requirement = Metadata\Version\ConstraintRequirement::from($versionRequirement);
 
         if (!$this->isPackageVersionSatisfied($package, $requirement)) {
-            return $message ?? TextUI\Messages::forMissingRequiredPackage($package, $requirement);
+            return $message ?? IO\Messages::forMissingRequiredPackage($package, $requirement);
         }
 
         return null;

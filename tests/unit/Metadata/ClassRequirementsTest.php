@@ -68,7 +68,7 @@ final class ClassRequirementsTest extends Framework\TestCase
      */
     public static function validateForAttributeReturnsMessageIfClassDoesNotExistDataProvider(): Generator
     {
-        yield 'no message' => [null, Src\TextUI\Messages::forMissingClass('Foo\\Baz')];
+        yield 'no message' => [null, Src\IO\Messages::forMissingClass('Foo\\Baz')];
         yield 'custom message' => ['Foo\\Baz is missing, sorry!', 'Foo\\Baz is missing, sorry!'];
     }
 }

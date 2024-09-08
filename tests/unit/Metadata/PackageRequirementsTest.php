@@ -95,9 +95,9 @@ final class PackageRequirementsTest extends Framework\TestCase
      */
     public static function validateForAttributeReturnsMessageIfPackageIsNotInstalledDataProvider(): Generator
     {
-        yield 'package name' => ['foo/baz', Src\TextUI\Messages::forMissingRequiredPackage('foo/baz')];
+        yield 'package name' => ['foo/baz', Src\IO\Messages::forMissingRequiredPackage('foo/baz')];
         yield 'package name with custom message' => ['foo/baz', 'foo/baz is missing, sorry!'];
-        yield 'package pattern' => ['foo/*', Src\TextUI\Messages::forMissingRequiredPackage('foo/*')];
+        yield 'package pattern' => ['foo/*', Src\IO\Messages::forMissingRequiredPackage('foo/*')];
         yield 'package pattern with custom message' => ['foo/*', 'foo/* packages are missing, sorry!'];
     }
 
@@ -111,7 +111,7 @@ final class PackageRequirementsTest extends Framework\TestCase
         yield 'package name' => [
             'phpunit/phpunit',
             '< 10',
-            Src\TextUI\Messages::forMissingRequiredPackage('phpunit/phpunit', $versionRequirement),
+            Src\IO\Messages::forMissingRequiredPackage('phpunit/phpunit', $versionRequirement),
         ];
         yield 'package name with custom message' => [
             'phpunit/phpunit',
@@ -121,7 +121,7 @@ final class PackageRequirementsTest extends Framework\TestCase
         yield 'package pattern' => [
             'phpunit/*-coverage',
             '< 10',
-            Src\TextUI\Messages::forMissingRequiredPackage('phpunit/php-code-coverage'),
+            Src\IO\Messages::forMissingRequiredPackage('phpunit/php-code-coverage'),
         ];
         yield 'package pattern with custom message' => [
             'phpunit/*-coverage',

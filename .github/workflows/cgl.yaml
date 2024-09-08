@@ -31,7 +31,7 @@ jobs:
 
       # Install dependencies
       - name: Install Composer dependencies
-        run: composer require --no-progress symfony/console:"^6.4 || ^7.0"
+        run: composer require --no-progress codeception/codeception:"^5.0" symfony/console:"^6.4 || ^7.0"
 
       # Check Composer dependencies
       - name: Check dependencies
