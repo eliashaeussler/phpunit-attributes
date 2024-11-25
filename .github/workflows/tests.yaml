@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ["8.1", "8.2", "8.3"]
+        php-version: ["8.1", "8.2", "8.3", "8.4"]
         phpunit-version: ["10", "11"]
         dependencies: ["highest", "lowest"]
         exclude:
@@ -51,7 +51,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ["8.1", "8.2", "8.3"]
+        php-version: ["8.1", "8.2", "8.3", "8.4"]
         phpunit-version: ["10", "11"]
         exclude:
           - php-version: "8.1"
