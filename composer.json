@@ -12,7 +12,7 @@
 		}
 	],
 	"require": {
-		"php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+		"php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
 		"phpunit/phpunit": "^10.4 || ^11.0"
 	},
 	"require-dev": {
@@ -24,6 +24,7 @@
 		"phpstan/extension-installer": "^1.2",
 		"phpstan/phpstan-phpunit": "^1.1",
 		"phpunit/phpcov": "^9.0 || ^10.0",
+		"phpunit/phpunit": "^10.5.35 || ^11.4",
 		"symfony/console": "^6.4 || ^7.0"
 	},
 	"autoload": {
