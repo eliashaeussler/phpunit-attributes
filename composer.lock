@@ -1982,30 +1982,31 @@
         },
         {
             "name": "eliashaeussler/php-cs-fixer-config",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/php-cs-fixer-config.git",
-                "reference": "41d6cb771e3a5bf1d2f5abe80fff34c6f16fc3ac"
+                "reference": "472c2eb8296f561be8c8e5d36dea513b9b3eea44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/php-cs-fixer-config/zipball/41d6cb771e3a5bf1d2f5abe80fff34c6f16fc3ac",
-                "reference": "41d6cb771e3a5bf1d2f5abe80fff34c6f16fc3ac",
+                "url": "https://api.github.com/repos/eliashaeussler/php-cs-fixer-config/zipball/472c2eb8296f561be8c8e5d36dea513b9b3eea44",
+                "reference": "472c2eb8296f561be8c8e5d36dea513b9b3eea44",
                 "shasum": ""
             },
             "require": {
                 "friendsofphp/php-cs-fixer": "^3.14",
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
                 "symfony/finder": "^5.4 || ^6.0 || ^7.0"
             },
             "require-dev": {
                 "armin/editorconfig-cli": "^1.5 || ^2.0",
                 "eliashaeussler/phpstan-config": "^2.0.0",
+                "eliashaeussler/phpunit-attributes": "^1.1",
                 "eliashaeussler/rector-config": "^3.0",
                 "ergebnis/composer-normalize": "^2.29",
                 "phpstan/extension-installer": "^1.2",
-                "phpunit/phpunit": "^10.1 || ^11.0"
+                "phpunit/phpunit": "^10.4 || ^11.0"
             },
             "type": "library",
             "autoload": {
@@ -2028,26 +2029,26 @@
             "description": "My personal configuration for PHP-CS-Fixer",
             "support": {
                 "issues": "https://github.com/eliashaeussler/php-cs-fixer-config/issues",
-                "source": "https://github.com/eliashaeussler/php-cs-fixer-config/tree/2.2.0"
+                "source": "https://github.com/eliashaeussler/php-cs-fixer-config/tree/2.2.1"
             },
-            "time": "2024-05-17T19:59:53+00:00"
+            "time": "2024-11-25T19:20:13+00:00"
         },
         {
             "name": "eliashaeussler/phpstan-config",
-            "version": "2.5.1",
+            "version": "2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/phpstan-config.git",
-                "reference": "145c61edf3517fcdd09c55ba6f9f276196bef6eb"
+                "reference": "9c930d1fb1876ec36cd78613e1fc07668bb754db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/phpstan-config/zipball/145c61edf3517fcdd09c55ba6f9f276196bef6eb",
-                "reference": "145c61edf3517fcdd09c55ba6f9f276196bef6eb",
+                "url": "https://api.github.com/repos/eliashaeussler/phpstan-config/zipball/9c930d1fb1876ec36cd78613e1fc07668bb754db",
+                "reference": "9c930d1fb1876ec36cd78613e1fc07668bb754db",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
                 "phpstan/phpstan": "^1.9",
                 "phpstan/phpstan-deprecation-rules": "^1.1",
                 "phpstan/phpstan-strict-rules": "^1.4"
@@ -2087,27 +2088,27 @@
             "description": "My personal configuration for PHPStan",
             "support": {
                 "issues": "https://github.com/eliashaeussler/phpstan-config/issues",
-                "source": "https://github.com/eliashaeussler/phpstan-config/tree/2.5.1"
+                "source": "https://github.com/eliashaeussler/phpstan-config/tree/2.5.2"
             },
-            "time": "2024-08-24T12:00:14+00:00"
+            "time": "2024-11-25T19:09:31+00:00"
         },
         {
             "name": "eliashaeussler/rector-config",
-            "version": "3.0.3",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/rector-config.git",
-                "reference": "143f26b0f10016e6655050240cd7afe5c2f8177c"
+                "reference": "65e90e19b6a541f612df793fc5a07e6222ea9832"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/rector-config/zipball/143f26b0f10016e6655050240cd7afe5c2f8177c",
-                "reference": "143f26b0f10016e6655050240cd7afe5c2f8177c",
+                "url": "https://api.github.com/repos/eliashaeussler/rector-config/zipball/65e90e19b6a541f612df793fc5a07e6222ea9832",
+                "reference": "65e90e19b6a541f612df793fc5a07e6222ea9832",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0",
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
                 "rector/rector": "^1.2.9"
             },
             "require-dev": {
@@ -2148,9 +2149,9 @@
             "description": "My personal configuration for Rector",
             "support": {
                 "issues": "https://github.com/eliashaeussler/rector-config/issues",
-                "source": "https://github.com/eliashaeussler/rector-config/tree/3.0.3"
+                "source": "https://github.com/eliashaeussler/rector-config/tree/3.0.4"
             },
-            "time": "2024-11-05T09:29:36+00:00"
+            "time": "2024-11-25T19:24:19+00:00"
         },
         {
             "name": "ergebnis/composer-normalize",
