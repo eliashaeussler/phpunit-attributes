@@ -16,11 +16,15 @@ jobs:
       fail-fast: false
       matrix:
         php-version: ["8.1", "8.2", "8.3", "8.4"]
-        phpunit-version: ["10", "11"]
+        phpunit-version: ["10", "11", "12"]
         dependencies: ["highest", "lowest"]
         exclude:
           - php-version: "8.1"
             phpunit-version: "11"
+          - php-version: "8.1"
+            phpunit-version: "12"
+          - php-version: "8.2"
+            phpunit-version: "12"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -52,10 +56,14 @@ jobs:
       fail-fast: false
       matrix:
         php-version: ["8.1", "8.2", "8.3", "8.4"]
-        phpunit-version: ["10", "11"]
+        phpunit-version: ["10", "11", "12"]
         exclude:
           - php-version: "8.1"
             phpunit-version: "11"
+          - php-version: "8.1"
+            phpunit-version: "12"
+          - php-version: "8.2"
+            phpunit-version: "12"
     steps:
       - uses: actions/checkout@v4
         with:
