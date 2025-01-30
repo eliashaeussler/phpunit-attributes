@@ -12,7 +12,6 @@ repository:
   allow_merge_commit: true
   allow_rebase_merge: true
   delete_branch_on_merge: true
-  allow_update_branch: true
   # This will be handled by Renovate
   enable_automated_security_fixes: false
   enable_vulnerability_alerts: false
@@ -71,40 +70,71 @@ labels:
     color: '#ffffff'
     description: 'This will not be worked on'
 
-# Branch protection rules
-branches:
-  - name: 'main'
-    protection:
-      required_pull_request_reviews:
-        required_approving_review_count: 1
-        dismiss_stale_reviews: true
-        require_code_owner_reviews: true
-      required_status_checks:
-        strict: true
-        contexts:
-          - 'cgl'
-          - 'Tests with Composer (PHP 8.1, PHPUnit 10 & highest dependencies)'
-          - 'Tests with Composer (PHP 8.1, PHPUnit 10 & lowest dependencies)'
-          - 'Tests with Composer (PHP 8.2, PHPUnit 10 & highest dependencies)'
-          - 'Tests with Composer (PHP 8.2, PHPUnit 10 & lowest dependencies)'
-          - 'Tests with Composer (PHP 8.2, PHPUnit 11 & highest dependencies)'
-          - 'Tests with Composer (PHP 8.2, PHPUnit 11 & lowest dependencies)'
-          - 'Tests with Composer (PHP 8.3, PHPUnit 10 & highest dependencies)'
-          - 'Tests with Composer (PHP 8.3, PHPUnit 10 & lowest dependencies)'
-          - 'Tests with Composer (PHP 8.3, PHPUnit 11 & highest dependencies)'
-          - 'Tests with Composer (PHP 8.3, PHPUnit 11 & lowest dependencies)'
-          - 'Tests with Composer (PHP 8.4, PHPUnit 10 & highest dependencies)'
-          - 'Tests with Composer (PHP 8.4, PHPUnit 10 & lowest dependencies)'
-          - 'Tests with Composer (PHP 8.4, PHPUnit 11 & highest dependencies)'
-          - 'Tests with Composer (PHP 8.4, PHPUnit 11 & lowest dependencies)'
-          - 'Tests with PHAR (PHP 8.1 & PHPUnit 10)'
-          - 'Tests with PHAR (PHP 8.2 & PHPUnit 10)'
-          - 'Tests with PHAR (PHP 8.2 & PHPUnit 11)'
-          - 'Tests with PHAR (PHP 8.3 & PHPUnit 10)'
-          - 'Tests with PHAR (PHP 8.3 & PHPUnit 11)'
-          - 'Tests with PHAR (PHP 8.4 & PHPUnit 10)'
-          - 'Tests with PHAR (PHP 8.4 & PHPUnit 11)'
-          - 'Test coverage'
-      enforce_admins: false
-      required_linear_history: true
-      restrictions: ~
+# Rulesets
+rulesets:
+  - name: CI
+    target: branch
+    enforcement: active
+    conditions:
+      ref_name:
+        include:
+          - '~DEFAULT_BRANCH'
+        exclude: []
+    rules:
+      - type: deletion
+      - type: non_fast_forward
+      - type: required_status_checks
+        parameters:
+          strict_required_status_checks_policy: true
+          do_not_enforce_on_create: false
+          required_status_checks:
+            - context: 'cgl'
+              integration_id: 15368
+            - context: 'Tests with Composer (PHP 8.1, PHPUnit 10 & highest dependencies)'
+              integration_id: 15368
+            - context: 'Tests with Composer (PHP 8.1, PHPUnit 10 & lowest dependencies)'
+              integration_id: 15368
+            - context: 'Tests with Composer (PHP 8.2, PHPUnit 10 & highest dependencies)'
+              integration_id: 15368
+            - context: 'Tests with Composer (PHP 8.2, PHPUnit 10 & lowest dependencies)'
+              integration_id: 15368
+            - context: 'Tests with Composer (PHP 8.2, PHPUnit 11 & highest dependencies)'
+              integration_id: 15368
+            - context: 'Tests with Composer (PHP 8.2, PHPUnit 11 & lowest dependencies)'
+              integration_id: 15368
+            - context: 'Tests with Composer (PHP 8.3, PHPUnit 10 & highest dependencies)'
+              integration_id: 15368
+            - context: 'Tests with Composer (PHP 8.3, PHPUnit 10 & lowest dependencies)'
+              integration_id: 15368
+            - context: 'Tests with Composer (PHP 8.3, PHPUnit 11 & highest dependencies)'
+              integration_id: 15368
+            - context: 'Tests with Composer (PHP 8.3, PHPUnit 11 & lowest dependencies)'
+              integration_id: 15368
+            - context: 'Tests with Composer (PHP 8.4, PHPUnit 10 & highest dependencies)'
+              integration_id: 15368
+            - context: 'Tests with Composer (PHP 8.4, PHPUnit 10 & lowest dependencies)'
+              integration_id: 15368
+            - context: 'Tests with Composer (PHP 8.4, PHPUnit 11 & highest dependencies)'
+              integration_id: 15368
+            - context: 'Tests with Composer (PHP 8.4, PHPUnit 11 & lowest dependencies)'
+              integration_id: 15368
+            - context: 'Tests with PHAR (PHP 8.1 & PHPUnit 10)'
+              integration_id: 15368
+            - context: 'Tests with PHAR (PHP 8.2 & PHPUnit 10)'
+              integration_id: 15368
+            - context: 'Tests with PHAR (PHP 8.2 & PHPUnit 11)'
+              integration_id: 15368
+            - context: 'Tests with PHAR (PHP 8.3 & PHPUnit 10)'
+              integration_id: 15368
+            - context: 'Tests with PHAR (PHP 8.3 & PHPUnit 11)'
+              integration_id: 15368
+            - context: 'Tests with PHAR (PHP 8.4 & PHPUnit 10)'
+              integration_id: 15368
+            - context: 'Tests with PHAR (PHP 8.4 & PHPUnit 11)'
+              integration_id: 15368
+            - context: 'Test coverage'
+              integration_id: 15368
+    bypass_actors:
+      - actor_id: 5
+        actor_type: RepositoryRole
+        bypass_mode: always
