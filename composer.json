@@ -23,7 +23,7 @@
 		"ergebnis/composer-normalize": "^2.30",
 		"phpstan/extension-installer": "^1.2",
 		"phpstan/phpstan-phpunit": "^2.0",
-		"phpunit/phpcov": "^9.0 || ^10.0",
+		"phpunit/phpcov": "^9.0 || ^10.0 || ^11.0",
 		"phpunit/phpunit": "^10.5.35 || ^11.4",
 		"symfony/console": "^6.4 || ^7.0"
 	},
