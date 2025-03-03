@@ -62,4 +62,12 @@ final class Messages
     {
         return sprintf('Class "%s" is required.', $className);
     }
+
+    /**
+     * @return non-empty-string
+     */
+    public static function forUndefinedConstant(string $constant): string
+    {
+        return sprintf('Constant "%s" is required.', $constant);
+    }
 }
