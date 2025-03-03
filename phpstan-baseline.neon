@@ -1,91 +1,127 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			message: '#^Parameter \#1 \$className of attribute class EliasHaeussler\\PHPUnitAttributes\\Attribute\\RequiresClass constructor expects class\-string, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: tests/e2e/requires-class-attribute/fixtures/class-level/tests/RepeatedRequiresClassAttributeTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			message: '#^Parameter \#1 \$className of attribute class EliasHaeussler\\PHPUnitAttributes\\Attribute\\RequiresClass constructor expects class\-string, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: tests/e2e/requires-class-attribute/fixtures/class-level/tests/SingleRequiresClassAttributeTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			message: '#^Parameter \#1 \$className of attribute class EliasHaeussler\\PHPUnitAttributes\\Attribute\\RequiresClass constructor expects class\-string, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: tests/e2e/requires-class-attribute/fixtures/custom-message/tests/RequiresClassAttributeWithCustomMessageTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			message: '#^Parameter \#1 \$className of attribute class EliasHaeussler\\PHPUnitAttributes\\Attribute\\RequiresClass constructor expects class\-string, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: tests/e2e/requires-class-attribute/fixtures/fail-on-unsatisfied-requirement/tests/RequiresClassAttributeFailsOnUnsatisfiedRequirementTest.php
 
 		-
-			message: "#^Instantiated class EliasHaeussler\\\\PHPUnitAttributes\\\\Tests\\\\E2E\\\\Foo not found\\.$#"
+			message: '#^Instantiated class EliasHaeussler\\PHPUnitAttributes\\Tests\\E2E\\Foo not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: tests/e2e/requires-class-attribute/fixtures/handle-autoload-errors/tests/RequiresClassAttributeHandlesAutoloadErrorsTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			message: '#^Parameter \#1 \$className of attribute class EliasHaeussler\\PHPUnitAttributes\\Attribute\\RequiresClass constructor expects class\-string, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: tests/e2e/requires-class-attribute/fixtures/handle-autoload-errors/tests/RequiresClassAttributeHandlesAutoloadErrorsTest.php
 
 		-
-			message: "#^Property EliasHaeussler\\\\PHPUnitAttributes\\\\Tests\\\\E2E\\\\RequiresClassAttributeHandlesAutoloadErrorsTest\\:\\:\\$foo has unknown class EliasHaeussler\\\\PHPUnitAttributes\\\\Tests\\\\E2E\\\\Foo as its type\\.$#"
+			message: '#^Property EliasHaeussler\\PHPUnitAttributes\\Tests\\E2E\\RequiresClassAttributeHandlesAutoloadErrorsTest\:\:\$foo has unknown class EliasHaeussler\\PHPUnitAttributes\\Tests\\E2E\\Foo as its type\.$#'
+			identifier: class.notFound
 			count: 1
 			path: tests/e2e/requires-class-attribute/fixtures/handle-autoload-errors/tests/RequiresClassAttributeHandlesAutoloadErrorsTest.php
 
 		-
-			message: "#^Property EliasHaeussler\\\\PHPUnitAttributes\\\\Tests\\\\E2E\\\\RequiresClassAttributeHandlesAutoloadErrorsTest\\:\\:\\$foo is never read, only written\\.$#"
+			message: '#^Property EliasHaeussler\\PHPUnitAttributes\\Tests\\E2E\\RequiresClassAttributeHandlesAutoloadErrorsTest\:\:\$foo is never read, only written\.$#'
+			identifier: property.onlyWritten
 			count: 1
 			path: tests/e2e/requires-class-attribute/fixtures/handle-autoload-errors/tests/RequiresClassAttributeHandlesAutoloadErrorsTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			message: '#^Parameter \#1 \$className of attribute class EliasHaeussler\\PHPUnitAttributes\\Attribute\\RequiresClass constructor expects class\-string, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: tests/e2e/requires-class-attribute/fixtures/method-level/tests/RepeatedRequiresClassAttributeTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			message: '#^Parameter \#1 \$className of attribute class EliasHaeussler\\PHPUnitAttributes\\Attribute\\RequiresClass constructor expects class\-string, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: tests/e2e/requires-class-attribute/fixtures/method-level/tests/SingleRequiresClassAttributeTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			message: '#^Parameter \#1 \$className of attribute class EliasHaeussler\\PHPUnitAttributes\\Attribute\\RequiresClass constructor expects class\-string, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: tests/e2e/requires-class-attribute/fixtures/parameter-migration/tests/RequiresClassAttributeFailsWithMigratedParameterTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			message: '#^Parameter \#1 \$className of attribute class EliasHaeussler\\PHPUnitAttributes\\Attribute\\RequiresClass constructor expects class\-string, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: tests/e2e/requires-class-attribute/fixtures/skip-on-invalid-configuration-value/tests/RequiresClassAttributeSkipsOnInvalidConfigurationValueTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$className of attribute class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			message: '#^Parameter \#1 \$className of attribute class EliasHaeussler\\PHPUnitAttributes\\Attribute\\RequiresClass constructor expects class\-string, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: tests/e2e/requires-class-attribute/fixtures/skip-on-unsatisfied-requirement/tests/RequiresClassAttributeSkipsOnUnsatisfiedRequirementTest.php
 
 		-
-			message: "#^Instantiated class EliasHaeussler\\\\PHPUnitAttributes\\\\Tests\\\\E2E\\\\Foo not found\\.$#"
+			message: '#^Instantiated class EliasHaeussler\\PHPUnitAttributes\\Tests\\E2E\\Foo not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/e2e/requires-constant-attribute/fixtures/handle-autoload-errors/tests/RequiresConstantAttributeHandlesAutoloadErrorsTest.php
+
+		-
+			message: '#^Property EliasHaeussler\\PHPUnitAttributes\\Tests\\E2E\\RequiresConstantAttributeHandlesAutoloadErrorsTest\:\:\$foo has unknown class EliasHaeussler\\PHPUnitAttributes\\Tests\\E2E\\Foo as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/e2e/requires-constant-attribute/fixtures/handle-autoload-errors/tests/RequiresConstantAttributeHandlesAutoloadErrorsTest.php
+
+		-
+			message: '#^Property EliasHaeussler\\PHPUnitAttributes\\Tests\\E2E\\RequiresConstantAttributeHandlesAutoloadErrorsTest\:\:\$foo is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: tests/e2e/requires-constant-attribute/fixtures/handle-autoload-errors/tests/RequiresConstantAttributeHandlesAutoloadErrorsTest.php
+
+		-
+			message: '#^Instantiated class EliasHaeussler\\PHPUnitAttributes\\Tests\\E2E\\Foo not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: tests/e2e/requires-package-attribute/fixtures/handle-autoload-errors/tests/RequiresPackageAttributeHandlesAutoloadErrorsTest.php
 
 		-
-			message: "#^Property EliasHaeussler\\\\PHPUnitAttributes\\\\Tests\\\\E2E\\\\RequiresPackageAttributeHandlesAutoloadErrorsTest\\:\\:\\$foo has unknown class EliasHaeussler\\\\PHPUnitAttributes\\\\Tests\\\\E2E\\\\Foo as its type\\.$#"
+			message: '#^Property EliasHaeussler\\PHPUnitAttributes\\Tests\\E2E\\RequiresPackageAttributeHandlesAutoloadErrorsTest\:\:\$foo has unknown class EliasHaeussler\\PHPUnitAttributes\\Tests\\E2E\\Foo as its type\.$#'
+			identifier: class.notFound
 			count: 1
 			path: tests/e2e/requires-package-attribute/fixtures/handle-autoload-errors/tests/RequiresPackageAttributeHandlesAutoloadErrorsTest.php
 
 		-
-			message: "#^Property EliasHaeussler\\\\PHPUnitAttributes\\\\Tests\\\\E2E\\\\RequiresPackageAttributeHandlesAutoloadErrorsTest\\:\\:\\$foo is never read, only written\\.$#"
+			message: '#^Property EliasHaeussler\\PHPUnitAttributes\\Tests\\E2E\\RequiresPackageAttributeHandlesAutoloadErrorsTest\:\:\$foo is never read, only written\.$#'
+			identifier: property.onlyWritten
 			count: 1
 			path: tests/e2e/requires-package-attribute/fixtures/handle-autoload-errors/tests/RequiresPackageAttributeHandlesAutoloadErrorsTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$className of class EliasHaeussler\\\\PHPUnitAttributes\\\\Attribute\\\\RequiresClass constructor expects class\\-string, string given\\.$#"
+			message: '#^Parameter \#1 \$className of class EliasHaeussler\\PHPUnitAttributes\\Attribute\\RequiresClass constructor expects class\-string, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: tests/unit/Metadata/ClassRequirementsTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$className of static method EliasHaeussler\\\\PHPUnitAttributes\\\\TextUI\\\\Messages\\:\\:forMissingClass\\(\\) expects class\\-string, string given\\.$#"
+			message: '#^Parameter \#1 \$className of static method EliasHaeussler\\PHPUnitAttributes\\TextUI\\Messages\:\:forMissingClass\(\) expects class\-string, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: tests/unit/Metadata/ClassRequirementsTest.php

@@ -58,6 +58,19 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
             ),
         );
 
+        if ($parameters->has('handleUndefinedConstants')) {
+            $handleUndefinedConstants = Enum\OutcomeBehavior::tryFrom($parameters->get('handleUndefinedConstants'));
+        } else {
+            $handleUndefinedConstants = null;
+        }
+
+        $facade->registerTracer(
+            new Event\Tracer\RequiresConstantAttributeTracer(
+                new Metadata\ConstantRequirements(),
+                $handleUndefinedConstants ?? Enum\OutcomeBehavior::Skip,
+            ),
+        );
+
         $this->triggerDeprecationForMigratedConfigurationParameters(
             $configuration->colors(),
             $requiresPackageMigrationResult,
