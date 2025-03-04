@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../vendor/phpunit/phpunit/phpunit.xsd"
+>
+    <extensions>
+        <bootstrap class="EliasHaeussler\PHPUnitAttributes\PHPUnitAttributesExtension">
+            <!-- "foo" is invalid here by purpose, test verifies that it's normalized to ”skip" -->
+            <parameter name="handleDefinedConstants" value="foo" />
+        </bootstrap>
+    </extensions>
+    <testsuites>
+        <testsuite name="default">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

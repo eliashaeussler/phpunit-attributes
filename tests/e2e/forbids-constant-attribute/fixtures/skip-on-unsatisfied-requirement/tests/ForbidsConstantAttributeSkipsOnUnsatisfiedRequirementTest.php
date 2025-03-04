@@ -21,38 +21,29 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Metadata;
+namespace EliasHaeussler\PHPUnitAttributes\Tests\E2E;
 
-use EliasHaeussler\PHPUnitAttributes\Attribute;
-use EliasHaeussler\PHPUnitAttributes\TextUI;
-
-use function defined;
+use EliasHaeussler\PHPUnitAttributes as Src;
+use PHPUnit\Framework;
 
 /**
- * ConstantRequirements.
+ * ForbidsConstantAttributeSkipsOnUnsatisfiedRequirementTest.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-final class ConstantRequirements
+final class ForbidsConstantAttributeSkipsOnUnsatisfiedRequirementTest extends Framework\TestCase
 {
-    /**
-     * @return non-empty-string|null
-     */
-    public function validateForAttribute(Attribute\RequiresConstant|Attribute\ForbidsConstant $attribute): ?string
+    #[Framework\Attributes\Test]
+    #[Src\Attribute\ForbidsConstant('FOO_BAZ')]
+    public function fakeTest(): void
     {
-        $constant = $attribute->constant();
-        $message = $attribute->message();
-        $defined = @defined($constant);
+        self::assertTrue(true);
+    }
 
-        if (!$defined && $attribute instanceof Attribute\RequiresConstant) {
-            return $message ?? TextUI\Messages::forUndefinedConstant($constant);
-        }
-
-        if ($defined && $attribute instanceof Attribute\ForbidsConstant) {
-            return $message ?? TextUI\Messages::forDefinedConstant($constant);
-        }
-
-        return null;
+    #[Framework\Attributes\Test]
+    public function anotherFakeTest(): void
+    {
+        self::assertTrue(true);
     }
 }

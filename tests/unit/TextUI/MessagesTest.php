@@ -64,4 +64,22 @@ final class MessagesTest extends Framework\TestCase
             Src\TextUI\Messages::forMissingClass(self::class),
         );
     }
+
+    #[Framework\Attributes\Test]
+    public function forUndefinedConstantReturnsMessageForGivenConstant(): void
+    {
+        self::assertSame(
+            'Constant "FOO_BAZ" is required.',
+            Src\TextUI\Messages::forUndefinedConstant('FOO_BAZ'),
+        );
+    }
+
+    #[Framework\Attributes\Test]
+    public function forDefinedConstantReturnsMessageForGivenConstant(): void
+    {
+        self::assertSame(
+            'Constant "FOO_BAZ" is forbidden.',
+            Src\TextUI\Messages::forDefinedConstant('FOO_BAZ'),
+        );
+    }
 }
