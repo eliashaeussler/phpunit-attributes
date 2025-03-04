@@ -26,98 +26,25 @@ namespace EliasHaeussler\PHPUnitAttributes\Event\Tracer;
 use EliasHaeussler\PHPUnitAttributes\Attribute;
 use EliasHaeussler\PHPUnitAttributes\Enum;
 use EliasHaeussler\PHPUnitAttributes\Metadata;
-use EliasHaeussler\PHPUnitAttributes\Reflection;
-use PHPUnit\Event;
-use PHPUnit\Framework;
-
-use function array_filter;
-use function array_keys;
-use function array_values;
-use function implode;
 
 /**
  * RequiresClassAttributeTracer.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
+ *
+ * @extends AbstractAttributeTracer<Attribute\RequiresClass>
  */
-final class RequiresClassAttributeTracer implements Event\Tracer\Tracer
+final class RequiresClassAttributeTracer extends AbstractAttributeTracer
 {
-    /**
-     * @var array<class-string, array<non-empty-string, Enum\OutcomeBehavior>>
-     */
-    private array $testClassBehaviorsCache = [];
-
     public function __construct(
         private readonly Metadata\ClassRequirements $classRequirements,
-        private readonly Enum\OutcomeBehavior $behaviorOnMissingClasses,
-    ) {}
-
-    public function trace(Event\Event $event): void
-    {
-        if ($event instanceof Event\Test\BeforeTestMethodCalled) {
-            $this->processAttributesOnClassLevel($event->testClassName());
-
-            return;
-        }
-
-        if (!($event instanceof Event\Test\Prepared)) {
-            return;
-        }
-
-        $test = $event->test();
-
-        if ($test instanceof Event\Code\TestMethod) {
-            $this->processAttributesOnClassLevel($test->className());
-            $this->processAttributesOnMethodLevel($test->className(), $test->methodName());
-        }
+        Enum\OutcomeBehavior $behaviorOnMissingClasses,
+    ) {
+        $this->defaultOutcomeBehavior = $behaviorOnMissingClasses;
     }
 
-    /**
-     * @param class-string $testClassName
-     */
-    private function processAttributesOnClassLevel(string $testClassName): void
-    {
-        $behaviors = $this->testClassBehaviorsCache[$testClassName] ?? [];
-
-        if ([] !== $behaviors) {
-            $this->handleOutcomeBehavior($behaviors);
-        }
-
-        $classAttributes = Reflection\AttributeReflector::forClass(
-            $testClassName,
-            Attribute\RequiresClass::class,
-        );
-        $behaviors = $this->testClassBehaviorsCache[$testClassName] = $this->checkClassNames($classAttributes);
-
-        if ([] !== $behaviors) {
-            $this->handleOutcomeBehavior($behaviors);
-        }
-    }
-
-    /**
-     * @param class-string $testClassName
-     */
-    private function processAttributesOnMethodLevel(string $testClassName, string $testMethodName): void
-    {
-        $methodAttributes = Reflection\AttributeReflector::forClassMethod(
-            $testClassName,
-            $testMethodName,
-            Attribute\RequiresClass::class,
-        );
-        $behaviors = $this->checkClassNames($methodAttributes);
-
-        if ([] !== $behaviors) {
-            $this->handleOutcomeBehavior($behaviors);
-        }
-    }
-
-    /**
-     * @param list<Attribute\RequiresClass> $attributes
-     *
-     * @return array<non-empty-string, Enum\OutcomeBehavior>
-     */
-    private function checkClassNames(array $attributes): array
+    protected function resolveBehaviorsFromAttributes(array $attributes): array
     {
         $notSatisfied = [];
 
@@ -125,29 +52,15 @@ final class RequiresClassAttributeTracer implements Event\Tracer\Tracer
             $message = $this->classRequirements->validateForAttribute($attribute);
 
             if (null !== $message) {
-                $notSatisfied[$message] = $attribute->outcomeBehavior() ?? $this->behaviorOnMissingClasses;
+                $notSatisfied[$message] = $attribute->outcomeBehavior() ?? $this->defaultOutcomeBehavior;
             }
         }
 
         return $notSatisfied;
     }
 
-    /**
-     * @param array<non-empty-string, Enum\OutcomeBehavior> $behaviors
-     */
-    private function handleOutcomeBehavior(array $behaviors): never
+    protected function getAttributeClassName(): string
     {
-        $message = implode(PHP_EOL, array_keys($behaviors));
-        $outcomeBehaviors = array_values(
-            array_filter(
-                $behaviors,
-                static fn (?Enum\OutcomeBehavior $outcomeBehavior) => null !== $outcomeBehavior,
-            ),
-        );
-
-        match (Enum\OutcomeBehavior::fromSet($outcomeBehaviors) ?? $this->behaviorOnMissingClasses) {
-            Enum\OutcomeBehavior::Fail => Framework\Assert::fail($message),
-            Enum\OutcomeBehavior::Skip => Framework\Assert::markTestSkipped($message),
-        };
+        return Attribute\RequiresClass::class;
     }
 }

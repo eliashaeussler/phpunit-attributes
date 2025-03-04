@@ -21,46 +21,33 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Event\Tracer;
+namespace EliasHaeussler\PHPUnitAttributes\Tests\Fixtures;
 
-use EliasHaeussler\PHPUnitAttributes\Attribute;
-use EliasHaeussler\PHPUnitAttributes\Enum;
-use EliasHaeussler\PHPUnitAttributes\Metadata;
+use EliasHaeussler\PHPUnitAttributes\Event;
 
 /**
- * RequiresConstantAttributeTracer.
+ * DummyAttributeTracer.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  *
- * @extends AbstractAttributeTracer<Attribute\RequiresConstant>
+ * @extends Event\Tracer\AbstractAttributeTracer<DummyAttribute>
  */
-final class RequiresConstantAttributeTracer extends AbstractAttributeTracer
+final class DummyAttributeTracer extends Event\Tracer\AbstractAttributeTracer
 {
-    public function __construct(
-        private readonly Metadata\ConstantRequirements $constantRequirements,
-        Enum\OutcomeBehavior $behaviorOnUndefinedConstants,
-    ) {
-        $this->defaultOutcomeBehavior = $behaviorOnUndefinedConstants;
-    }
-
     protected function resolveBehaviorsFromAttributes(array $attributes): array
     {
-        $notSatisfied = [];
+        $behaviors = [];
 
         foreach ($attributes as $attribute) {
-            $message = $this->constantRequirements->validateForAttribute($attribute);
-
-            if (null !== $message) {
-                $notSatisfied[$message] = $attribute->outcomeBehavior() ?? $this->defaultOutcomeBehavior;
-            }
+            $behaviors[$attribute->message] = $this->defaultOutcomeBehavior;
         }
 
-        return $notSatisfied;
+        return $behaviors;
     }
 
     protected function getAttributeClassName(): string
     {
-        return Attribute\RequiresConstant::class;
+        return DummyAttribute::class;
     }
 }
