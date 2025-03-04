@@ -21,38 +21,44 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Metadata;
+namespace EliasHaeussler\PHPUnitAttributes\Attribute;
 
-use EliasHaeussler\PHPUnitAttributes\Attribute;
-use EliasHaeussler\PHPUnitAttributes\TextUI;
-
-use function defined;
+use Attribute;
+use EliasHaeussler\PHPUnitAttributes\Enum;
 
 /**
- * ConstantRequirements.
+ * ForbidsConstant.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-final class ConstantRequirements
+#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
+final class ForbidsConstant
 {
+    /**
+     * @param non-empty-string|null $message
+     */
+    public function __construct(
+        private readonly string $constant,
+        private readonly ?string $message = null,
+        private readonly ?Enum\OutcomeBehavior $outcomeBehavior = null,
+    ) {}
+
+    public function constant(): string
+    {
+        return $this->constant;
+    }
+
     /**
      * @return non-empty-string|null
      */
-    public function validateForAttribute(Attribute\RequiresConstant|Attribute\ForbidsConstant $attribute): ?string
+    public function message(): ?string
     {
-        $constant = $attribute->constant();
-        $message = $attribute->message();
-        $defined = @defined($constant);
+        return $this->message;
+    }
 
-        if (!$defined && $attribute instanceof Attribute\RequiresConstant) {
-            return $message ?? TextUI\Messages::forUndefinedConstant($constant);
-        }
-
-        if ($defined && $attribute instanceof Attribute\ForbidsConstant) {
-            return $message ?? TextUI\Messages::forDefinedConstant($constant);
-        }
-
-        return null;
+    public function outcomeBehavior(): ?Enum\OutcomeBehavior
+    {
+        return $this->outcomeBehavior;
     }
 }

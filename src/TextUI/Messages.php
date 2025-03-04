@@ -70,4 +70,12 @@ final class Messages
     {
         return sprintf('Constant "%s" is required.', $constant);
     }
+
+    /**
+     * @return non-empty-string
+     */
+    public static function forDefinedConstant(string $constant): string
+    {
+        return sprintf('Constant "%s" is forbidden.', $constant);
+    }
 }

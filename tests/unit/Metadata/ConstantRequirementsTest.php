@@ -27,6 +27,8 @@ use EliasHaeussler\PHPUnitAttributes as Src;
 use Generator;
 use PHPUnit\Framework;
 
+use function define;
+
 /**
  * ConstantRequirementsTest.
  *
@@ -55,10 +57,33 @@ final class ConstantRequirementsTest extends Framework\TestCase
         self::assertSame($expected, $this->subject->validateForAttribute($attribute));
     }
 
+    /**
+     * @param non-empty-string|null $message
+     */
+    #[Framework\Attributes\Test]
+    #[Framework\Attributes\DataProvider('validateForAttributeReturnsMessageIfConstantIsDefinedDataProvider')]
+    #[Framework\Attributes\RunInSeparateProcess]
+    public function validateForAttributeReturnsMessageIfConstantIsDefined(?string $message, string $expected): void
+    {
+        $attribute = new Src\Attribute\ForbidsConstant('FOO_BAZ', $message);
+
+        define('FOO_BAZ', 'bar');
+
+        self::assertSame($expected, $this->subject->validateForAttribute($attribute));
+    }
+
     #[Framework\Attributes\Test]
     public function validateForAttributeReturnsNullIfConstantIsDefined(): void
     {
         $attribute = new Src\Attribute\RequiresConstant('PHP_VERSION');
+
+        self::assertNull($this->subject->validateForAttribute($attribute));
+    }
+
+    #[Framework\Attributes\Test]
+    public function validateForAttributeReturnsNullIfConstantIsUndefined(): void
+    {
+        $attribute = new Src\Attribute\ForbidsConstant('FOO_BAZ');
 
         self::assertNull($this->subject->validateForAttribute($attribute));
     }
@@ -70,5 +95,14 @@ final class ConstantRequirementsTest extends Framework\TestCase
     {
         yield 'no message' => [null, Src\TextUI\Messages::forUndefinedConstant('FOO_BAZ')];
         yield 'custom message' => ['FOO_BAZ is undefined, sorry!', 'FOO_BAZ is undefined, sorry!'];
+    }
+
+    /**
+     * @return Generator<string, array{non-empty-string|null, non-empty-string}>
+     */
+    public static function validateForAttributeReturnsMessageIfConstantIsDefinedDataProvider(): Generator
+    {
+        yield 'no message' => [null, Src\TextUI\Messages::forDefinedConstant('FOO_BAZ')];
+        yield 'custom message' => ['FOO_BAZ is forbidden, sorry!', 'FOO_BAZ is forbidden, sorry!'];
     }
 }
