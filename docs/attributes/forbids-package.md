@@ -1,11 +1,11 @@
-# [`#[RequiresPackage]`](../../src/Attribute/RequiresPackage.php)
+# [`#[ForbidsPackage]`](../../src/Attribute/ForbidsPackage.php)
 
 _Scope: Class & Method level_
 
-This attribute can be used to define specific package requirements for single
-tests as well as complete test classes. A required package is expected to be
-installed via Composer. You can optionally define a version constraint and a
-custom message.
+This attribute can be used to define packages which should *not* be
+installed via Composer in the current environment. It can be specified
+for single tests as well as complete test classes. You can optionally
+define a version constraint and a custom message.
 
 > [!IMPORTANT]
 > The attribute determines installed Composer packages from the build-time
@@ -26,15 +26,15 @@ custom message.
 
 ## Configuration
 
-By default, test cases with unsatisfied requirements are skipped. However, this
-behavior can be configured by using the `handleUnsatisfiedPackageRequirements`
-extension parameter. If set to `fail`, test cases with unsatisfied requirements
+By default, test cases with satisfied requirements are skipped. However, this
+behavior can be configured by using the `handleSatisfiedPackageRequirements`
+extension parameter. If set to `fail`, test cases with satisfied requirements
 will fail (defaults to `skip`):
 
 ```xml
 <extensions>
     <bootstrap class="EliasHaeussler\PHPUnitAttributes\PHPUnitAttributesExtension">
-        <parameter name="handleUnsatisfiedPackageRequirements" value="fail" />
+        <parameter name="handleSatisfiedPackageRequirements" value="fail" />
     </bootstrap>
 </extensions>
 ```
@@ -44,7 +44,7 @@ will fail (defaults to `skip`):
 ```php
 final class DummyTest extends TestCase
 {
-    #[RequiresPackage('symfony/console')]
+    #[ForbidsPackage('symfony/console')]
     public function testDummyAction(): void
     {
         // ...
@@ -55,22 +55,22 @@ final class DummyTest extends TestCase
 <details>
 <summary>More examples</summary>
 
-### Require explicit Composer package
+### Forbid explicit Composer package
 
 Class level:
 
 ```php
-#[RequiresPackage('symfony/console')]
+#[ForbidsPackage('symfony/console')]
 final class DummyTest extends TestCase
 {
     public function testDummyAction(): void
     {
-        // Skipped if symfony/console is not installed.
+        // Skipped if symfony/console is installed.
     }
 
     public function testOtherDummyAction(): void
     {
-        // Skipped if symfony/console is not installed.
+        // Skipped if symfony/console is installed.
     }
 }
 ```
@@ -80,10 +80,10 @@ Method level:
 ```php
 final class DummyTest extends TestCase
 {
-    #[RequiresPackage('symfony/console')]
+    #[ForbidsPackage('symfony/console')]
     public function testDummyAction(): void
     {
-        // Skipped if symfony/console is not installed.
+        // Skipped if symfony/console is installed.
     }
 
     public function testOtherDummyAction(): void
@@ -93,22 +93,22 @@ final class DummyTest extends TestCase
 }
 ```
 
-### Require any Composer package matching a given pattern
+### Forbid any Composer package matching a given pattern
 
 Class level:
 
 ```php
-#[RequiresPackage('symfony/*')]
+#[ForbidsPackage('symfony/*')]
 final class DummyTest extends TestCase
 {
     public function testDummyAction(): void
     {
-        // Skipped if no symfony/* packages are installed.
+        // Skipped if any symfony/* packages are installed.
     }
 
     public function testOtherDummyAction(): void
     {
-        // Skipped if no symfony/* packages are installed.
+        // Skipped if any symfony/* packages are installed.
     }
 }
 ```
@@ -118,10 +118,10 @@ Method level:
 ```php
 final class DummyTest extends TestCase
 {
-    #[RequiresPackage('symfony/*')]
+    #[ForbidsPackage('symfony/*')]
     public function testDummyAction(): void
     {
-        // Skipped if no symfony/* packages are installed.
+        // Skipped if any symfony/* packages are installed.
     }
 
     public function testOtherDummyAction(): void
@@ -131,22 +131,22 @@ final class DummyTest extends TestCase
 }
 ```
 
-### Require Composer package with given version constraint
+### Forbid Composer package with given version constraint
 
 Class level:
 
 ```php
-#[RequiresPackage('symfony/console', '>= 7')]
+#[ForbidsPackage('symfony/console', '>= 7')]
 final class DummyTest extends TestCase
 {
     public function testDummyAction(): void
     {
-        // Skipped if installed version of symfony/console is < 7.
+        // Skipped if installed version of symfony/console is >= 7.
     }
 
     public function testOtherDummyAction(): void
     {
-        // Skipped if installed version of symfony/console is < 7.
+        // Skipped if installed version of symfony/console is >= 7.
     }
 }
 ```
@@ -156,10 +156,10 @@ Method level:
 ```php
 final class DummyTest extends TestCase
 {
-    #[RequiresPackage('symfony/console', '>= 7')]
+    #[ForbidsPackage('symfony/console', '>= 7')]
     public function testDummyAction(): void
     {
-        // Skipped if installed version of symfony/console is < 7.
+        // Skipped if installed version of symfony/console is >= 7.
     }
 
     public function testOtherDummyAction(): void
@@ -169,22 +169,22 @@ final class DummyTest extends TestCase
 }
 ```
 
-### Require Composer package and provide custom message
+### Forbid Composer package and provide custom message
 
 Class level:
 
 ```php
-#[RequiresPackage('symfony/console', message: 'This test requires the Symfony Console.')]
+#[ForbidsPackage('symfony/console', message: 'This test forbids the Symfony Console.')]
 final class DummyTest extends TestCase
 {
     public function testDummyAction(): void
     {
-        // Skipped if symfony/console is not installed, along with custom message.
+        // Skipped if symfony/console is installed, along with custom message.
     }
 
     public function testOtherDummyAction(): void
     {
-        // Skipped if symfony/console is not installed, along with custom message.
+        // Skipped if symfony/console is installed, along with custom message.
     }
 }
 ```
@@ -194,10 +194,10 @@ Method level:
 ```php
 final class DummyTest extends TestCase
 {
-    #[RequiresPackage('symfony/console', message: 'This test requires the Symfony Console.')]
+    #[ForbidsPackage('symfony/console', message: 'This test forbids the Symfony Console.')]
     public function testDummyAction(): void
     {
-        // Skipped if symfony/console is not installed, along with custom message.
+        // Skipped if symfony/console is installed, along with custom message.
     }
 
     public function testOtherDummyAction(): void
@@ -207,22 +207,22 @@ final class DummyTest extends TestCase
 }
 ```
 
-### Require Composer package and define custom outcome behavior
+### Forbid Composer package and define custom outcome behavior
 
 Class level:
 
 ```php
-#[RequiresPackage('symfony/console', outcomeBehavior: OutcomeBehavior::Fail)]
+#[ForbidsPackage('symfony/console', outcomeBehavior: OutcomeBehavior::Fail)]
 final class DummyTest extends TestCase
 {
     public function testDummyAction(): void
     {
-        // Fails if symfony/console is not installed.
+        // Fails if symfony/console is installed.
     }
 
     public function testOtherDummyAction(): void
     {
-        // Fails if symfony/console is not installed.
+        // Fails if symfony/console is installed.
     }
 }
 ```
@@ -232,10 +232,10 @@ Method level:
 ```php
 final class DummyTest extends TestCase
 {
-    #[RequiresPackage('symfony/console', outcomeBehavior: OutcomeBehavior::Fail)]
+    #[ForbidsPackage('symfony/console', outcomeBehavior: OutcomeBehavior::Fail)]
     public function testDummyAction(): void
     {
-        // Fails if symfony/console is not installed.
+        // Fails if symfony/console is installed.
     }
 
     public function testOtherDummyAction(): void
@@ -250,18 +250,18 @@ final class DummyTest extends TestCase
 Class level:
 
 ```php
-#[RequiresPackage('symfony/console')]
-#[RequiresPackage('guzzlehttp/guzzle')]
+#[ForbidsPackage('symfony/console')]
+#[ForbidsPackage('guzzlehttp/guzzle')]
 final class DummyTest extends TestCase
 {
     public function testDummyAction(): void
     {
-        // Skipped if symfony/console and/or guzzlehttp/guzzle are not installed.
+        // Skipped if symfony/console and/or guzzlehttp/guzzle are installed.
     }
 
     public function testOtherDummyAction(): void
     {
-        // Skipped if symfony/console and/or guzzlehttp/guzzle are not installed.
+        // Skipped if symfony/console and/or guzzlehttp/guzzle are installed.
     }
 }
 ```
@@ -271,11 +271,11 @@ Method level:
 ```php
 final class DummyTest extends TestCase
 {
-    #[RequiresPackage('symfony/console')]
-    #[RequiresPackage('guzzlehttp/guzzle')]
+    #[ForbidsPackage('symfony/console')]
+    #[ForbidsPackage('guzzlehttp/guzzle')]
     public function testDummyAction(): void
     {
-        // Skipped if symfony/console and/or guzzlehttp/guzzle are not installed.
+        // Skipped if symfony/console and/or guzzlehttp/guzzle are installed.
     }
 
     public function testOtherDummyAction(): void

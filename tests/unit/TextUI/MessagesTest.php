@@ -37,22 +37,42 @@ use PHPUnit\Metadata\Version\ConstraintRequirement;
 final class MessagesTest extends Framework\TestCase
 {
     #[Framework\Attributes\Test]
-    public function forMissingRequiredPackageReturnMessageForGivenPackage(): void
+    public function forMissingPackageReturnMessageForGivenPackage(): void
     {
         self::assertSame(
             'Package "foo/baz" is required.',
-            Src\TextUI\Messages::forMissingRequiredPackage('foo/baz'),
+            Src\TextUI\Messages::forMissingPackage('foo/baz'),
         );
     }
 
     #[Framework\Attributes\Test]
-    public function forMissingRequiredPackageReturnMessageForGivenPackageAndVersionRequirement(): void
+    public function forMissingPackageReturnMessageForGivenPackageAndVersionRequirement(): void
     {
         $versionRequirement = ConstraintRequirement::from('> 10');
 
         self::assertSame(
             'Package "foo/baz" (> 10) is required.',
-            Src\TextUI\Messages::forMissingRequiredPackage('foo/baz', $versionRequirement),
+            Src\TextUI\Messages::forMissingPackage('foo/baz', $versionRequirement),
+        );
+    }
+
+    #[Framework\Attributes\Test]
+    public function forInstalledPackageReturnMessageForGivenPackage(): void
+    {
+        self::assertSame(
+            'Package "phpunit/phpunit" is forbidden.',
+            Src\TextUI\Messages::forInstalledPackage('phpunit/phpunit'),
+        );
+    }
+
+    #[Framework\Attributes\Test]
+    public function forInstalledPackageReturnMessageForGivenPackageAndVersionRequirement(): void
+    {
+        $versionRequirement = ConstraintRequirement::from('> 10');
+
+        self::assertSame(
+            'Package "phpunit/phpunit" (> 10) is forbidden.',
+            Src\TextUI\Messages::forInstalledPackage('phpunit/phpunit', $versionRequirement),
         );
     }
 

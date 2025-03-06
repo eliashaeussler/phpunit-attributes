@@ -30,7 +30,6 @@ use PHPUnit\Metadata;
 
 use function class_exists;
 use function fnmatch;
-use function str_contains;
 
 /**
  * PackageRequirements.
@@ -43,24 +42,42 @@ final class PackageRequirements
     /**
      * @return non-empty-string|null
      */
-    public function validateForAttribute(Attribute\RequiresPackage $attribute): ?string
+    public function validateForAttribute(Attribute\RequiresPackage|Attribute\ForbidsPackage $attribute): ?string
     {
-        $package = $this->findPackage($attribute->package());
+        $packages = $this->findPackages($attribute->package());
         $versionRequirement = $attribute->versionRequirement();
         $message = $attribute->message();
 
-        if (null === $package || !$this->isPackageInstalled($package)) {
-            return $message ?? TextUI\Messages::forMissingRequiredPackage($package ?? $attribute->package());
+        // Early return if package cannot be resolved
+        if ([] === $packages) {
+            if ($attribute instanceof Attribute\RequiresPackage) {
+                return $message ?? TextUI\Messages::forMissingPackage($attribute->package());
+            }
+
+            return null;
         }
 
+        // Early return if package is installed, but no version requirement is given
         if (null === $versionRequirement) {
+            if ($attribute instanceof Attribute\ForbidsPackage) {
+                return $message ?? TextUI\Messages::forInstalledPackage($attribute->package());
+            }
+
             return null;
         }
 
         $requirement = Metadata\Version\ConstraintRequirement::from($versionRequirement);
 
-        if (!$this->isPackageVersionSatisfied($package, $requirement)) {
-            return $message ?? TextUI\Messages::forMissingRequiredPackage($package, $requirement);
+        foreach ($packages as $package) {
+            $packageVersionSatisfied = $this->isPackageVersionSatisfied($package, $requirement);
+
+            if (!$packageVersionSatisfied && $attribute instanceof Attribute\RequiresPackage) {
+                return $message ?? TextUI\Messages::forMissingPackage($package, $requirement);
+            }
+
+            if ($packageVersionSatisfied && $attribute instanceof Attribute\ForbidsPackage) {
+                return $message ?? TextUI\Messages::forInstalledPackage($package, $requirement);
+            }
         }
 
         return null;
@@ -69,34 +86,23 @@ final class PackageRequirements
     /**
      * @param non-empty-string $packageName
      *
-     * @return non-empty-string|null
+     * @return list<non-empty-string>
      */
-    private function findPackage(string $packageName): ?string
+    private function findPackages(string $packageName): array
     {
-        if (!str_contains($packageName, '*')) {
-            return $packageName;
+        if (!@class_exists(InstalledVersions::class)) {
+            return []; // @codeCoverageIgnore
         }
 
-        if (!@class_exists(InstalledVersions::class)) {
-            return null; // @codeCoverageIgnore
-        }
+        $installedPackages = [];
 
         foreach (InstalledVersions::getInstalledPackages() as $installedPackage) {
             if (fnmatch($packageName, $installedPackage)) {
-                return $installedPackage;
+                $installedPackages[] = $installedPackage;
             }
         }
 
-        return null;
-    }
-
-    private function isPackageInstalled(string $packageName): bool
-    {
-        if (!@class_exists(InstalledVersions::class)) {
-            return false; // @codeCoverageIgnore
-        }
-
-        return InstalledVersions::isInstalled($packageName);
+        return $installedPackages;
     }
 
     private function isPackageVersionSatisfied(string $packageName, Metadata\Version\Requirement $requirement): bool

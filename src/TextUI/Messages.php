@@ -41,12 +41,29 @@ final class Messages
      *
      * @return non-empty-string
      */
-    public static function forMissingRequiredPackage(
+    public static function forMissingPackage(
         string $packageName,
         ?Metadata\Version\Requirement $versionRequirement = null,
     ): string {
         return sprintf(
             '%s "%s"%s is required.',
+            str_contains($packageName, '*') ? 'Any package matching' : 'Package',
+            $packageName,
+            null !== $versionRequirement ? ' ('.$versionRequirement->asString().')' : '',
+        );
+    }
+
+    /**
+     * @param non-empty-string $packageName
+     *
+     * @return non-empty-string
+     */
+    public static function forInstalledPackage(
+        string $packageName,
+        ?Metadata\Version\Requirement $versionRequirement = null,
+    ): string {
+        return sprintf(
+            '%s "%s"%s is forbidden.',
             str_contains($packageName, '*') ? 'Any package matching' : 'Package',
             $packageName,
             null !== $versionRequirement ? ' ('.$versionRequirement->asString().')' : '',
