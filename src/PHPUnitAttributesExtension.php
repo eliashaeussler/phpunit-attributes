@@ -125,6 +125,14 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
             ),
         );
 
+        // ForbidsPackage
+        $facade->registerTracer(
+            new Event\Tracer\ForbidsPackageAttributeTracer(
+                new Metadata\PackageRequirements(),
+                $this->resolveOutcomeBehavior('handleSatisfiedPackageRequirements', $parameters),
+            ),
+        );
+
         return $migrationResult;
     }
 

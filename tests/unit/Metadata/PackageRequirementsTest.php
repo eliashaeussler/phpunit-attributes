@@ -57,10 +57,31 @@ final class PackageRequirementsTest extends Framework\TestCase
         self::assertSame($message, $this->subject->validateForAttribute($attribute));
     }
 
+    /**
+     * @param non-empty-string $packageName
+     * @param non-empty-string $message
+     */
+    #[Framework\Attributes\Test]
+    #[Framework\Attributes\DataProvider('validateForAttributeReturnsMessageIfPackageIsInstalledDataProvider')]
+    public function validateForAttributeReturnsMessageIfPackageIsInstalled(string $packageName, string $message): void
+    {
+        $attribute = new Src\Attribute\ForbidsPackage($packageName, message: $message);
+
+        self::assertSame($message, $this->subject->validateForAttribute($attribute));
+    }
+
     #[Framework\Attributes\Test]
     public function validateForAttributeReturnsNullIfPackageIsInstalledAndNoSpecificVersionIsRequired(): void
     {
         $attribute = new Src\Attribute\RequiresPackage('phpunit/phpunit');
+
+        self::assertNull($this->subject->validateForAttribute($attribute));
+    }
+
+    #[Framework\Attributes\Test]
+    public function validateForAttributeReturnsNullIfPackageIsNotInstalledAndNoSpecificVersionIsRequired(): void
+    {
+        $attribute = new Src\Attribute\ForbidsPackage('foo/baz');
 
         self::assertNull($this->subject->validateForAttribute($attribute));
     }
@@ -82,10 +103,35 @@ final class PackageRequirementsTest extends Framework\TestCase
         self::assertSame($message, $this->subject->validateForAttribute($attribute));
     }
 
+    /**
+     * @param non-empty-string $packageName
+     * @param non-empty-string $versionRequirement
+     * @param non-empty-string $message
+     */
+    #[Framework\Attributes\Test]
+    #[Framework\Attributes\DataProvider('validateForAttributeReturnsMessageIfVersionRequirementIsSatisfiedDataProvider')]
+    public function validateForAttributeReturnsMessageIfVersionRequirementIsSatisfied(
+        string $packageName,
+        string $versionRequirement,
+        string $message,
+    ): void {
+        $attribute = new Src\Attribute\ForbidsPackage($packageName, $versionRequirement, $message);
+
+        self::assertSame($message, $this->subject->validateForAttribute($attribute));
+    }
+
     #[Framework\Attributes\Test]
     public function validateForAttributeReturnsNullIfPackageIsInstalledAndVersionRequirementIsSatisfied(): void
     {
         $attribute = new Src\Attribute\RequiresPackage('phpunit/phpunit', '>= 10');
+
+        self::assertNull($this->subject->validateForAttribute($attribute));
+    }
+
+    #[Framework\Attributes\Test]
+    public function validateForAttributeReturnsNullIfPackageIsInstalledAndVersionRequirementIsNotSatisfied(): void
+    {
+        $attribute = new Src\Attribute\ForbidsPackage('phpunit/phpunit', '< 10');
 
         self::assertNull($this->subject->validateForAttribute($attribute));
     }
@@ -95,10 +141,21 @@ final class PackageRequirementsTest extends Framework\TestCase
      */
     public static function validateForAttributeReturnsMessageIfPackageIsNotInstalledDataProvider(): Generator
     {
-        yield 'package name' => ['foo/baz', Src\TextUI\Messages::forMissingRequiredPackage('foo/baz')];
+        yield 'package name' => ['foo/baz', Src\TextUI\Messages::forMissingPackage('foo/baz')];
         yield 'package name with custom message' => ['foo/baz', 'foo/baz is missing, sorry!'];
-        yield 'package pattern' => ['foo/*', Src\TextUI\Messages::forMissingRequiredPackage('foo/*')];
+        yield 'package pattern' => ['foo/*', Src\TextUI\Messages::forMissingPackage('foo/*')];
         yield 'package pattern with custom message' => ['foo/*', 'foo/* packages are missing, sorry!'];
+    }
+
+    /**
+     * @return Generator<string, array{non-empty-string, non-empty-string}>
+     */
+    public static function validateForAttributeReturnsMessageIfPackageIsInstalledDataProvider(): Generator
+    {
+        yield 'package name' => ['phpunit/phpunit', Src\TextUI\Messages::forInstalledPackage('phpunit/phpunit')];
+        yield 'package name with custom message' => ['phpunit/phpunit', 'phpunit/phpunit is installed, sorry!'];
+        yield 'package pattern' => ['phpunit/*', Src\TextUI\Messages::forInstalledPackage('phpunit/*')];
+        yield 'package pattern with custom message' => ['phpunit/*', 'phpunit/* packages are installed, sorry!'];
     }
 
     /**
@@ -111,7 +168,7 @@ final class PackageRequirementsTest extends Framework\TestCase
         yield 'package name' => [
             'phpunit/phpunit',
             '< 10',
-            Src\TextUI\Messages::forMissingRequiredPackage('phpunit/phpunit', $versionRequirement),
+            Src\TextUI\Messages::forMissingPackage('phpunit/phpunit', $versionRequirement),
         ];
         yield 'package name with custom message' => [
             'phpunit/phpunit',
@@ -121,12 +178,41 @@ final class PackageRequirementsTest extends Framework\TestCase
         yield 'package pattern' => [
             'phpunit/*-coverage',
             '< 10',
-            Src\TextUI\Messages::forMissingRequiredPackage('phpunit/php-code-coverage'),
+            Src\TextUI\Messages::forMissingPackage('phpunit/php-code-coverage'),
         ];
         yield 'package pattern with custom message' => [
             'phpunit/*-coverage',
             '< 10',
             'phpunit/php-code-coverage < 10 is missing, sorry!',
+        ];
+    }
+
+    /**
+     * @return Generator<string, array{non-empty-string, non-empty-string, non-empty-string}>
+     */
+    public static function validateForAttributeReturnsMessageIfVersionRequirementIsSatisfiedDataProvider(): Generator
+    {
+        $versionRequirement = Metadata\Version\ConstraintRequirement::from('>= 10');
+
+        yield 'package name' => [
+            'phpunit/phpunit',
+            '>= 10',
+            Src\TextUI\Messages::forInstalledPackage('phpunit/phpunit', $versionRequirement),
+        ];
+        yield 'package name with custom message' => [
+            'phpunit/phpunit',
+            '>= 10',
+            'PHPUnit >= 10 is installed, sorry!',
+        ];
+        yield 'package pattern' => [
+            'phpunit/*-coverage',
+            '>= 10',
+            Src\TextUI\Messages::forInstalledPackage('phpunit/php-code-coverage'),
+        ];
+        yield 'package pattern with custom message' => [
+            'phpunit/*-coverage',
+            '>= 10',
+            'phpunit/php-code-coverage >= 10 is installed, sorry!',
         ];
     }
 }
