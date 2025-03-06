@@ -21,38 +21,24 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Metadata;
+namespace EliasHaeussler\PHPUnitAttributes\Tests\E2E;
 
-use EliasHaeussler\PHPUnitAttributes\Attribute;
-use EliasHaeussler\PHPUnitAttributes\TextUI;
-
-use function class_exists;
+use EliasHaeussler\PHPUnitAttributes as Src;
+use Exception;
+use PHPUnit\Framework;
 
 /**
- * ClassRequirements.
+ * ForbidsClassAttributeWithCustomMessageTest.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-final class ClassRequirements
+final class ForbidsClassAttributeWithCustomMessageTest extends Framework\TestCase
 {
-    /**
-     * @return non-empty-string|null
-     */
-    public function validateForAttribute(Attribute\RequiresClass|Attribute\ForbidsClass $attribute): ?string
+    #[Framework\Attributes\Test]
+    #[Src\Attribute\ForbidsClass(Exception::class, 'You\'re obviously having some Exception...')]
+    public function fakeTest(): void
     {
-        $className = $attribute->className();
-        $message = $attribute->message();
-        $classExists = @class_exists($className);
-
-        if (!$classExists && $attribute instanceof Attribute\RequiresClass) {
-            return $message ?? TextUI\Messages::forMissingClass($className);
-        }
-
-        if ($classExists && $attribute instanceof Attribute\ForbidsClass) {
-            return $message ?? TextUI\Messages::forAvailableClass($className);
-        }
-
-        return null;
+        self::assertTrue(true);
     }
 }

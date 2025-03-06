@@ -55,10 +55,30 @@ final class ClassRequirementsTest extends Framework\TestCase
         self::assertSame($expected, $this->subject->validateForAttribute($attribute));
     }
 
+    /**
+     * @param non-empty-string|null $message
+     */
+    #[Framework\Attributes\Test]
+    #[Framework\Attributes\DataProvider('validateForAttributeReturnsMessageIfClassExistsDataProvider')]
+    public function validateForAttributeReturnsMessageIfClassExists(?string $message, string $expected): void
+    {
+        $attribute = new Src\Attribute\ForbidsClass(self::class, $message);
+
+        self::assertSame($expected, $this->subject->validateForAttribute($attribute));
+    }
+
     #[Framework\Attributes\Test]
     public function validateForAttributeReturnsNullIfClassExists(): void
     {
         $attribute = new Src\Attribute\RequiresClass(self::class);
+
+        self::assertNull($this->subject->validateForAttribute($attribute));
+    }
+
+    #[Framework\Attributes\Test]
+    public function validateForAttributeReturnsNullIfClassDoesNotExist(): void
+    {
+        $attribute = new Src\Attribute\ForbidsClass('Foo\\Baz');
 
         self::assertNull($this->subject->validateForAttribute($attribute));
     }
@@ -70,5 +90,14 @@ final class ClassRequirementsTest extends Framework\TestCase
     {
         yield 'no message' => [null, Src\TextUI\Messages::forMissingClass('Foo\\Baz')];
         yield 'custom message' => ['Foo\\Baz is missing, sorry!', 'Foo\\Baz is missing, sorry!'];
+    }
+
+    /**
+     * @return Generator<string, array{non-empty-string|null, non-empty-string}>
+     */
+    public static function validateForAttributeReturnsMessageIfClassExistsDataProvider(): Generator
+    {
+        yield 'no message' => [null, Src\TextUI\Messages::forAvailableClass(self::class)];
+        yield 'custom message' => ['Class is available, sorry!', 'Class is available, sorry!'];
     }
 }

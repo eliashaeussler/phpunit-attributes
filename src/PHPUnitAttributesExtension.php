@@ -44,46 +44,9 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
         Runner\Extension\Facade $facade,
         Runner\Extension\ParameterCollection $parameters,
     ): void {
-        [$requiresPackageMigrationResult, $requiresClassMigrationResult] = $this->migrateConfigurationParameters($parameters);
-
-        $facade->registerTracer(
-            new Event\Tracer\RequiresPackageAttributeTracer(
-                new Metadata\PackageRequirements(),
-                Enum\OutcomeBehavior::tryFrom($requiresPackageMigrationResult->value()) ?? Enum\OutcomeBehavior::Skip,
-            ),
-        );
-        $facade->registerTracer(
-            new Event\Tracer\RequiresClassAttributeTracer(
-                new Metadata\ClassRequirements(),
-                Enum\OutcomeBehavior::tryFrom($requiresClassMigrationResult->value()) ?? Enum\OutcomeBehavior::Skip,
-            ),
-        );
-
-        if ($parameters->has('handleUndefinedConstants')) {
-            $handleUndefinedConstants = Enum\OutcomeBehavior::tryFrom($parameters->get('handleUndefinedConstants'));
-        } else {
-            $handleUndefinedConstants = null;
-        }
-
-        $facade->registerTracer(
-            new Event\Tracer\RequiresConstantAttributeTracer(
-                new Metadata\ConstantRequirements(),
-                $handleUndefinedConstants ?? Enum\OutcomeBehavior::Skip,
-            ),
-        );
-
-        if ($parameters->has('handleDefinedConstants')) {
-            $handleDefinedConstants = Enum\OutcomeBehavior::tryFrom($parameters->get('handleDefinedConstants'));
-        } else {
-            $handleDefinedConstants = null;
-        }
-
-        $facade->registerTracer(
-            new Event\Tracer\ForbidsConstantAttributeTracer(
-                new Metadata\ConstantRequirements(),
-                $handleDefinedConstants ?? Enum\OutcomeBehavior::Skip,
-            ),
-        );
+        $requiresClassMigrationResult = $this->registerClassAttributeTracers($facade, $parameters);
+        $this->registerConstantAttributeTracers($facade, $parameters);
+        $requiresPackageMigrationResult = $this->registerPackageAttributeTracers($facade, $parameters);
 
         $this->triggerDeprecationForMigratedConfigurationParameters(
             $configuration->colors(),
@@ -92,35 +55,106 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
         );
     }
 
-    /**
-     * @return list<TextUI\Configuration\MigrationResult>
-     */
-    private function migrateConfigurationParameters(Runner\Extension\ParameterCollection $parameters): array
-    {
-        // RequiresPackage
-        // @todo Remove support of legacy parameter in v3 of the library
-        $requiresPackageMigration = TextUI\Configuration\Migration::forParameter(
-            'handleUnsatisfiedPackageRequirements',
-            'failOnUnsatisfiedPackageRequirements',
-        );
-        $requiresPackageMigration->withValueMapping(Enum\OutcomeBehavior::Fail->value, 'true', true);
-        $requiresPackageMigration->withValueMapping(Enum\OutcomeBehavior::Skip->value, 'false', true);
-        $requiresPackageMigrationResult = $requiresPackageMigration->resolve($parameters, Enum\OutcomeBehavior::Skip->value);
-
+    private function registerClassAttributeTracers(
+        Runner\Extension\Facade $facade,
+        Runner\Extension\ParameterCollection $parameters,
+    ): TextUI\Configuration\MigrationResult {
         // RequiresClass
         // @todo Remove support of legacy parameter in v3 of the library
-        $requiresClassMigration = TextUI\Configuration\Migration::forParameter(
+        $migrationResult = $this->migrateParameter(
             'handleMissingClasses',
             'failOnMissingClasses',
+            $parameters,
         );
-        $requiresClassMigration->withValueMapping(Enum\OutcomeBehavior::Fail->value, 'true', true);
-        $requiresClassMigration->withValueMapping(Enum\OutcomeBehavior::Skip->value, 'false', true);
-        $requiresClassMigrationResult = $requiresClassMigration->resolve($parameters, Enum\OutcomeBehavior::Skip->value);
 
-        return [
-            $requiresPackageMigrationResult,
-            $requiresClassMigrationResult,
-        ];
+        $facade->registerTracer(
+            new Event\Tracer\RequiresClassAttributeTracer(
+                new Metadata\ClassRequirements(),
+                Enum\OutcomeBehavior::tryFrom($migrationResult->value()) ?? Enum\OutcomeBehavior::Skip,
+            ),
+        );
+
+        // ForbidsClass
+        $facade->registerTracer(
+            new Event\Tracer\ForbidsClassAttributeTracer(
+                new Metadata\ClassRequirements(),
+                $this->resolveOutcomeBehavior('handleAvailableClasses', $parameters),
+            ),
+        );
+
+        return $migrationResult;
+    }
+
+    private function registerConstantAttributeTracers(
+        Runner\Extension\Facade $facade,
+        Runner\Extension\ParameterCollection $parameters,
+    ): void {
+        // RequiresConstant
+        $facade->registerTracer(
+            new Event\Tracer\RequiresConstantAttributeTracer(
+                new Metadata\ConstantRequirements(),
+                $this->resolveOutcomeBehavior('handleUndefinedConstants', $parameters),
+            ),
+        );
+
+        // ForbidsConstant
+        $facade->registerTracer(
+            new Event\Tracer\ForbidsConstantAttributeTracer(
+                new Metadata\ConstantRequirements(),
+                $this->resolveOutcomeBehavior('handleDefinedConstants', $parameters),
+            ),
+        );
+    }
+
+    private function registerPackageAttributeTracers(
+        Runner\Extension\Facade $facade,
+        Runner\Extension\ParameterCollection $parameters,
+    ): TextUI\Configuration\MigrationResult {
+        // RequiresPackage
+        // @todo Remove support of legacy parameter in v3 of the library
+        $migrationResult = $this->migrateParameter(
+            'handleUnsatisfiedPackageRequirements',
+            'failOnUnsatisfiedPackageRequirements',
+            $parameters,
+        );
+
+        $facade->registerTracer(
+            new Event\Tracer\RequiresPackageAttributeTracer(
+                new Metadata\PackageRequirements(),
+                Enum\OutcomeBehavior::tryFrom($migrationResult->value()) ?? Enum\OutcomeBehavior::Skip,
+            ),
+        );
+
+        return $migrationResult;
+    }
+
+    /**
+     * @param non-empty-string $new
+     * @param non-empty-string $legacy
+     */
+    private function migrateParameter(
+        string $new,
+        string $legacy,
+        Runner\Extension\ParameterCollection $parameters,
+    ): TextUI\Configuration\MigrationResult {
+        return TextUI\Configuration\Migration::forParameter($new, $legacy)
+            ->withValueMapping(Enum\OutcomeBehavior::Fail->value, 'true', true)
+            ->withValueMapping(Enum\OutcomeBehavior::Skip->value, 'false', true)
+            ->resolve($parameters, Enum\OutcomeBehavior::Skip->value)
+        ;
+    }
+
+    private function resolveOutcomeBehavior(
+        string $name,
+        Runner\Extension\ParameterCollection $parameters,
+    ): Enum\OutcomeBehavior {
+        if ($parameters->has($name)) {
+            $behavior = Enum\OutcomeBehavior::tryFrom($parameters->get($name));
+        } else {
+            $behavior = null;
+        }
+
+        return $behavior ?? Enum\OutcomeBehavior::Skip;
     }
 
     private function triggerDeprecationForMigratedConfigurationParameters(
@@ -135,20 +169,23 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
             }
         }
 
-        if ([] !== $deprecationMessages) {
-            array_unshift(
-                $deprecationMessages,
-                'Your XML configuration contains deprecated extension parameters. Migrate your XML configuration:',
-            );
+        if ([] === $deprecationMessages) {
+            return;
+        }
 
-            $emitter = Facade::emitter();
+        // Early return if no deprecations are to be triggered
+        array_unshift(
+            $deprecationMessages,
+            'Your XML configuration contains deprecated extension parameters. Migrate your XML configuration:',
+        );
 
-            if (method_exists($emitter, 'testRunnerTriggeredPhpunitDeprecation')) {
-                $emitter->testRunnerTriggeredPhpunitDeprecation(implode(PHP_EOL, $deprecationMessages));
-            } else {
-                // @todo Remove once support for PHPUnit v10 (PHP 8.1) is dropped
-                $emitter->testRunnerTriggeredDeprecation(implode(PHP_EOL, $deprecationMessages));
-            }
+        $emitter = Facade::emitter();
+
+        if (method_exists($emitter, 'testRunnerTriggeredPhpunitDeprecation')) {
+            $emitter->testRunnerTriggeredPhpunitDeprecation(implode(PHP_EOL, $deprecationMessages));
+        } else {
+            // @todo Remove once support for PHPUnit v10 (PHP 8.1) is dropped
+            $emitter->testRunnerTriggeredDeprecation(implode(PHP_EOL, $deprecationMessages));
         }
     }
 }

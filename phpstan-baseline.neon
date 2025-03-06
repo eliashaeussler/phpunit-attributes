@@ -49,6 +49,12 @@ parameters:
 			path: tests/e2e/requires-class-attribute/fixtures/skip-on-unsatisfied-requirement/tests/RequiresClassAttributeSkipsOnUnsatisfiedRequirementTest.php
 
 		-
+			message: '#^Parameter \#1 \$className of class EliasHaeussler\\PHPUnitAttributes\\Attribute\\ForbidsClass constructor expects class\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/unit/Metadata/ClassRequirementsTest.php
+
+		-
 			message: '#^Parameter \#1 \$className of class EliasHaeussler\\PHPUnitAttributes\\Attribute\\RequiresClass constructor expects class\-string, string given\.$#'
 			identifier: argument.type
 			count: 1
