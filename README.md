@@ -64,6 +64,7 @@ be added to the extension registration section like follows:
 
 The following attributes are shipped with this library:
 
+* [`#[ForbidsClass]`](docs/attributes/forbids-class.md)
 * [`#[ForbidsConstant]`](docs/attributes/forbids-constant.md)
 * [`#[RequiresClass]`](docs/attributes/requires-class.md)
 * [`#[RequiresConstant]`](docs/attributes/requires-constant.md)

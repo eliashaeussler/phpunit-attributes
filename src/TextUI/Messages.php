@@ -64,6 +64,16 @@ final class Messages
     }
 
     /**
+     * @param class-string $className
+     *
+     * @return non-empty-string
+     */
+    public static function forAvailableClass(string $className): string
+    {
+        return sprintf('Class "%s" is forbidden.', $className);
+    }
+
+    /**
      * @return non-empty-string
      */
     public static function forUndefinedConstant(string $constant): string

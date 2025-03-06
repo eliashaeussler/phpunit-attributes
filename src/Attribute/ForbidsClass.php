@@ -21,38 +21,48 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Metadata;
+namespace EliasHaeussler\PHPUnitAttributes\Attribute;
 
-use EliasHaeussler\PHPUnitAttributes\Attribute;
-use EliasHaeussler\PHPUnitAttributes\TextUI;
-
-use function class_exists;
+use Attribute;
+use EliasHaeussler\PHPUnitAttributes\Enum;
 
 /**
- * ClassRequirements.
+ * FOrbidsClass.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-final class ClassRequirements
+#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
+final class ForbidsClass
 {
+    /**
+     * @param class-string          $className
+     * @param non-empty-string|null $message
+     */
+    public function __construct(
+        private readonly string $className,
+        private readonly ?string $message = null,
+        private readonly ?Enum\OutcomeBehavior $outcomeBehavior = null,
+    ) {}
+
+    /**
+     * @return class-string
+     */
+    public function className(): string
+    {
+        return $this->className;
+    }
+
     /**
      * @return non-empty-string|null
      */
-    public function validateForAttribute(Attribute\RequiresClass|Attribute\ForbidsClass $attribute): ?string
+    public function message(): ?string
     {
-        $className = $attribute->className();
-        $message = $attribute->message();
-        $classExists = @class_exists($className);
+        return $this->message;
+    }
 
-        if (!$classExists && $attribute instanceof Attribute\RequiresClass) {
-            return $message ?? TextUI\Messages::forMissingClass($className);
-        }
-
-        if ($classExists && $attribute instanceof Attribute\ForbidsClass) {
-            return $message ?? TextUI\Messages::forAvailableClass($className);
-        }
-
-        return null;
+    public function outcomeBehavior(): ?Enum\OutcomeBehavior
+    {
+        return $this->outcomeBehavior;
     }
 }

@@ -81,7 +81,7 @@ final class DummyTest extends TestCase
 Class level:
 
 ```php
-#[ForbidsConstant(AnAnnoyingClass::class . '::AN_ANNOYING_CONSTANT', 'This test requires an important constant.')]
+#[ForbidsConstant(AnAnnoyingClass::class . '::AN_ANNOYING_CONSTANT', 'This test forbids an important constant.')]
 final class DummyTest extends TestCase
 {
     public function testDummyAction(): void
