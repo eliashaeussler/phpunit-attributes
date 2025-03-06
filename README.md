@@ -64,11 +64,19 @@ be added to the extension registration section like follows:
 
 The following attributes are shipped with this library:
 
+### PHP class
+
 * [`#[ForbidsClass]`](docs/attributes/forbids-class.md)
-* [`#[ForbidsConstant]`](docs/attributes/forbids-constant.md)
-* [`#[ForbidsPackage]`](docs/attributes/forbids-package.md)
 * [`#[RequiresClass]`](docs/attributes/requires-class.md)
+
+### PHP constant
+
+* [`#[ForbidsConstant]`](docs/attributes/forbids-constant.md)
 * [`#[RequiresConstant]`](docs/attributes/requires-constant.md)
+
+### Composer package
+
+* [`#[ForbidsPackage]`](docs/attributes/forbids-package.md)
 * [`#[RequiresPackage]`](#requirespackage)
 
 ## 🧑‍💻 Contributing
