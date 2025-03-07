@@ -27,7 +27,7 @@ use Attribute;
 use EliasHaeussler\PHPUnitAttributes\Enum;
 
 /**
- * ForbisEnv.
+ * ForbidsEnv.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
