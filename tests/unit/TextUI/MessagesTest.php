@@ -102,4 +102,22 @@ final class MessagesTest extends Framework\TestCase
             Src\TextUI\Messages::forDefinedConstant('FOO_BAZ'),
         );
     }
+
+    #[Framework\Attributes\Test]
+    public function forMissingEnvironmentVariableReturnsMessageForGivenEnvironmentVariable(): void
+    {
+        self::assertSame(
+            'Environment variable "FOO_BAZ" is required.',
+            Src\TextUI\Messages::forMissingEnvironmentVariable('FOO_BAZ'),
+        );
+    }
+
+    #[Framework\Attributes\Test]
+    public function forAvailableEnvironmentVariableReturnsMessageForGivenEnvironmentVariable(): void
+    {
+        self::assertSame(
+            'Environment variable "FOO_BAZ" is forbidden.',
+            Src\TextUI\Messages::forAvailableEnvironmentVariable('FOO_BAZ'),
+        );
+    }
 }

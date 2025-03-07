@@ -47,6 +47,7 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
         $requiresClassMigrationResult = $this->registerClassAttributeTracers($facade, $parameters);
         $this->registerConstantAttributeTracers($facade, $parameters);
         $requiresPackageMigrationResult = $this->registerPackageAttributeTracers($facade, $parameters);
+        $this->registerEnvAttributeTracers($facade, $parameters);
 
         $this->triggerDeprecationForMigratedConfigurationParameters(
             $configuration->colors(),
@@ -134,6 +135,27 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
         );
 
         return $migrationResult;
+    }
+
+    private function registerEnvAttributeTracers(
+        Runner\Extension\Facade $facade,
+        Runner\Extension\ParameterCollection $parameters,
+    ): void {
+        // RequiresEnv
+        $facade->registerTracer(
+            new Event\Tracer\RequiresEnvAttributeTracer(
+                new Metadata\EnvRequirements(),
+                $this->resolveOutcomeBehavior('handleMissingEnvironmentVariables', $parameters),
+            ),
+        );
+
+        // ForbidsEnv
+        $facade->registerTracer(
+            new Event\Tracer\ForbidsEnvAttributeTracer(
+                new Metadata\EnvRequirements(),
+                $this->resolveOutcomeBehavior('handleAvailableEnvironmentVariables', $parameters),
+            ),
+        );
     }
 
     /**

@@ -7,7 +7,7 @@ if a certain class does *not* exist.
 
 ## Configuration
 
-By default, test cases requiring existent classes are skipped. However, this
+By default, test cases forbidding existent classes are skipped. However, this
 behavior can be configured by using the `handleAvailableClasses` extension parameter.
 If set to `fail`, test cases with available classes will fail (defaults to `skip`):
 
@@ -98,7 +98,7 @@ Method level:
 ```php
 final class DummyTest extends TestCase
 {
-    #[ForbidsClass('AnAbsentClass', 'This test requires the `AnAbsentClass` class.')]
+    #[ForbidsClass('AnAbsentClass', 'This test forbids the `AnAbsentClass` class.')]
     public function testDummyAction(): void
     {
         // Skipped if AnAbsentClass is available, along with custom message.

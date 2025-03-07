@@ -27,30 +27,26 @@ use Attribute;
 use EliasHaeussler\PHPUnitAttributes\Enum;
 
 /**
- * ForbisClass.
+ * ForbisEnv.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
-final class ForbidsClass
+final class ForbidsEnv
 {
     /**
-     * @param class-string          $className
      * @param non-empty-string|null $message
      */
     public function __construct(
-        private readonly string $className,
+        private readonly string $envVariableName,
         private readonly ?string $message = null,
         private readonly ?Enum\OutcomeBehavior $outcomeBehavior = null,
     ) {}
 
-    /**
-     * @return class-string
-     */
-    public function className(): string
+    public function envVariableName(): string
     {
-        return $this->className;
+        return $this->envVariableName;
     }
 
     /**

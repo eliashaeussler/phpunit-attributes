@@ -9,7 +9,7 @@ current class loader (which normally is Composer's default class loader).
 
 ## Configuration
 
-By default, test cases requiring defined constants are skipped. However, this
+By default, test cases forbidding defined constants are skipped. However, this
 behavior can be configured by using the `handleDefinedConstants` extension
 parameter. If set to `fail`, test cases with defined constants will fail
 (defaults to `skip`):
@@ -81,7 +81,7 @@ final class DummyTest extends TestCase
 Class level:
 
 ```php
-#[ForbidsConstant(AnAnnoyingClass::class . '::AN_ANNOYING_CONSTANT', 'This test forbids an important constant.')]
+#[ForbidsConstant(AnAnnoyingClass::class . '::AN_ANNOYING_CONSTANT', 'This test forbids an annoying constant.')]
 final class DummyTest extends TestCase
 {
     public function testDummyAction(): void
@@ -101,7 +101,7 @@ Method level:
 ```php
 final class DummyTest extends TestCase
 {
-    #[ForbidsConstant(AnAnnoyingClass::class . '::AN_ANNOYING_CONSTANT', 'This test requires an important constant.')]
+    #[ForbidsConstant(AnAnnoyingClass::class . '::AN_ANNOYING_CONSTANT', 'This test forbids an annoying constant.')]
     public function testDummyAction(): void
     {
         // Skipped if AnAnnoyingClass::AN_ANNOYING_CONSTANT is defined, along with custom message.
@@ -157,18 +157,18 @@ final class DummyTest extends TestCase
 Class level:
 
 ```php
-#[ForbidsConstant('SOME_IMPORTANT_CONSTANT')]
-#[ForbidsConstant('ANOTHER_VERY_IMPORTANT_CONSTANT')]
+#[ForbidsConstant('SOME_ANNOYING_CONSTANT')]
+#[ForbidsConstant('ANOTHER_VERY_ANNOYING_CONSTANT')]
 final class DummyTest extends TestCase
 {
     public function testDummyAction(): void
     {
-        // Skipped if SOME_IMPORTANT_CONSTANT and/or ANOTHER_VERY_IMPORTANT_CONSTANT constants are defined.
+        // Skipped if SOME_ANNOYING_CONSTANT and/or ANOTHER_VERY_ANNOYING_CONSTANT constants are defined.
     }
 
     public function testOtherDummyAction(): void
     {
-        // Skipped if SOME_IMPORTANT_CONSTANT and/or ANOTHER_VERY_IMPORTANT_CONSTANT constants are defined.
+        // Skipped if SOME_ANNOYING_CONSTANT and/or ANOTHER_VERY_ANNOYING_CONSTANT constants are defined.
     }
 }
 ```
@@ -178,11 +178,11 @@ Method level:
 ```php
 final class DummyTest extends TestCase
 {
-    #[ForbidsConstant('SOME_IMPORTANT_CONSTANT')]
-    #[ForbidsConstant('ANOTHER_VERY_IMPORTANT_CONSTANT')]
+    #[ForbidsConstant('SOME_ANNOYING_CONSTANT')]
+    #[ForbidsConstant('ANOTHER_VERY_ANNOYING_CONSTANT')]
     public function testDummyAction(): void
     {
-        // Skipped if SOME_IMPORTANT_CONSTANT and/or ANOTHER_VERY_IMPORTANT_CONSTANT constants are defined.
+        // Skipped if SOME_ANNOYING_CONSTANT and/or ANOTHER_VERY_ANNOYING_CONSTANT constants are defined.
     }
 
     public function testOtherDummyAction(): void
