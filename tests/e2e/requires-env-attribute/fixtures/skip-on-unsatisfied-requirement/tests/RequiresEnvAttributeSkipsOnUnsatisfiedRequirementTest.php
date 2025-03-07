@@ -21,48 +21,29 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\PHPUnitAttributes\Attribute;
+namespace EliasHaeussler\PHPUnitAttributes\Tests\E2E;
 
-use Attribute;
-use EliasHaeussler\PHPUnitAttributes\Enum;
+use EliasHaeussler\PHPUnitAttributes as Src;
+use PHPUnit\Framework;
 
 /**
- * ForbisClass.
+ * RequiresEnvAttributeSkipsOnUnsatisfiedRequirementTest.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
-final class ForbidsClass
+final class RequiresEnvAttributeSkipsOnUnsatisfiedRequirementTest extends Framework\TestCase
 {
-    /**
-     * @param class-string          $className
-     * @param non-empty-string|null $message
-     */
-    public function __construct(
-        private readonly string $className,
-        private readonly ?string $message = null,
-        private readonly ?Enum\OutcomeBehavior $outcomeBehavior = null,
-    ) {}
-
-    /**
-     * @return class-string
-     */
-    public function className(): string
+    #[Framework\Attributes\Test]
+    #[Src\Attribute\RequiresEnv('FOO_BAZ')]
+    public function fakeTest(): void
     {
-        return $this->className;
+        self::assertTrue(true);
     }
 
-    /**
-     * @return non-empty-string|null
-     */
-    public function message(): ?string
+    #[Framework\Attributes\Test]
+    public function anotherFakeTest(): void
     {
-        return $this->message;
-    }
-
-    public function outcomeBehavior(): ?Enum\OutcomeBehavior
-    {
-        return $this->outcomeBehavior;
+        self::assertTrue(true);
     }
 }

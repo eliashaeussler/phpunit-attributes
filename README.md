@@ -77,7 +77,12 @@ The following attributes are shipped with this library:
 ### Composer package
 
 * [`#[ForbidsPackage]`](docs/attributes/forbids-package.md)
-* [`#[RequiresPackage]`](#requirespackage)
+* [`#[RequiresPackage]`](docs/attributes/requires-package.md)
+
+### Environment
+
+* [`#[ForbidsEnv]`](docs/attributes/forbids-env.md)
+* [`#[RequiresEnv]`](docs/attributes/requires-env.md)
 
 ## 🧑‍💻 Contributing
 

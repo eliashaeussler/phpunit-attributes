@@ -105,4 +105,20 @@ final class Messages
     {
         return sprintf('Constant "%s" is forbidden.', $constant);
     }
+
+    /**
+     * @return non-empty-string
+     */
+    public static function forMissingEnvironmentVariable(string $envVariableName): string
+    {
+        return sprintf('Environment variable "%s" is required.', $envVariableName);
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public static function forAvailableEnvironmentVariable(string $envVariableName): string
+    {
+        return sprintf('Environment variable "%s" is forbidden.', $envVariableName);
+    }
 }
