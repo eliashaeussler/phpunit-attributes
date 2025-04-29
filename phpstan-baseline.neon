@@ -1,6 +1,18 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Call to method testRunnerTriggeredDeprecation\(\) of internal interface PHPUnit\\Event\\Emitter from outside its root namespace PHPUnit\.$#'
+			identifier: method.internalInterface
+			count: 1
+			path: src/PHPUnitAttributesExtension.php
+
+		-
+			message: '#^Call to static method emitter\(\) of internal class PHPUnit\\Event\\Facade from outside its root namespace PHPUnit\.$#'
+			identifier: staticMethod.internalClass
+			count: 1
+			path: src/PHPUnitAttributesExtension.php
+
+		-
 			message: '#^Instantiated class EliasHaeussler\\PHPUnitAttributes\\Tests\\E2E\\Foo not found\.$#'
 			identifier: class.notFound
 			count: 1
