@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Call to method testRunnerTriggeredDeprecation\(\) of internal interface PHPUnit\\Event\\Emitter from outside its root namespace PHPUnit\.$#'
+			message: '#^Call to method testRunnerTriggeredPhpunitDeprecation\(\) of internal interface PHPUnit\\Event\\Emitter from outside its root namespace PHPUnit\.$#'
 			identifier: method.internalInterface
 			count: 1
 			path: src/PHPUnitAttributesExtension.php

@@ -29,7 +29,6 @@ use PHPUnit\TextUI\Configuration;
 
 use function array_unshift;
 use function implode;
-use function method_exists;
 
 /**
  * PHPUnitAttributesExtension.
@@ -210,12 +209,6 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
         );
 
         $emitter = Facade::emitter();
-
-        if (method_exists($emitter, 'testRunnerTriggeredPhpunitDeprecation')) {
-            $emitter->testRunnerTriggeredPhpunitDeprecation(implode(PHP_EOL, $deprecationMessages));
-        } else {
-            // @todo Remove once support for PHPUnit v10 (PHP 8.1) is dropped
-            $emitter->testRunnerTriggeredDeprecation(implode(PHP_EOL, $deprecationMessages));
-        }
+        $emitter->testRunnerTriggeredPhpunitDeprecation(implode(PHP_EOL, $deprecationMessages));
     }
 }
