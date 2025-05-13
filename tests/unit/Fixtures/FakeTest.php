@@ -39,6 +39,7 @@ final class FakeTest extends Framework\TestCase
     #[Framework\Attributes\Test]
     #[Attribute\RequiresPackage('phpunit/phpunit', '>= 10', 'PHPUnit >= 10 must be installed')]
     #[Attribute\RequiresPackage('phpstan/phpstan-phpunit')]
+    #[Framework\Attributes\DoesNotPerformAssertions]
     public function fakeMethod(): void
     {
         // Intentionally left blank.
