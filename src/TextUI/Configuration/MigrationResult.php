@@ -71,7 +71,7 @@ final class MigrationResult
             return null;
         }
 
-        $legacyText = sprintf('- <parameter name="%s" value="%s" />', $this->migration->legacyName(), $this->legacyValue);
+        $legacyText = sprintf('- <parameter name="%s" value="%s" />', $this->migration->legacyName(), (string) $this->legacyValue);
         $newText = sprintf('+ <parameter name="%s" value="%s" />', $this->migration->newName(), $this->value);
 
         // Try to colorize diff
