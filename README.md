@@ -3,7 +3,6 @@
 # PHPUnit Attributes
 
 [![Coverage](https://img.shields.io/coverallsCoverage/github/eliashaeussler/phpunit-attributes?logo=coveralls)](https://coveralls.io/github/eliashaeussler/phpunit-attributes)
-[![Maintainability](https://img.shields.io/codeclimate/maintainability/eliashaeussler/phpunit-attributes?logo=codeclimate)](https://codeclimate.com/github/eliashaeussler/phpunit-attributes/maintainability)
 [![CGL](https://img.shields.io/github/actions/workflow/status/eliashaeussler/phpunit-attributes/cgl.yaml?label=cgl&logo=github)](https://github.com/eliashaeussler/phpunit-attributes/actions/workflows/cgl.yaml)
 [![Tests](https://img.shields.io/github/actions/workflow/status/eliashaeussler/phpunit-attributes/tests.yaml?label=tests&logo=github)](https://github.com/eliashaeussler/phpunit-attributes/actions/workflows/tests.yaml)
 [![Supported PHP Versions](https://img.shields.io/packagist/dependency-v/eliashaeussler/phpunit-attributes/php?logo=php)](https://packagist.org/packages/eliashaeussler/phpunit-attributes)
