@@ -19,7 +19,7 @@ body:
     attributes:
       label: PHPUnit version
       description: What PHPUnit version are you using?
-      placeholder: 'e.g. 10.5.30'
+      placeholder: 'e.g. 11.5.44'
     validations:
       required: true
   - type: input

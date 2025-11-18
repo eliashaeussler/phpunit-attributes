@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 require dirname(__DIR__, 3) . '/vendor/autoload.php';
 
-// Display PHPUnit deprecations (PHPUnit >= 10.5.32, >= 11.3.3)
+// Display PHPUnit deprecations (PHPUnit >= 11.3.3)
 $reflectionClass = new \ReflectionClass(\PHPUnit\TextUI\Configuration\Configuration::class);
 if ($reflectionClass->hasMethod('displayDetailsOnPhpunitDeprecations')) {
     $_SERVER['argv'][] = '--display-phpunit-deprecations';
