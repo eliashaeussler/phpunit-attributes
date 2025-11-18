@@ -23,12 +23,8 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\PHPUnitAttributes;
 
-use PHPUnit\Event\Facade;
 use PHPUnit\Runner;
 use PHPUnit\TextUI\Configuration;
-
-use function array_unshift;
-use function implode;
 
 /**
  * PHPUnitAttributesExtension.
@@ -43,34 +39,21 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
         Runner\Extension\Facade $facade,
         Runner\Extension\ParameterCollection $parameters,
     ): void {
-        $requiresClassMigrationResult = $this->registerClassAttributeTracers($facade, $parameters);
+        $this->registerClassAttributeTracers($facade, $parameters);
         $this->registerConstantAttributeTracers($facade, $parameters);
-        $requiresPackageMigrationResult = $this->registerPackageAttributeTracers($facade, $parameters);
+        $this->registerPackageAttributeTracers($facade, $parameters);
         $this->registerEnvAttributeTracers($facade, $parameters);
-
-        $this->triggerDeprecationForMigratedConfigurationParameters(
-            $configuration->colors(),
-            $requiresPackageMigrationResult,
-            $requiresClassMigrationResult,
-        );
     }
 
     private function registerClassAttributeTracers(
         Runner\Extension\Facade $facade,
         Runner\Extension\ParameterCollection $parameters,
-    ): TextUI\Configuration\MigrationResult {
+    ): void {
         // RequiresClass
-        // @todo Remove support of legacy parameter in v3 of the library
-        $migrationResult = $this->migrateParameter(
-            'handleMissingClasses',
-            'failOnMissingClasses',
-            $parameters,
-        );
-
         $facade->registerTracer(
             new Event\Tracer\RequiresClassAttributeTracer(
                 new Metadata\ClassRequirements(),
-                Enum\OutcomeBehavior::tryFrom($migrationResult->value()) ?? Enum\OutcomeBehavior::Skip,
+                $this->resolveOutcomeBehavior('handleMissingClasses', $parameters),
             ),
         );
 
@@ -81,8 +64,6 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
                 $this->resolveOutcomeBehavior('handleAvailableClasses', $parameters),
             ),
         );
-
-        return $migrationResult;
     }
 
     private function registerConstantAttributeTracers(
@@ -109,19 +90,12 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
     private function registerPackageAttributeTracers(
         Runner\Extension\Facade $facade,
         Runner\Extension\ParameterCollection $parameters,
-    ): TextUI\Configuration\MigrationResult {
+    ): void {
         // RequiresPackage
-        // @todo Remove support of legacy parameter in v3 of the library
-        $migrationResult = $this->migrateParameter(
-            'handleUnsatisfiedPackageRequirements',
-            'failOnUnsatisfiedPackageRequirements',
-            $parameters,
-        );
-
         $facade->registerTracer(
             new Event\Tracer\RequiresPackageAttributeTracer(
                 new Metadata\PackageRequirements(),
-                Enum\OutcomeBehavior::tryFrom($migrationResult->value()) ?? Enum\OutcomeBehavior::Skip,
+                $this->resolveOutcomeBehavior('handleUnsatisfiedPackageRequirements', $parameters),
             ),
         );
 
@@ -132,8 +106,6 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
                 $this->resolveOutcomeBehavior('handleSatisfiedPackageRequirements', $parameters),
             ),
         );
-
-        return $migrationResult;
     }
 
     private function registerEnvAttributeTracers(
@@ -157,22 +129,6 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
         );
     }
 
-    /**
-     * @param non-empty-string $new
-     * @param non-empty-string $legacy
-     */
-    private function migrateParameter(
-        string $new,
-        string $legacy,
-        Runner\Extension\ParameterCollection $parameters,
-    ): TextUI\Configuration\MigrationResult {
-        return TextUI\Configuration\Migration::forParameter($new, $legacy)
-            ->withValueMapping(Enum\OutcomeBehavior::Fail->value, 'true', true)
-            ->withValueMapping(Enum\OutcomeBehavior::Skip->value, 'false', true)
-            ->resolve($parameters, Enum\OutcomeBehavior::Skip->value)
-        ;
-    }
-
     private function resolveOutcomeBehavior(
         string $name,
         Runner\Extension\ParameterCollection $parameters,
@@ -184,31 +140,5 @@ final class PHPUnitAttributesExtension implements Runner\Extension\Extension
         }
 
         return $behavior ?? Enum\OutcomeBehavior::Skip;
-    }
-
-    private function triggerDeprecationForMigratedConfigurationParameters(
-        bool $colorize,
-        TextUI\Configuration\MigrationResult ...$migrationResults,
-    ): void {
-        $deprecationMessages = [];
-
-        foreach ($migrationResults as $migrationResult) {
-            if ($migrationResult->wasMigrated()) {
-                $deprecationMessages[] = $migrationResult->getDiffAsString($colorize);
-            }
-        }
-
-        if ([] === $deprecationMessages) {
-            return;
-        }
-
-        // Early return if no deprecations are to be triggered
-        array_unshift(
-            $deprecationMessages,
-            'Your XML configuration contains deprecated extension parameters. Migrate your XML configuration:',
-        );
-
-        $emitter = Facade::emitter();
-        $emitter->testRunnerTriggeredPhpunitDeprecation(implode(PHP_EOL, $deprecationMessages));
     }
 }
