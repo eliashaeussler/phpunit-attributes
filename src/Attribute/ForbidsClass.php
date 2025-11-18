@@ -33,16 +33,16 @@ use EliasHaeussler\PHPUnitAttributes\Enum;
  * @license GPL-3.0-or-later
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
-final class ForbidsClass
+final readonly class ForbidsClass
 {
     /**
      * @param class-string          $className
      * @param non-empty-string|null $message
      */
     public function __construct(
-        private readonly string $className,
-        private readonly ?string $message = null,
-        private readonly ?Enum\OutcomeBehavior $outcomeBehavior = null,
+        private string $className,
+        private ?string $message = null,
+        private ?Enum\OutcomeBehavior $outcomeBehavior = null,
     ) {}
 
     /**

@@ -33,15 +33,15 @@ use EliasHaeussler\PHPUnitAttributes\Enum;
  * @license GPL-3.0-or-later
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
-final class ForbidsConstant
+final readonly class ForbidsConstant
 {
     /**
      * @param non-empty-string|null $message
      */
     public function __construct(
-        private readonly string $constant,
-        private readonly ?string $message = null,
-        private readonly ?Enum\OutcomeBehavior $outcomeBehavior = null,
+        private string $constant,
+        private ?string $message = null,
+        private ?Enum\OutcomeBehavior $outcomeBehavior = null,
     ) {}
 
     public function constant(): string

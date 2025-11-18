@@ -32,12 +32,12 @@ use Attribute;
  * @license GPL-3.0-or-later
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
-final class DummyAttribute
+final readonly class DummyAttribute
 {
     /**
      * @param non-empty-string $message
      */
     public function __construct(
-        public readonly string $message,
+        public string $message,
     ) {}
 }

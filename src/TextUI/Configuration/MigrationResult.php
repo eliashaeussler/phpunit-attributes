@@ -34,12 +34,12 @@ use function sprintf;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0-or-later
  */
-final class MigrationResult
+final readonly class MigrationResult
 {
     private function __construct(
-        private readonly Migration $migration,
-        private readonly string $value,
-        private readonly ?string $legacyValue,
+        private Migration $migration,
+        private string $value,
+        private ?string $legacyValue,
     ) {}
 
     public static function forMigration(

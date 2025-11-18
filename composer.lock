@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9fb430f0da8a4ef904b20ebcfd89c55c",
+    "content-hash": "0ddad9b8a3861a8ab75338aea0aa215e",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -1679,33 +1679,33 @@
     "packages-dev": [
         {
             "name": "armin/editorconfig-cli",
-            "version": "1.8.1",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/a-r-m-i-n/editorconfig-cli.git",
-                "reference": "c15a733467c2540bd7d4bc054d05c64c80b0b39c"
+                "reference": "408dd6b11d67914f9b23fca21ea3f805157b35a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a-r-m-i-n/editorconfig-cli/zipball/c15a733467c2540bd7d4bc054d05c64c80b0b39c",
-                "reference": "c15a733467c2540bd7d4bc054d05c64c80b0b39c",
+                "url": "https://api.github.com/repos/a-r-m-i-n/editorconfig-cli/zipball/408dd6b11d67914f9b23fca21ea3f805157b35a0",
+                "reference": "408dd6b11d67914f9b23fca21ea3f805157b35a0",
                 "shasum": ""
             },
             "require": {
                 "ext-iconv": "*",
                 "ext-json": "*",
                 "idiosyncratic/editorconfig": "^0.1.1",
-                "php": "^7.4 || ^8.0",
-                "symfony/console": "^4 || ^5 || ^6",
-                "symfony/finder": "^4.4 || ^5 || ^6",
-                "symfony/mime": "^4 || ^5 || ^6"
+                "php": "^8.2",
+                "symfony/console": "^5 || ^6 || ^7",
+                "symfony/finder": "^5 || ^6 || ^7",
+                "symfony/mime": "^5 || ^6 || ^7"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "3.4.0",
-                "jangregor/phpstan-prophecy": "1.0.0",
-                "phpstan/phpstan": "1.4.0",
-                "phpunit/phpunit": "^9.6.8 || ^10.1",
-                "seld/phar-utils": "^1.1"
+                "friendsofphp/php-cs-fixer": "^3.59",
+                "jangregor/phpstan-prophecy": "^2.0",
+                "phpstan/phpstan": "^2.0",
+                "phpunit/phpunit": "^10.5",
+                "seld/phar-utils": "^1.2"
             },
             "bin": [
                 "bin/ec"
@@ -1733,7 +1733,7 @@
                 "issues": "https://github.com/a-r-m-i-n/editorconfig-cli/issues",
                 "source": "https://github.com/a-r-m-i-n/editorconfig-cli"
             },
-            "time": "2023-12-28T15:51:57+00:00"
+            "time": "2025-06-02T17:23:31+00:00"
         },
         {
             "name": "clue/ndjson-react",
@@ -5776,7 +5776,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0"
+        "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0"
     },
     "platform-dev": {},
     "plugin-api-version": "2.9.0"
