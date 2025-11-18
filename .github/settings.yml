@@ -90,10 +90,6 @@ rulesets:
           required_status_checks:
             - context: 'cgl'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.1, PHPUnit 10 & highest dependencies)'
-              integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.1, PHPUnit 10 & lowest dependencies)'
-              integration_id: 15368
             - context: 'Tests with Composer (PHP 8.2, PHPUnit 10 & highest dependencies)'
               integration_id: 15368
             - context: 'Tests with Composer (PHP 8.2, PHPUnit 10 & lowest dependencies)'
@@ -137,8 +133,6 @@ rulesets:
             - context: 'Tests with Composer (PHP 8.5, PHPUnit 12 & highest dependencies)'
               integration_id: 15368
             - context: 'Tests with Composer (PHP 8.5, PHPUnit 12 & lowest dependencies)'
-              integration_id: 15368
-            - context: 'Tests with PHAR (PHP 8.1 & PHPUnit 10)'
               integration_id: 15368
             - context: 'Tests with PHAR (PHP 8.2 & PHPUnit 10)'
               integration_id: 15368

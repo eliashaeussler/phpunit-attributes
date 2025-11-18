@@ -33,7 +33,7 @@ use EliasHaeussler\PHPUnitAttributes\Enum;
  * @license GPL-3.0-or-later
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
-final class ForbidsPackage
+final readonly class ForbidsPackage
 {
     /**
      * @param non-empty-string      $package
@@ -41,10 +41,10 @@ final class ForbidsPackage
      * @param non-empty-string|null $message
      */
     public function __construct(
-        private readonly string $package,
-        private readonly ?string $versionRequirement = null,
-        private readonly ?string $message = null,
-        private readonly ?Enum\OutcomeBehavior $outcomeBehavior = null,
+        private string $package,
+        private ?string $versionRequirement = null,
+        private ?string $message = null,
+        private ?Enum\OutcomeBehavior $outcomeBehavior = null,
     ) {}
 
     /**
