@@ -90,17 +90,9 @@ rulesets:
           required_status_checks:
             - context: 'cgl'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.2, PHPUnit 10 & highest dependencies)'
-              integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.2, PHPUnit 10 & lowest dependencies)'
-              integration_id: 15368
             - context: 'Tests with Composer (PHP 8.2, PHPUnit 11 & highest dependencies)'
               integration_id: 15368
             - context: 'Tests with Composer (PHP 8.2, PHPUnit 11 & lowest dependencies)'
-              integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.3, PHPUnit 10 & highest dependencies)'
-              integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.3, PHPUnit 10 & lowest dependencies)'
               integration_id: 15368
             - context: 'Tests with Composer (PHP 8.3, PHPUnit 11 & highest dependencies)'
               integration_id: 15368
@@ -110,10 +102,6 @@ rulesets:
               integration_id: 15368
             - context: 'Tests with Composer (PHP 8.3, PHPUnit 12 & lowest dependencies)'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.4, PHPUnit 10 & highest dependencies)'
-              integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.4, PHPUnit 10 & lowest dependencies)'
-              integration_id: 15368
             - context: 'Tests with Composer (PHP 8.4, PHPUnit 11 & highest dependencies)'
               integration_id: 15368
             - context: 'Tests with Composer (PHP 8.4, PHPUnit 11 & lowest dependencies)'
@@ -121,10 +109,6 @@ rulesets:
             - context: 'Tests with Composer (PHP 8.4, PHPUnit 12 & highest dependencies)'
               integration_id: 15368
             - context: 'Tests with Composer (PHP 8.4, PHPUnit 12 & lowest dependencies)'
-              integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.5, PHPUnit 10 & highest dependencies)'
-              integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.5, PHPUnit 10 & lowest dependencies)'
               integration_id: 15368
             - context: 'Tests with Composer (PHP 8.5, PHPUnit 11 & highest dependencies)'
               integration_id: 15368
@@ -134,23 +118,15 @@ rulesets:
               integration_id: 15368
             - context: 'Tests with Composer (PHP 8.5, PHPUnit 12 & lowest dependencies)'
               integration_id: 15368
-            - context: 'Tests with PHAR (PHP 8.2 & PHPUnit 10)'
-              integration_id: 15368
             - context: 'Tests with PHAR (PHP 8.2 & PHPUnit 11)'
-              integration_id: 15368
-            - context: 'Tests with PHAR (PHP 8.3 & PHPUnit 10)'
               integration_id: 15368
             - context: 'Tests with PHAR (PHP 8.3 & PHPUnit 11)'
               integration_id: 15368
             - context: 'Tests with PHAR (PHP 8.3 & PHPUnit 12)'
               integration_id: 15368
-            - context: 'Tests with PHAR (PHP 8.4 & PHPUnit 10)'
-              integration_id: 15368
             - context: 'Tests with PHAR (PHP 8.4 & PHPUnit 11)'
               integration_id: 15368
             - context: 'Tests with PHAR (PHP 8.4 & PHPUnit 12)'
-              integration_id: 15368
-            - context: 'Tests with PHAR (PHP 8.5 & PHPUnit 10)'
               integration_id: 15368
             - context: 'Tests with PHAR (PHP 8.5 & PHPUnit 11)'
               integration_id: 15368
