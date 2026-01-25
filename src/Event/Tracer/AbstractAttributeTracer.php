@@ -58,7 +58,7 @@ abstract class AbstractAttributeTracer implements Event\Tracer\Tracer
             return;
         }
 
-        if (!($event instanceof Event\Test\Prepared)) {
+        if (!$event instanceof Event\Test\Prepared) {
             return;
         }
 
