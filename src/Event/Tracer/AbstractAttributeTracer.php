@@ -32,6 +32,7 @@ use function array_filter;
 use function array_keys;
 use function array_values;
 use function implode;
+use function method_exists;
 
 /**
  * AbstractAttributeTracer.
@@ -53,7 +54,9 @@ abstract class AbstractAttributeTracer implements Event\Tracer\Tracer
     public function trace(Event\Event $event): void
     {
         if ($event instanceof Event\Test\BeforeTestMethodCalled) {
-            $this->processAttributesOnClassLevel($event->testClassName());
+            $testClassName = method_exists($event, 'test') ? $event->test()->className() : $event->testClassName();
+
+            $this->processAttributesOnClassLevel($testClassName);
 
             return;
         }
