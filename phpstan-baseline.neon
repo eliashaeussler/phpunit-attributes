@@ -1,6 +1,24 @@
 parameters:
 	ignoreErrors:
 		-
+			rawMessage: 'Call to function method_exists() with PHPUnit\Event\Test\BeforeTestMethodCalled and ''test'' will always evaluate to false.'
+			identifier: function.impossibleType
+			count: 1
+			path: src/Event/Tracer/AbstractAttributeTracer.php
+
+		-
+			rawMessage: 'Cannot call method className() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: src/Event/Tracer/AbstractAttributeTracer.php
+
+		-
+			rawMessage: 'Parameter #1 $testClassName of method EliasHaeussler\PHPUnitAttributes\Event\Tracer\AbstractAttributeTracer<TAttribute of object>::processAttributesOnClassLevel() expects class-string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: src/Event/Tracer/AbstractAttributeTracer.php
+
+		-
 			rawMessage: Instantiated class EliasHaeussler\PHPUnitAttributes\Tests\E2E\Foo not found.
 			identifier: class.notFound
 			count: 1
