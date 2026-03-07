@@ -13,7 +13,7 @@
 	],
 	"require": {
 		"php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
-		"phpunit/phpunit": "^11.5.34 || ^12.3.6 || ^13.0.0"
+		"phpunit/phpunit": "^11.5.34 || ^12.3.6 || ^13.0"
 	},
 	"require-dev": {
 		"armin/editorconfig-cli": "^2.0",
