@@ -4,76 +4,76 @@ parameters:
 			rawMessage: 'Call to function method_exists() with PHPUnit\Event\Test\BeforeTestMethodCalled and ''test'' will always evaluate to false.'
 			identifier: function.impossibleType
 			count: 1
-			path: src/Event/Tracer/AbstractAttributeTracer.php
+			path: ../../src/Event/Tracer/AbstractAttributeTracer.php
 
 		-
 			rawMessage: 'Cannot call method className() on mixed.'
 			identifier: method.nonObject
 			count: 1
-			path: src/Event/Tracer/AbstractAttributeTracer.php
+			path: ../../src/Event/Tracer/AbstractAttributeTracer.php
 
 		-
 			rawMessage: 'Parameter #1 $testClassName of method EliasHaeussler\PHPUnitAttributes\Event\Tracer\AbstractAttributeTracer<TAttribute of object>::processAttributesOnClassLevel() expects class-string, mixed given.'
 			identifier: argument.type
 			count: 1
-			path: src/Event/Tracer/AbstractAttributeTracer.php
+			path: ../../src/Event/Tracer/AbstractAttributeTracer.php
 
 		-
 			rawMessage: Instantiated class EliasHaeussler\PHPUnitAttributes\Tests\E2E\Foo not found.
 			identifier: class.notFound
 			count: 1
-			path: tests/e2e/abstract-attribute/fixtures/handle-autoload-errors/tests/DummyAttributeHandlesAutoloadErrorsTest.php
+			path: ../../tests/e2e/abstract-attribute/fixtures/handle-autoload-errors/tests/DummyAttributeHandlesAutoloadErrorsTest.php
 
 		-
 			rawMessage: Property EliasHaeussler\PHPUnitAttributes\Tests\E2E\DummyAttributeHandlesAutoloadErrorsTest::$foo has unknown class EliasHaeussler\PHPUnitAttributes\Tests\E2E\Foo as its type.
 			identifier: class.notFound
 			count: 1
-			path: tests/e2e/abstract-attribute/fixtures/handle-autoload-errors/tests/DummyAttributeHandlesAutoloadErrorsTest.php
+			path: ../../tests/e2e/abstract-attribute/fixtures/handle-autoload-errors/tests/DummyAttributeHandlesAutoloadErrorsTest.php
 
 		-
 			rawMessage: 'Property EliasHaeussler\PHPUnitAttributes\Tests\E2E\DummyAttributeHandlesAutoloadErrorsTest::$foo is never read, only written.'
 			identifier: property.onlyWritten
 			count: 1
-			path: tests/e2e/abstract-attribute/fixtures/handle-autoload-errors/tests/DummyAttributeHandlesAutoloadErrorsTest.php
+			path: ../../tests/e2e/abstract-attribute/fixtures/handle-autoload-errors/tests/DummyAttributeHandlesAutoloadErrorsTest.php
 
 		-
 			rawMessage: 'Parameter #1 $className of attribute class EliasHaeussler\PHPUnitAttributes\Attribute\RequiresClass constructor expects class-string, string given.'
 			identifier: argument.type
 			count: 1
-			path: tests/e2e/requires-class-attribute/fixtures/custom-message/tests/RequiresClassAttributeWithCustomMessageTest.php
+			path: ../../tests/e2e/requires-class-attribute/fixtures/custom-message/tests/RequiresClassAttributeWithCustomMessageTest.php
 
 		-
 			rawMessage: 'Parameter #1 $className of attribute class EliasHaeussler\PHPUnitAttributes\Attribute\RequiresClass constructor expects class-string, string given.'
 			identifier: argument.type
 			count: 1
-			path: tests/e2e/requires-class-attribute/fixtures/fail-on-unsatisfied-requirement/tests/RequiresClassAttributeFailsOnUnsatisfiedRequirementTest.php
+			path: ../../tests/e2e/requires-class-attribute/fixtures/fail-on-unsatisfied-requirement/tests/RequiresClassAttributeFailsOnUnsatisfiedRequirementTest.php
 
 		-
 			rawMessage: 'Parameter #1 $className of attribute class EliasHaeussler\PHPUnitAttributes\Attribute\RequiresClass constructor expects class-string, string given.'
 			identifier: argument.type
 			count: 1
-			path: tests/e2e/requires-class-attribute/fixtures/skip-on-invalid-configuration-value/tests/RequiresClassAttributeSkipsOnInvalidConfigurationValueTest.php
+			path: ../../tests/e2e/requires-class-attribute/fixtures/skip-on-invalid-configuration-value/tests/RequiresClassAttributeSkipsOnInvalidConfigurationValueTest.php
 
 		-
 			rawMessage: 'Parameter #1 $className of attribute class EliasHaeussler\PHPUnitAttributes\Attribute\RequiresClass constructor expects class-string, string given.'
 			identifier: argument.type
 			count: 1
-			path: tests/e2e/requires-class-attribute/fixtures/skip-on-unsatisfied-requirement/tests/RequiresClassAttributeSkipsOnUnsatisfiedRequirementTest.php
+			path: ../../tests/e2e/requires-class-attribute/fixtures/skip-on-unsatisfied-requirement/tests/RequiresClassAttributeSkipsOnUnsatisfiedRequirementTest.php
 
 		-
 			rawMessage: 'Parameter #1 $className of class EliasHaeussler\PHPUnitAttributes\Attribute\ForbidsClass constructor expects class-string, string given.'
 			identifier: argument.type
 			count: 1
-			path: tests/unit/Metadata/ClassRequirementsTest.php
+			path: ../../tests/unit/Metadata/ClassRequirementsTest.php
 
 		-
 			rawMessage: 'Parameter #1 $className of class EliasHaeussler\PHPUnitAttributes\Attribute\RequiresClass constructor expects class-string, string given.'
 			identifier: argument.type
 			count: 1
-			path: tests/unit/Metadata/ClassRequirementsTest.php
+			path: ../../tests/unit/Metadata/ClassRequirementsTest.php
 
 		-
 			rawMessage: 'Parameter #1 $className of static method EliasHaeussler\PHPUnitAttributes\TextUI\Messages::forMissingClass() expects class-string, string given.'
 			identifier: argument.type
 			count: 1
-			path: tests/unit/Metadata/ClassRequirementsTest.php
+			path: ../../tests/unit/Metadata/ClassRequirementsTest.php

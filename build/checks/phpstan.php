@@ -23,12 +23,12 @@ declare(strict_types=1);
 
 use EliasHaeussler\PHPStanConfig;
 
-return PHPStanConfig\Config\Config::create(__DIR__)
+return PHPStanConfig\Config\Config::create(dirname(__DIR__, 2))
     ->in(
         'src',
         'tests',
     )
-    ->withBaseline()
+    ->withBaseline(__DIR__.'/phpstan-baseline.neon')
     ->withBleedingEdge()
     ->maxLevel()
     ->ignoreError(

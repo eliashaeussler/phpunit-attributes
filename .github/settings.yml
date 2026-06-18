@@ -11,7 +11,9 @@ repository:
   allow_squash_merge: true
   allow_merge_commit: true
   allow_rebase_merge: true
+  allow_auto_merge: true
   delete_branch_on_merge: true
+  allow_update_branch: true
   # This will be handled by Renovate
   enable_automated_security_fixes: false
   enable_vulnerability_alerts: false
@@ -88,63 +90,65 @@ rulesets:
           strict_required_status_checks_policy: true
           do_not_enforce_on_create: false
           required_status_checks:
-            - context: 'cgl'
+            - context: 'Checks / Perform Composer checks'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.2, PHPUnit 11 & highest dependencies)'
+            - context: 'Checks / Perform repository checks'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.2, PHPUnit 11 & lowest dependencies)'
+            - context: 'Composer tests (PHP 8.2, PHPUnit 11 & highest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.3, PHPUnit 11 & highest dependencies)'
+            - context: 'Composer tests (PHP 8.2, PHPUnit 11 & lowest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.3, PHPUnit 11 & lowest dependencies)'
+            - context: 'Composer tests (PHP 8.3, PHPUnit 11 & highest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.3, PHPUnit 12 & highest dependencies)'
+            - context: 'Composer tests (PHP 8.3, PHPUnit 11 & lowest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.3, PHPUnit 12 & lowest dependencies)'
+            - context: 'Composer tests (PHP 8.3, PHPUnit 12 & highest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.4, PHPUnit 11 & highest dependencies)'
+            - context: 'Composer tests (PHP 8.3, PHPUnit 12 & lowest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.4, PHPUnit 11 & lowest dependencies)'
+            - context: 'Composer tests (PHP 8.4, PHPUnit 11 & highest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.4, PHPUnit 12 & highest dependencies)'
+            - context: 'Composer tests (PHP 8.4, PHPUnit 11 & lowest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.4, PHPUnit 12 & lowest dependencies)'
+            - context: 'Composer tests (PHP 8.4, PHPUnit 12 & highest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.4, PHPUnit 13 & highest dependencies)'
+            - context: 'Composer tests (PHP 8.4, PHPUnit 12 & lowest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.4, PHPUnit 13 & lowest dependencies)'
+            - context: 'Composer tests (PHP 8.4, PHPUnit 13 & highest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.5, PHPUnit 11 & highest dependencies)'
+            - context: 'Composer tests (PHP 8.4, PHPUnit 13 & lowest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.5, PHPUnit 11 & lowest dependencies)'
+            - context: 'Composer tests (PHP 8.5, PHPUnit 11 & highest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.5, PHPUnit 12 & highest dependencies)'
+            - context: 'Composer tests (PHP 8.5, PHPUnit 11 & lowest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.5, PHPUnit 12 & lowest dependencies)'
+            - context: 'Composer tests (PHP 8.5, PHPUnit 12 & highest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.5, PHPUnit 13 & highest dependencies)'
+            - context: 'Composer tests (PHP 8.5, PHPUnit 12 & lowest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with Composer (PHP 8.5, PHPUnit 13 & lowest dependencies)'
+            - context: 'Composer tests (PHP 8.5, PHPUnit 13 & highest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with PHAR (PHP 8.2 & PHPUnit 11)'
+            - context: 'Composer tests (PHP 8.5, PHPUnit 13 & lowest dependencies) / Run tests'
               integration_id: 15368
-            - context: 'Tests with PHAR (PHP 8.3 & PHPUnit 11)'
+            - context: 'PHAR tests (PHP 8.2 & PHPUnit 11) / Run tests'
               integration_id: 15368
-            - context: 'Tests with PHAR (PHP 8.3 & PHPUnit 12)'
+            - context: 'PHAR tests (PHP 8.3 & PHPUnit 11) / Run tests'
               integration_id: 15368
-            - context: 'Tests with PHAR (PHP 8.4 & PHPUnit 11)'
+            - context: 'PHAR tests (PHP 8.3 & PHPUnit 12) / Run tests'
               integration_id: 15368
-            - context: 'Tests with PHAR (PHP 8.4 & PHPUnit 12)'
+            - context: 'PHAR tests (PHP 8.4 & PHPUnit 11) / Run tests'
               integration_id: 15368
-            - context: 'Tests with PHAR (PHP 8.4 & PHPUnit 13)'
+            - context: 'PHAR tests (PHP 8.4 & PHPUnit 12) / Run tests'
               integration_id: 15368
-            - context: 'Tests with PHAR (PHP 8.5 & PHPUnit 11)'
+            - context: 'PHAR tests (PHP 8.4 & PHPUnit 13) / Run tests'
               integration_id: 15368
-            - context: 'Tests with PHAR (PHP 8.5 & PHPUnit 12)'
+            - context: 'PHAR tests (PHP 8.5 & PHPUnit 11) / Run tests'
               integration_id: 15368
-            - context: 'Tests with PHAR (PHP 8.5 & PHPUnit 13)'
+            - context: 'PHAR tests (PHP 8.5 & PHPUnit 12) / Run tests'
               integration_id: 15368
-            - context: 'Test coverage'
+            - context: 'PHAR tests (PHP 8.5 & PHPUnit 13) / Run tests'
+              integration_id: 15368
+            - context: 'Test coverage / Collect test coverage'
               integration_id: 15368
     bypass_actors:
       - actor_id: 5
