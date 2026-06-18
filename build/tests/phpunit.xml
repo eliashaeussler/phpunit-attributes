@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
+         xsi:noNamespaceSchemaLocation="../../vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="../../vendor/autoload.php"
          colors="true"
 >
     <extensions>
@@ -9,24 +9,24 @@
     </extensions>
     <testsuites>
         <testsuite name="e2e">
-            <directory suffix=".phpt">tests/e2e</directory>
-            <exclude>tests/e2e/*/fixtures</exclude>
+            <directory suffix=".phpt">../../tests/e2e</directory>
+            <exclude>../../tests/e2e/*/fixtures</exclude>
         </testsuite>
         <testsuite name="unit">
-            <directory>tests/unit</directory>
-            <exclude>tests/unit/Fixtures</exclude>
+            <directory>../../tests/unit</directory>
+            <exclude>../../tests/unit/Fixtures</exclude>
         </testsuite>
     </testsuites>
     <coverage>
         <report>
-            <clover outputFile=".build/coverage/clover.xml" />
-            <html outputDirectory=".build/coverage/html"/>
+            <clover outputFile="coverage/clover.xml" />
+            <html outputDirectory="coverage/html"/>
             <text outputFile="php://stdout" showOnlySummary="true"/>
         </report>
     </coverage>
     <source>
         <include>
-            <directory>src</directory>
+            <directory>../../src</directory>
         </include>
     </source>
 </phpunit>

@@ -24,6 +24,7 @@
 		"phpstan/extension-installer": "^1.2",
 		"phpstan/phpstan-phpunit": "^2.0",
 		"phpunit/phpcov": "^10.0 || ^11.0 || ^12.0 || ^13.0",
+		"shipmonk/composer-dependency-analyser": "^1.8",
 		"symfony/console": "^6.4 || ^7.0 || ^8.0"
 	},
 	"autoload": {
@@ -44,32 +45,48 @@
 		"sort-packages": true
 	},
 	"scripts": {
+		"check": [
+			"@check:deps",
+			"@check:refactor",
+			"@check:static",
+			"@check:style"
+		],
+		"check:deps": "composer-dependency-analyser",
+		"check:refactor": [
+			"@check:refactor:php"
+		],
+		"check:refactor:php": "@refactor:php --dry-run",
+		"check:static": "phpstan analyse -c build/checks/phpstan.php",
+		"check:style": [
+			"@check:style:composer",
+			"@check:style:editorconfig",
+			"@check:style:php"
+		],
+		"check:style:composer": "@fix:composer --dry-run",
+		"check:style:editorconfig": "ec",
+		"check:style:php": "@fix:php --dry-run",
+		"ci": [
+			"@composer validate --strict",
+			"@composer audit",
+			"@check:deps",
+			"@check:refactor",
+			"@check:static --error-format github",
+			"@check:style"
+		],
 		"fix": [
 			"@fix:composer",
 			"@fix:editorconfig",
 			"@fix:php"
 		],
 		"fix:composer": "@composer normalize",
-		"fix:editorconfig": "@lint:editorconfig --fix",
-		"fix:php": "php-cs-fixer fix",
-		"lint": [
-			"@lint:composer",
-			"@lint:editorconfig",
-			"@lint:php"
+		"fix:editorconfig": "@check:style:editorconfig --fix",
+		"fix:php": "php-cs-fixer fix --config build/checks/.php-cs-fixer.php",
+		"refactor": [
+			"@refactor:php"
 		],
-		"lint:composer": "@fix:composer --dry-run",
-		"lint:editorconfig": "ec",
-		"lint:php": "@fix:php --dry-run",
-		"migration": [
-			"@migration:rector"
-		],
-		"migration:rector": "rector process -c rector.php",
-		"sca": [
-			"@sca:php"
-		],
-		"sca:php": "phpstan analyse -c phpstan.php",
+		"refactor:php": "rector process -c build/checks/rector.php",
 		"test": "@test:coverage --no-coverage",
-		"test:coverage": "phpunit",
+		"test:coverage": "phpunit -c build/tests/phpunit.xml",
 		"test:coverage:e2e": "@test:coverage --testsuite e2e",
 		"test:coverage:unit": "@test:coverage --testsuite unit",
 		"test:e2e": "@test --testsuite e2e",

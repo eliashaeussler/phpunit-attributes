@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    name: 'Prepare workflow'
+    uses: eliashaeussler/gha/.github/workflows/preparation.yaml@25277ecb47b0e804f4cc464509789a0183cb78fc # 0.7.3
+
+  checks:
+    name: 'Checks'
+
+    needs: [prepare]
+    if: ${{ needs.prepare.outputs.continue == 'true' }}
+
+    permissions:
+      contents: read
+      security-events: write
+
+    uses: eliashaeussler/gha/.github/workflows/checks.yaml@25277ecb47b0e804f4cc464509789a0183cb78fc # 0.7.3
+    with:
+      # We use the minimum supported PHP version
+      php-version: 8.2 # renovate-ignore
+
+  composer-tests:
+    name: 'Composer tests (PHP ${{ matrix.php-version }}, PHPUnit ${{ matrix.phpunit-version }} & ${{ matrix.dependencies }} dependencies)'
+
+    needs: [prepare]
+    if: ${{ needs.prepare.outputs.continue == 'true' }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["8.2", "8.3", "8.4", "8.5"]
+        phpunit-version: ["11", "12", "13"]
+        dependencies: ["highest", "lowest"]
+        exclude:
+          - php-version: "8.2"
+            phpunit-version: "12"
+          - php-version: "8.2"
+            phpunit-version: "13"
+          - php-version: "8.3"
+            phpunit-version: "13"
+
+    uses: eliashaeussler/gha/.github/workflows/composer-tests.yaml@25277ecb47b0e804f4cc464509789a0183cb78fc # 0.7.3
+    with:
+      php-version: ${{ matrix.php-version }}
+      dependencies: ${{ matrix.dependencies }}
+      composer-options: --with=phpunit/phpunit:^${{ matrix.phpunit-version }}
+
+  phar-tests:
+    name: 'PHAR tests (PHP ${{ matrix.php-version }} & PHPUnit ${{ matrix.phpunit-version }})'
+
+    needs: [prepare]
+    if: ${{ needs.prepare.outputs.continue == 'true' }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["8.2", "8.3", "8.4", "8.5"]
+        phpunit-version: ["11", "12", "13"]
+        exclude:
+          - php-version: "8.2"
+            phpunit-version: "12"
+          - php-version: "8.2"
+            phpunit-version: "13"
+          - php-version: "8.3"
+            phpunit-version: "13"
+
+    uses: eliashaeussler/gha/.github/workflows/composer-tests.yaml@25277ecb47b0e804f4cc464509789a0183cb78fc # 0.7.3
+    with:
+      php-version: ${{ matrix.php-version }}
+      dependencies: ${{ matrix.dependencies }}
+      phpunit-phar-version: ${{ matrix.phpunit-version }}
+      phpunit-phar-flags: --no-coverage --configuration build/tests/phpunit.xml
+
+  test-coverage:
+    name: 'Test coverage'
+
+    needs: [prepare]
+    if: ${{ needs.prepare.outputs.continue == 'true' }}
+
+    uses: eliashaeussler/gha/.github/workflows/composer-test-coverage.yaml@25277ecb47b0e804f4cc464509789a0183cb78fc # 0.7.3
